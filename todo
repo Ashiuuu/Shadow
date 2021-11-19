@@ -1,0 +1,11 @@
+- parsing des options
+  - c : execute une commande
+  - implem stdin
+  - check les options bash
+- structure de base du lexer
+  - regle de base
+  - if de base
+- structure de base de base du parser
+  - ast de structure if de base
+- execution de ce qu'il y a au dessus
+- debut d'el manual 
