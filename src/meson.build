@@ -3,4 +3,12 @@ project('42sh', 'c', default_options: [
     'warning_level=3',
 ])
 
-executable('42sh', 'main.c')
+
+all_sources = []
+all_sources += 'main.c'
+
+subdir('lexer')
+subdir('parser')
+subdir('exec')
+
+executable('42sh', all_sources)
