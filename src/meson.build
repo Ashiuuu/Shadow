@@ -1,4 +1,4 @@
-project('42sh', 'c', default_options: [
+project('42sh', 'c', version : '1.0.0', default_options: [
     'c_std=c99',
     'warning_level=3',
 ])
