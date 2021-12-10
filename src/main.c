@@ -1,20 +1,37 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <strings.h>
 
 int main(int argc, char* argv[])
 {
+    printf("argc = %d\nargv = %s\n", argc, argv);
     if (argc == 1)
     {
-        printf("sh$ ");
-        int fd = 0; // 0 = stdin
-        char buf[32];
-        read(fd, buf, 31);
-        printf("%s", buf);
-        printf("%s", argv);
+        printf("not implemented yet");
+        // detect if something in stdin
+        // display '42sh$ ' and wait for command
+        // use readline for every command
     }
     else
     {
-        printf("exec some command");
+        int opt;
+
+        while ((opt = getopt(argc, argv, "c:")) != -1)
+        {
+            printf("%c\n", opt);
+            switch(opt)
+            {
+                case 'c':
+                    printf("%s", optarg);
+                    // exec optarg command
+                    // exit
+                    break;
+                default:
+                    printf("error");
+            }
+        }
     }
+
     return 0;
 }
