@@ -10,5 +10,6 @@ all_sources += 'main.c'
 subdir('lexer')
 subdir('parser')
 subdir('exec')
+subdir('io')
 
 executable('42sh', all_sources)
