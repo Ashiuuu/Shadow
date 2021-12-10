@@ -8,4 +8,31 @@
 - structure de base de base du parser
   - ast de structure if de base
 - execution de ce qu'il y a au dessus
-- debut d'el manual 
+- debut d'el manual
+
+
+
+
+
+Options bash:
+[*] Des que bash a recu son script, arrete tout
+- bash script1.sh script2.sh       ne lance que script1.sh
+- bash script.sh -c 'echo salut'   ne lance que script.sh
+- bash -c 'echo salut' script.sh   ne lance que 'echo salut'
+[*] -c doit etre suivi de commande, sinon erreur : 
+- bash -c test.sh "echo salut"     ne marche pas
+- bash -c --verbose 'echo salut'   ne marche pas
+- bash --verbose -c 'echo salut'   marche !
+
+
+
+Main.c:
+Gestion des differentes facon de lancer 42sh
+-c : command string     => dans io, transformer string en FILE*
+cat script.sh >> 42sh   => ouvrir stdin en FILE*
+42sh script.sh          => fopen le fichier en FILE*
+
+io:
+FILE *string_to_steam(char buffer[])
+FILE *open_stdin()
+FILE *open_file()
