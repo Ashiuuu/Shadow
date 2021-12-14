@@ -1,8 +1,12 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include <getopt.h>
+
+#include "io/io.h"
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +26,12 @@ int main(int argc, char* argv[])
             switch(opt)
             {
                 case 'c':
-                    printf("%s\n", optarg);
+                    printf("Reading -c argument as a stream :\n");
+                    FILE *arg = string_to_stream(optarg);
+                    int ch;
+                    while ((ch = fgetc(arg)) != EOF)
+                        printf("%c\n", ch);
+                    fclose(arg);
                     // exec optarg command
                     // exit
                     break;
