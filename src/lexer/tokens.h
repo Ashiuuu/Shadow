@@ -13,7 +13,7 @@ enum token_type
     TOKEN_SEMICOL,     // ; token
     TOKEN_EOL,         // \n token
     TOKEN_SINGLEQUOTE, // ' token
-    TOKEN_WORDS        // identifier token ; ex : variable name
+    TOKEN_WORDS        // identifier token, ex : variable name
 };
 
 struct token
