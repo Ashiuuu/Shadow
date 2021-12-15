@@ -14,6 +14,8 @@ enum parser_status parse_input(FILE *input)
     // | '\n'
     // | EOF
 
+    input = input;
+
     return PARSER_OK;
 }
 
@@ -23,6 +25,7 @@ enum parser_status parse_input(FILE *input)
 enum parser_status parser_simple_command(FILE *input)
 {
     // for nowm simple command is just WORD+ ie 'ls /bin' or 'pwd' 
+    input = input;
     return PARSER_OK;
 }
 
@@ -37,7 +40,8 @@ enum parser_status parser_simple_command(FILE *input)
 enum parser_status parse_shell_command(FILE *input)
 {
     // just if for now
-    
+    input = input;
+
     return PARSER_OK;
 }
 
@@ -45,6 +49,8 @@ enum parser_status parse_shell_command(FILE *input)
 // if compound_list  then compound_list [else_clause] fi
 enum parser_status parse_if(FILE *input)
 {
+    input = input;
+
     return PARSER_OK;
 }
 
@@ -53,5 +59,7 @@ enum parser_status parse_if(FILE *input)
 // | elif compound_list then compound_list [else_clause]
 enum parser_status parse_else(FILE *input)
 {
+    input = input;
+
     return PARSER_OK;
 }
