@@ -1,7 +1,6 @@
 #!/bin/sh
 
-meson setup build src
-cd build
-ninja
-mv 42sh ../
-cd ..
+meson setup build
+ninja -C build
+mv build/42sh .
+mv build/test_suite .
