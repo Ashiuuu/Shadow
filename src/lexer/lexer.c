@@ -15,7 +15,7 @@ int is_alphanum(char c)
     return (is_alpha(c) || is_num(c));
 }
 
-struct lexer *lexer_new(FILE *input_stream)
+struct lexer *lexer_new(struct INPUT *input_stream)
 {
     struct lexer *ret = malloc(sizeof(struct lexer));
     if (ret == NULL)
@@ -36,7 +36,7 @@ void lexer_free(struct lexer *lexer)
     if (lexer->current_token != NULL)
         free(lexer->current_token);
     if (lexer->input != NULL)
-        fclose(lexer->input);
+        free_input(lexer->input);
     free(lexer);
 }
 
@@ -50,6 +50,7 @@ struct token *lexer_peek(struct lexer *lexer)
 struct token *lexer_pop(struct lexer *lexer)
 {
     lexer = lexer;
+    return NULL;
 }
 
 struct token *read_until_new_token(struct lexer *lexer)

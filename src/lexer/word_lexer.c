@@ -13,6 +13,8 @@ struct word_lexer *new_word_lexer()
     ret->value = xmalloc(sizeof(char) * ret->capacity);
     ret->len = 0;
     ret->state = LEXER_CONT;
+
+    return ret;
 }
 
 void reset_word_lexer(struct word_lexer *lexer)

@@ -16,6 +16,7 @@ struct INPUT *input_from_string(char *s);
 struct INPUT *input_from_stdin();
 struct INPUT *input_from_file(char *filename);
 char pop_char(struct INPUT *input);
+void free_input(struct INPUT *input);
 
 
 FILE *string_to_stream(char *buffer);

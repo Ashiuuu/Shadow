@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "tokens.h"
+#include "io.h"
 
 // Utilities
 int is_num(char c);
@@ -20,9 +21,9 @@ enum lexer_state
 
 struct lexer
 {
-    INPUT *input;
+    struct INPUT *input;
     struct token *current_token;
-    struct word_len *word_lexer;
+    struct word_lexer *word_lexer;
     //struct keyword_lexer **keyword_list;
 };
 
@@ -59,7 +60,7 @@ enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, char c)
 
 
 
-struct lexer *lexer_new(FILE *input_stream);
+struct lexer *lexer_new(struct INPUT *input_stream);
 void lexer_free(struct lexer *lexer);
 
 

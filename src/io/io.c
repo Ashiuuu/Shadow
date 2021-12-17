@@ -40,6 +40,12 @@ char pop_char(struct INPUT *input)
     return input->current_char;
 }
 
+void free_input(struct INPUT *input)
+{
+    fclose(input->stream);
+    free(input);
+}
+
 
 FILE *string_to_stream(char *buffer)
 {

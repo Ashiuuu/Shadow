@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "lexer.h"
+
 enum parser_status
 {
     PARSER_OK,

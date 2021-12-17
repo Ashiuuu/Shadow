@@ -8,7 +8,7 @@ project(
         'werror=true',
     ],
 )
-cflags=['']
+cflags=['-D_GNU_SOURCE', '-D_POSIX_C_SOURCE=200809L']
 add_project_arguments(cflags, language: 'c')
 
 incdirs = [
