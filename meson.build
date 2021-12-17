@@ -39,5 +39,6 @@ executable(
 executable(
     'test_suite',
     common + ['test/io_test/io_test.c'],
-    include_directories: incdirs
+    include_directories: incdirs,
+    objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
