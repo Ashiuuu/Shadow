@@ -15,7 +15,7 @@
 
 Test(Sample, test_is_null)
 {
-    cr_assert_null(1);
+    cr_assert_null(NULL);
 }
 
 int main(int argc, char *argv[]) {
