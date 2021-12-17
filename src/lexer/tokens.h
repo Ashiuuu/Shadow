@@ -5,6 +5,7 @@
 
 enum token_type
 {
+    TOKEN_ERROR,
     TOKEN_IF,          // if keyword
     TOKEN_THEN,
     TOKEN_ELIF,
