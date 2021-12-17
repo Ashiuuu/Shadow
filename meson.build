@@ -8,8 +8,7 @@ project(
         'werror=true',
     ],
 )
-
-cflags = ['-D_GNU_SOURCE']
+cflags=['']
 add_project_arguments(cflags, language: 'c')
 
 incdirs = [
@@ -36,6 +35,6 @@ executable(
 
 executable(
     'test_suite',
-    common + ['test/main.c'],
+    common + ['test/io_test/io_test.c'],
     include_directories: incdirs
 )
