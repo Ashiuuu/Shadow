@@ -1,5 +1,46 @@
 #include "io.h"
 
+struct INPUT *new_input(FILE *stream)
+{
+    struct INPUT *ret = malloc(sizeof(struct INPUT));
+    if (ret == NULL)
+    {
+        fprintf(stderr, "Unable to malloc INPUT struct");
+        abort();
+    }
+    ret->stream = stream;
+    ret->current_char = fgetc(stream);
+    ret->next_char = fgetc(stream);
+
+    return ret;
+}
+
+struct INPUT *input_from_string(char *s)
+{
+    FILE *stream = string_to_stream(s);
+    return new_input(stream);
+}
+
+struct INPUT *input_from_stdin()
+{
+    return new_input(stdin);
+}
+
+struct INPUT *input_from_file(char *filename)
+{
+    FILE *stream = open_file(filename);
+    return new_input(stream);
+}
+
+char pop_char(struct INPUT *input)
+{
+    input->current_char = input->next_char;
+    input->next_char = fgetc(input->stream);
+
+    return input->current_char;
+}
+
+
 FILE *string_to_stream(char *buffer)
 {
     FILE *stream = fmemopen(buffer, strlen(buffer), "r");
