@@ -6,9 +6,14 @@
     string_to_stream("");
 }*/
 
-Test(Io_test, "Simple String")
+/*Test(Io_test, "Simple String")
 {
     FILE *stream = string_to_stream("Hello World");
     cr_assert_str_not_empty(fgetc(stream));
     cr_assert_str_eq(fgetc(stream), 'e');
+}*/
+
+Test(Sample, test_is_null)
+{
+    cr_assert_is_null(1);
 }
