@@ -6,7 +6,7 @@
 // | list EOF
 // | '\n'
 // | EOF
-enum parser_status parse_input(FILE *input)
+enum parser_status parse_input(struct lexer *input)
 {
     // for now:
     //   simple_command '\n'
@@ -22,7 +22,7 @@ enum parser_status parse_input(FILE *input)
 // Grammar :
 //   (prefix)+
 // | (prefix)* (element)+
-enum parser_status parser_simple_command(FILE *input)
+enum parser_status parser_simple_command(struct lexer *input)
 {
     // for nowm simple command is just WORD+ ie 'ls /bin' or 'pwd' 
     input = input;
@@ -37,7 +37,7 @@ enum parser_status parser_simple_command(FILE *input)
 // | rule_until
 // | rule_case
 // | rule_if
-enum parser_status parse_shell_command(FILE *input)
+enum parser_status parse_shell_command(struct lexer *input)
 {
     // just if for now
     input = input;
@@ -47,7 +47,7 @@ enum parser_status parse_shell_command(FILE *input)
 
 // Grammar :
 // if compound_list  then compound_list [else_clause] fi
-enum parser_status parse_if(FILE *input)
+enum parser_status parse_if(struct lexer *input)
 {
     input = input;
 
@@ -57,7 +57,7 @@ enum parser_status parse_if(FILE *input)
 // Grammar :
 //   else compound_list
 // | elif compound_list then compound_list [else_clause]
-enum parser_status parse_else(FILE *input)
+enum parser_status parse_else(struct lexer *input)
 {
     input = input;
 

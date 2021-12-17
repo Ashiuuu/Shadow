@@ -8,4 +8,4 @@ enum parser_status
     PARSER_ERROR
 };
 
-enum parser_status parse_input(FILE *input);
+enum parser_status parse_input(struct lexer *lexer);
