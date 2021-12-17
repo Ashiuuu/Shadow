@@ -22,7 +22,10 @@ incdirs = [
 common = [
     'src/exec/exec.c',
     'src/io/io.c',
+    'src/lexer/tokens.c',
     'src/lexer/lexer.c',
+    'src/lexer/word_lexer.c',
+    'src/lexer/keyword_lexer.c',
     'src/parser/parser.c',
     'src/utils/utils.c',
 ]

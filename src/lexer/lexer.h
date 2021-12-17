@@ -5,6 +5,7 @@
 
 #include "tokens.h"
 #include "io.h"
+#include "utils.h"
 
 // Utilities
 int is_num(char c);
@@ -40,7 +41,7 @@ struct word_lexer
 
 struct word_lexer *new_word_lexer();
 void reset_word_lexer(struct word_lexer *lexer);
-enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, char c);
+enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, struct INPUT *input);
 
 // Lexer that recognize keywords : if, else, fi, etc...
 
@@ -54,7 +55,7 @@ struct keyword_lexer
 
 struct keyword_lexer *new_keyword_lexer(const char *word);
 void reset_keyword_lexer(struct keyword_lexer *lexer);
-enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, char c);
+enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, struct INPUT *input);
 
 
 

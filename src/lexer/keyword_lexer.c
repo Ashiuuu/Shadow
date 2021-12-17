@@ -2,12 +2,7 @@
 
 struct keyword_lexer *new_keyword_lexer(const char *word)
 {
-    struct keyword_lexer *ret = malloc(sizeof(struct keyword_lexer));
-    if (ret == NULL)
-    {
-        fprintf("Malloc fail");
-        abort();
-    }
+    struct keyword_lexer *ret = xmalloc(sizeof(struct keyword_lexer));
 
     ret->keyword = word;
     ret->word_len = strlen(word);
@@ -19,11 +14,11 @@ struct keyword_lexer *new_keyword_lexer(const char *word)
 
 void reset_keyword_lexer(struct keyword_lexer *lexer)
 {
-    ret->pos = 0;
-    ret->state = LEXER_CONT;
+    lexer->pos = 0;
+    lexer->state = LEXER_CONT;
 }
 
-enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, char c)
+enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, struct INPUT *input)
 {
     if (lexer->state == LEXER_ERROR)
     {
@@ -33,7 +28,7 @@ enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, char c)
 
     if (lexer->pos >= lexer->word_len) // we already went through the last char
     {
-        if (c == ' ' || c == ';') // punctuation
+        if (input->current_char == ' ' || input->current_char == ';') // punctuation
         {
             lexer->state = LEXER_ACCEPT;
             return LEXER_ACCEPT;
@@ -42,7 +37,7 @@ enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, char c)
         return LEXER_ERROR;
     }
 
-    if (lexer->word[lexer->pos] == c)
+    if (lexer->keyword[lexer->pos] == input->current_char)
     {
         // valid character, simply continue
         lexer->pos++;
