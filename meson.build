@@ -17,6 +17,7 @@ incdirs = [
     include_directories('src/io'),
     include_directories('src/lexer'),
     include_directories('src/parser'),
+    include_directories('src/utils'),
 ]
 
 common = [
@@ -24,6 +25,7 @@ common = [
     'src/io/io.c',
     'src/lexer/lexer.c',
     'src/parser/parser.c',
+    'src/utils/utils.c',
 ]
 
 executable(
