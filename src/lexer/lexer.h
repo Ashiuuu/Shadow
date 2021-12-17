@@ -47,7 +47,7 @@ enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, struct INPUT 
 
 struct keyword_lexer
 {
-    char *keyword;
+    const char *keyword;
     size_t word_len;
     size_t pos;
     enum lexer_state state;
