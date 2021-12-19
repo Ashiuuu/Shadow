@@ -67,5 +67,6 @@ void lexer_free(struct lexer *lexer);
 
 
 struct token *read_until_new_token(struct lexer *lexer);
+struct token *token_swap(struct lexer *lexer, struct token *new_token);
 struct token *lexer_peek(struct lexer *lexer);
 struct token *lexer_pop(struct lexer *lexer);
