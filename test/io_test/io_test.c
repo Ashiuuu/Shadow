@@ -18,6 +18,31 @@ Test(Sample, test_is_null)
     cr_assert_null(NULL);
 }
 
+Test(io, single_letters)
+{
+    struct INPUT *input = input_from_string("test");
+
+    cr_assert_eq(input->current_char, 't');
+    cr_assert_eq(input->next_char, 'e');
+
+    pop_char(input);
+
+    cr_assert_eq(input->current_char, 'e');
+    cr_assert_eq(input->next_char, 's');
+}
+
+Test(io, word)
+{
+    struct INPUT *input = input_from_string("test");
+    char *string = "test";
+    
+    for (size_t i = 0; i < 4; ++i)
+    {
+        cr_assert_eq(input->current_char, string[i]);
+        pop_char(input);
+    }
+}
+
 int main(int argc, char *argv[]) {
     struct criterion_test_set *tests = criterion_initialize();
 
