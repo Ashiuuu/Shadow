@@ -30,6 +30,11 @@ common = [
     'src/utils/utils.c',
 ]
 
+test_files = [
+    'test/io_test/io_test.c',
+    'test/lexer_test/word_lexer_test.c',
+]
+
 executable(
     '42sh',
     common + ['src/main.c'],
@@ -38,7 +43,7 @@ executable(
 
 executable(
     'test_suite',
-    common + ['test/io_test/io_test.c'],
+    common + test_files,
     include_directories: incdirs,
     objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
