@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 enum token_type
 {
@@ -13,6 +14,7 @@ enum token_type
     TOKEN_FI,
     TOKEN_SEMICOL,     // ; token
     TOKEN_EOL,         // \n token
+    TOKEN_EOF,         // EOF token
     TOKEN_SINGLEQUOTE, // ' token
     TOKEN_WORDS        // identifier token, ex : variable name
 };
@@ -24,4 +26,5 @@ struct token
 };
 
 struct token *token_new(enum token_type type);
+struct token *token_new_word(char *value); // should only be word type
 void token_free(struct token *token);
