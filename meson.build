@@ -33,6 +33,7 @@ common = [
 test_files = [
     'test/io_test/io_test.c',
     'test/lexer_test/word_lexer_test.c',
+    'test/lexer_test/lexer_test.c',
 ]
 
 executable(
