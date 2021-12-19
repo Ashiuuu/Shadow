@@ -12,6 +12,14 @@ struct word_lexer *new_word_lexer()
     return ret;
 }
 
+void free_word_lexer(struct word_lexer *lexer)
+{
+    if (lexer->value != NULL)
+        free(lexer->value);
+
+    free(lexer);
+}
+
 void reset_word_lexer(struct word_lexer *lexer)
 {
     if (lexer->value != NULL)

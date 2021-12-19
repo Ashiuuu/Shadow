@@ -29,6 +29,8 @@ Test(io, single_letters)
 
     cr_assert_eq(input->current_char, 'e');
     cr_assert_eq(input->next_char, 's');
+
+    free_input(input);
 }
 
 Test(io, word)
@@ -41,6 +43,8 @@ Test(io, word)
         cr_assert_eq(input->current_char, string[i]);
         pop_char(input);
     }
+
+    free_input(input);
 }
 
 int main(int argc, char *argv[]) {

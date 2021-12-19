@@ -40,6 +40,7 @@ struct word_lexer
 };
 
 struct word_lexer *new_word_lexer();
+void free_word_lexer(struct word_lexer *lexer);
 void reset_word_lexer(struct word_lexer *lexer);
 enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, struct INPUT *input);
 

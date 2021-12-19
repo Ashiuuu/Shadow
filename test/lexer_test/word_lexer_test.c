@@ -10,6 +10,8 @@ Test(word_lexer, new_lexer)
     cr_assert_eq(new->capacity, 10);
     cr_assert_eq(new->len, 0);
     cr_assert_not_null(new->value);
+
+    free_word_lexer(new);
 }
 
 Test(word_lexer, single_letter)
@@ -20,6 +22,8 @@ Test(word_lexer, single_letter)
     word_lexer_consume_char(new, input);
     cr_assert_eq(new->value[0], 't');
     cr_assert_eq(new->len, 1);
+
+    free_word_lexer(new);
 }
 
 Test(word_lexer, whole_word)
@@ -36,6 +40,8 @@ Test(word_lexer, whole_word)
     cr_assert_eq(new->state, LEXER_ACCEPT);
     cr_assert_eq(new->len, 5);
     cr_assert_str_eq(new->value, "test1");
+
+    free_word_lexer(new);
 }
 
 Test(word_lexer, whole_word_trailing_whitespace)
@@ -50,6 +56,8 @@ Test(word_lexer, whole_word_trailing_whitespace)
     cr_assert_eq(new->state, LEXER_ACCEPT);
     cr_assert_eq(new->len, 5);
     cr_assert_str_eq(new->value, "test2");
+
+    free_word_lexer(new);
 }
 
 Test(word_lexer, multiple_words)
@@ -64,4 +72,6 @@ Test(word_lexer, multiple_words)
     cr_assert_eq(new->state, LEXER_ACCEPT);
     cr_assert_eq(new->len, 5);
     cr_assert_str_eq(new->value, "test3");
+
+    free_word_lexer(new);
 }
