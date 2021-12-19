@@ -47,6 +47,19 @@ Test(io, word)
     free_input(input);
 }
 
+Test(io, double_eof)
+{
+    struct INPUT *input = input_from_string("t");
+
+    cr_assert_eq(input->current_char, 't');
+    cr_assert_eq(input->next_char, EOF);
+
+    pop_char(input);
+
+    cr_assert_eq(input->current_char, EOF);
+    cr_assert_eq(input->next_char, EOF);  
+}
+
 int main(int argc, char *argv[]) {
     struct criterion_test_set *tests = criterion_initialize();
 
