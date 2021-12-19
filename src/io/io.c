@@ -10,7 +10,10 @@ struct INPUT *new_input(FILE *stream)
     }
     ret->stream = stream;
     ret->current_char = fgetc(stream);
-    ret->next_char = fgetc(stream);
+    if (ret->current_char == EOF)
+        ret->next_char = EOF;
+    else
+        ret->next_char = fgetc(stream);
 
     return ret;
 }
@@ -34,6 +37,11 @@ struct INPUT *input_from_file(char *filename)
 
 char pop_char(struct INPUT *input)
 {
+    if (input->next_char == EOF)
+    {
+        input->current_char = EOF;
+        return input->current_char;
+    }
     input->current_char = input->next_char;
     input->next_char = fgetc(input->stream);
 
