@@ -35,6 +35,9 @@ enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, struct INPUT 
     if (lexer->state == LEXER_ERROR)
         return LEXER_ERROR;
 
+    if (input->current_char == '\\')
+        pop_char(input);
+
     if (is_alphanum(input->current_char))
     {
         // valid character

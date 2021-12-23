@@ -69,6 +69,9 @@ struct token *read_until_new_token(struct lexer *lexer)
         return token_swap(lexer, token_new(TOKEN_EOF));
     }
 
+    while (lexer->input->current_char == ' ' || lexer->input->current_char == '\t')
+        pop_char(lexer->input);
+
     while (lexer->word_lexer->state == LEXER_CONT)
     {
         enum lexer_state state = word_lexer_consume_char(lexer->word_lexer, lexer->input);
