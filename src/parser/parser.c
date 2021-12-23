@@ -5,7 +5,7 @@
 // | list EOF
 // | '\n'
 // | EOF
-enum parser_status parse_input(struct lexer *input)
+enum parser_status parse_input(struct ast_node_command *ast, struct lexer *input)
 {
     // for now:
     //   simple_command '\n'
@@ -13,18 +13,50 @@ enum parser_status parse_input(struct lexer *input)
     // | '\n'
     // | EOF
 
-    input = input;
+    struct token *token = lexer_peek(input);
 
-    return PARSER_OK;
+    if (token->type == TOKEN_EOF || token->type == TOKEN_EOL)
+    {
+        lexer_pop(input);
+        // execute command ?
+        return PARSER_OK;   
+    }
+
+    if (token->type == TOKEN_WORDS)
+    {
+        return parser_simple_command(ast, input);
+    }
+
+    fprintf(stderr, "Unexpected token");
+    return PARSER_ERROR;
 }
 
 // Grammar :
 //   (prefix)+
 // | (prefix)* (element)+
-enum parser_status parser_simple_command(struct lexer *input)
+enum parser_status parser_simple_command(struct ast_node_command *ast, struct lexer *input)
 {
-    // for nowm simple command is just WORD+ ie 'ls /bin' or 'pwd' 
-    input = input;
+    // for now simple command is just WORD+ ie 'ls /bin' or 'pwd'
+    // for now, just create ast node, execute and exit
+    size_t capacity = 10;
+    char **args = xcalloc(capacity, sizeof(char *));
+
+    size_t i = 0;
+    struct token *token = lexer_peek(input);
+    while (token->type == TOKEN_WORDS)
+    {
+        if (i == capacity)
+        {
+            capacity *= 2;
+            args = xrealloc(args, capacity);
+        }
+        args[i] = strdup(token->value);
+        i++;
+        token = lexer_pop(input);
+    }
+    // finished parsing words, now exec
+    ast = new_command_node(args);
+    exec_command_node(ast);
     return PARSER_OK;
 }
 

@@ -5,6 +5,8 @@
 #include <getopt.h>
 
 #include "io/io.h"
+#include "parser/parser.h"
+#include "lexer/lexer.h"
 
 int main(int argc, char* argv[])
 {
@@ -24,13 +26,10 @@ int main(int argc, char* argv[])
             switch(opt)
             {
                 case 'c':
-                    printf("Reading -c argument as a stream :\n");
-                    FILE *arg = string_to_stream(optarg);
-                    int ch;
-                    while ((ch = fgetc(arg)) != EOF)
-                        printf("%c\n", ch);
-                    fclose(arg);
-                    // exec optarg command
+                    //struct INPUT *input = input_from_string(optarg);
+                    //struct lexer *lexer = lexer_new(input);
+                    //parse_input(NULL, lexer);
+                    parse_input(NULL, lexer_new(input_from_string(optarg)));
                     // exit
                     break;
                 case '?':
