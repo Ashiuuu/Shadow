@@ -19,14 +19,23 @@ incdirs = [
     include_directories('src/utils'),
 ]
 
-common = [
-    'src/exec/exec.c',
-    'src/io/io.c',
+lexer_files = [
     'src/lexer/tokens.c',
     'src/lexer/lexer.c',
     'src/lexer/word_lexer.c',
     'src/lexer/keyword_lexer.c',
+]
+
+parser_files = [
     'src/parser/parser.c',
+]
+
+exec_files = [
+    'src/exec/exec.c',
+]
+
+common = lexer_files + parser_files + exec_files + [
+    'src/io/io.c',
     'src/utils/utils.c',
 ]
 
@@ -43,8 +52,15 @@ executable(
 )
 
 executable(
+    'token_printer',
+    common + ['src/token_printer.c'],
+    include_directories: incdirs
+)
+
+executable(
     'test_suite',
     common + test_files,
     include_directories: incdirs,
+    #objects: '/usr/lib/libcriterion.so'
     objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
