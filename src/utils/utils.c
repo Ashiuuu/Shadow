@@ -12,6 +12,18 @@ inline void *xmalloc(size_t size)
     return ret;
 }
 
+void *xcalloc(size_t nmemb, size_t size)
+{
+    void *ret = calloc(nmemb, size);
+    if (ret == NULL)
+    {
+        fprintf(stderr, "calloc fail");
+        abort();
+    }
+
+    return ret;
+}
+
 inline void *xrealloc(void *ptr, size_t size)
 {
     void *ret = realloc(ptr, size);
@@ -20,6 +32,20 @@ inline void *xrealloc(void *ptr, size_t size)
         fprintf(stderr, "realloc fail");
         abort();
     }
+
+    return ret;
+}
+
+size_t array_len(char **arr)
+{
+    if (arr == NULL)
+    {
+        return 0;
+    }
+
+    size_t ret = 0;
+    while (arr[ret] != NULL)
+        ret++;
 
     return ret;
 }
