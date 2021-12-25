@@ -1,82 +1,31 @@
-#include <errno.h>
-
 #include "exec.h"
 #include "utils.h"
 
-// char **args = [ "test", "salut", NULL ]
-struct ast_node_command *new_command_node(char **args)
+void free_node(struct ast_node *node)
 {
-    struct ast_node_command *ret = xmalloc(sizeof(struct ast_node_command));
-    ret->args = xcalloc(array_len(args) + 1, sizeof(char *));
-    for (size_t i = 0; args[i] != NULL; ++i)
+    switch(node->type)
     {
-        ret->args[i] = strdup(args[i]);
+        case NODE_COMMAND:
+            free_command_node(node);
+            break;
+        case NODE_LIST:
+            free_list_node(node);
+            break;
+        default:
+            fprintf(stderr, "unknown node type (free_node)");
     }
-    ret->args[array_len(args)] = NULL;
-    return ret;
 }
 
-void free_command_node(struct ast_node_command *node)
+int exec_node(struct ast_node *node)
 {
-    if (node->args != NULL)
+    switch (node->type)
     {
-        for (size_t i; node->args[i] != NULL; ++i)
-            free(node->args[i]);
+        case NODE_COMMAND:
+            return exec_command_node(node);
+        case NODE_LIST:
+            return exec_list_node(node);
+        default:
+            fprintf(stderr, "unknown node type (exec_node)");
+            return -1;
     }
-
-    free(node);
-}
-
-int exec_command_node(struct ast_node_command *node)
-{
-    int status;
-
-    pid_t child = fork();
-    if (child == -1)
-    {
-        fprintf(stderr, "Could not fork process\n");
-        abort();
-    }
-
-    if (child == 0)
-    {
-        // child process
-        //char *args[] = { "bash", "-c", "echo test", NULL };
-        //execvp("bash", args);
-        execvp(node->args[0], node->args);
-        printf("error: %d\n", errno);
-        printf("%d\n", EACCES);
-        printf("EFAULT: %d\n", EFAULT);
-        printf("%d\n", EIO);
-        printf("%d\n", ELOOP);
-        printf("%d\n", E2BIG);
-        printf("%d\n", EAGAIN);
-        printf("%d\n", EINVAL);
-        printf("%d\n", EISDIR);
-        printf("%d\n", ELIBBAD);
-        printf("%d\n", EMFILE);
-        printf("%d\n", ENAMETOOLONG);
-        printf("%d\n", ENFILE);
-        printf("ENOENT: %d\n", ENOENT);
-        printf("%d\n", ENOEXEC);
-        printf("%d\n", ENOMEM);
-        printf("%d\n", ENOTDIR);
-        printf("%d\n", EPERM);
-        printf("%d\n", ETXTBSY);
-        fprintf(stderr, "Could not execute %s\n", node->args[0]);
-    }
-    else
-    {
-        // parent process
-        /*pid_t wait_pid = waitpid(cpid, &status, WUNTRACED | WCONTINUED);
-        if (wait_pid == -1)
-        {
-            fprintf(stderr, "wait pid error\n");
-            abort();
-        }*/
-
-        wait(&status); // wait for child
-    }
-
-    return status;
 }
