@@ -7,6 +7,7 @@
 #include "io/io.h"
 #include "parser/parser.h"
 #include "lexer/lexer.h"
+#include "exec/exec.h"
 
 int main(int argc, char* argv[])
 {
@@ -25,11 +26,10 @@ int main(int argc, char* argv[])
         {
             switch(opt)
             {
-                case 'c':
-                    //struct INPUT *input = input_from_string(optarg);
-                    //struct lexer *lexer = lexer_new(input);
-                    //parse_input(NULL, lexer);
-                    parse_input(NULL, lexer_new(input_from_string(optarg)));
+                case 'c': ;
+                    struct ast_node *ast = NULL;
+                    parse_input(&ast, lexer_new(input_from_string(optarg)));
+                    exec_node(ast);
                     // exit
                     break;
                 case '?':

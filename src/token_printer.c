@@ -26,7 +26,12 @@ int main(int argc, char **argv)
     TOKEN_WORDS        // identifier token, ex : variable name
     */
 
-    char *tab[] = { [TOKEN_ERROR] = "ERROR", [TOKEN_WORDS] = "WORD", [TOKEN_EOF] = "EOF"};
+    char *tab[] = { 
+        [TOKEN_ERROR] = "ERROR", 
+        [TOKEN_WORDS] = "WORD", 
+        [TOKEN_EOF] = "EOF",
+        [TOKEN_SEMICOL] = ";",
+    };
 
     struct INPUT *input = input_from_string(argv[1]);
     struct lexer *lexer = lexer_new(input);
@@ -38,6 +43,8 @@ int main(int argc, char **argv)
         token = lexer_pop(lexer);
         type = token->type;
         printf("%s\n", tab[type]);
+        if (type == TOKEN_ERROR)
+            break;
         if (type == TOKEN_WORDS)
             printf("    value: %s\n", token->value);
     } 

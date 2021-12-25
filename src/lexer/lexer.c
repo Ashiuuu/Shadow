@@ -63,14 +63,21 @@ struct token *lexer_pop(struct lexer *lexer)
 
 struct token *read_until_new_token(struct lexer *lexer)
 {
+    while (lexer->input->current_char == ' ' || lexer->input->current_char == '\t')
+    {
+        pop_char(lexer->input);
+    }
+
     if (lexer->input->current_char == EOF)
     {
         // new EOF token
         return token_swap(lexer, token_new(TOKEN_EOF));
     }
-
-    while (lexer->input->current_char == ' ' || lexer->input->current_char == '\t')
+    else if (lexer->input->current_char == ';')
+    {
         pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_SEMICOL));
+    }
 
     while (lexer->word_lexer->state == LEXER_CONT)
     {
@@ -81,9 +88,13 @@ struct token *read_until_new_token(struct lexer *lexer)
             lexer->current_token = token_new(TOKEN_ERROR);
             return lexer->current_token;
         }
+        else if (state == LEXER_ACCEPT)
+        {
+            token_swap(lexer, token_new_word(lexer->word_lexer->value));
+            reset_word_lexer(lexer->word_lexer);
+            break;
+        }
         pop_char(lexer->input);
     }
-    token_swap(lexer, token_new_word(lexer->word_lexer->value));
-    reset_word_lexer(lexer->word_lexer);
     return lexer->current_token;
 }
