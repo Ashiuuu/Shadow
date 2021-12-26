@@ -17,7 +17,6 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 
     if (token->type == TOKEN_WORDS)
     {
-        printf("wait for it\n");
         return parse_command_list(ast, input);
     }
 
@@ -72,7 +71,6 @@ enum parser_status parser_simple_command(struct ast_node **ast, struct lexer *in
 //         - ...
 enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input)
 {
-    printf("parsing list");
     *ast = new_list_node();
 
     struct ast_node *new = NULL;
@@ -80,7 +78,7 @@ enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input
     // handle status error
     if (stat != 0)
     {
-        fprintf(stderr, "error parsing command");
+        fprintf(stderr, "error parsing command\n");
         return PARSER_ERROR;
     }
 
@@ -92,7 +90,8 @@ enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input
     {
         if (token->type == TOKEN_SEMICOL && last_token == TOKEN_WORDS)
         {
-            lexer_pop(input);
+            last_token = TOKEN_SEMICOL;
+            token = lexer_pop(input);
         }
         else if (token->type == TOKEN_WORDS && last_token == TOKEN_SEMICOL)
         {
@@ -104,6 +103,8 @@ enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input
                 return PARSER_ERROR;
             }
             list_node_push(*ast, new_node);
+            last_token = TOKEN_WORDS;
+            token = lexer_peek(input);
         }
         else
         {
