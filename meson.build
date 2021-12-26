@@ -60,6 +60,12 @@ executable(
 )
 
 executable(
+    'ast_printer',
+    common + ['src/ast_printer.c'],
+    include_directories: incdirs
+)
+
+executable(
     'test_suite',
     common + test_files,
     include_directories: incdirs,
