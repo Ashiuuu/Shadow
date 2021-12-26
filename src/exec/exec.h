@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <stdio.h>
 
 struct ast_node_command
 {
@@ -47,3 +48,6 @@ struct ast_node *new_list_node();
 void list_node_push(struct ast_node *node, struct ast_node *added);
 void free_list_node(struct ast_node *node);
 int exec_list_node(struct ast_node *node);
+
+// built-ins
+int echo(struct ast_node *node);

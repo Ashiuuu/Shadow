@@ -46,6 +46,11 @@ int exec_command_node(struct ast_node *node)
     }
     int status;
 
+    if (strcmp(node->data.ast_command.args[0], "echo") == 0)
+    {
+        return echo(node);
+    }
+
     pid_t child = fork();
     if (child == -1)
     {

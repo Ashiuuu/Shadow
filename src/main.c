@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
                     struct ast_node *ast = NULL;
                     parse_input(&ast, lexer_new(input_from_string(optarg)));
                     exec_node(ast);
-                    // exit
+                    return 0;
                     break;
                 case '?':
                     if (optopt == 'c')

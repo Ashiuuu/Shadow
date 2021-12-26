@@ -34,6 +34,7 @@ exec_files = [
     'src/exec/exec.c',
     'src/exec/command_node.c',
     'src/exec/list_node.c',
+    'src/exec/echo.c',
 ]
 
 common = lexer_files + parser_files + exec_files + [

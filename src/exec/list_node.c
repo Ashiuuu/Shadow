@@ -57,13 +57,15 @@ int exec_list_node(struct ast_node *node)
         return -1;
     }
 
+    struct ast_node_list list = node->data.ast_list;
     int status = 0;
 
-    if (node->data.ast_list.nodes != NULL)
+    if (list.nodes != NULL)
     {
-        for (size_t i = 0; i < node->data.ast_list.len; ++i)
-            status = exec_node(node->data.ast_list.nodes[i]);
+        for (size_t i = 0; i < list.len; ++i)
+        {
+            status = exec_node(list.nodes[i]);
+        }
     }
-
     return status;
 }
