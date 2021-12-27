@@ -55,8 +55,9 @@ int echo(struct ast_node *node)
         {
             for (size_t j = 0; string[j] != '\0'; ++j)
             {
-                printf("  %d - ", string[j]);
-                printf("%c\n", string[j]);
+                printf("%c", string[j]);
+                /*printf("  %d - ", string[j]);
+                printf("%c\n", string[j]);*/
             }
         }
         else
