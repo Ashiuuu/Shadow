@@ -30,7 +30,13 @@ int main(int argc, char **argv)
         [TOKEN_ERROR] = "ERROR", 
         [TOKEN_WORDS] = "WORD", 
         [TOKEN_EOF] = "EOF",
+        [TOKEN_EOL] = "EOL",
         [TOKEN_SEMICOL] = ";",
+        [TOKEN_IF] = "if",
+        [TOKEN_ELIF] = "elif",
+        [TOKEN_ELSE] = "else",
+        [TOKEN_THEN] = "then",
+        [TOKEN_FI] = "fi",
     };
 
     struct INPUT *input = input_from_string(argv[1]);
@@ -42,11 +48,12 @@ int main(int argc, char **argv)
     {
         token = lexer_pop(lexer);
         type = token->type;
-        printf("%s\n", tab[type]);
+        printf("%s", tab[type]);
         if (type == TOKEN_ERROR)
             break;
         if (type == TOKEN_WORDS)
-            printf("    value: %s\n", token->value);
+            printf(" (%s)", token->value);
+        printf("\n");
     } 
 
     return 0;

@@ -34,7 +34,7 @@ struct lexer *lexer_new(struct INPUT *input_stream)
     ret->lexer_list = xmalloc(sizeof(struct general_lexer *) * ret->list_len);
 
     size_t i;
-    for (i = 0; i < ret->list_len - 1; ++i)
+    for (i = 0; keyword_list[i] != NULL; ++i)
     {
         ret->lexer_list[i] = new_keyword_lexer(keyword_list[i], type_list[i]);
     }
@@ -140,6 +140,11 @@ struct token *read_until_new_token(struct lexer *lexer)
     {
         pop_char(lexer->input);
         return token_swap(lexer, token_new(TOKEN_SEMICOL));
+    }
+    else if(lexer->input->current_char == '\n')
+    {
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_EOL));
     }
 
     int accepted = 0;
