@@ -12,6 +12,21 @@ int is_num(char c);
 int is_alpha(char c);
 int is_alphanum(char c);
 
+struct word_lexer
+{
+    char *value;
+    size_t len;
+    size_t capacity;
+};
+
+
+struct keyword_lexer
+{
+    const char *keyword;
+    enum token_type output_token;
+    size_t word_len;
+    size_t pos;
+};
 
 enum lexer_state
 {
@@ -20,43 +35,47 @@ enum lexer_state
     LEXER_ACCEPT
 };
 
+enum lexer_type
+{
+    WORD_LEXER,
+    KEYWORD_LEXER
+};
+
+union lexer_data
+{
+    struct word_lexer word_lexer;
+    struct keyword_lexer keyword_lexer;
+};
+
+struct general_lexer
+{
+    enum lexer_type type;
+    enum lexer_state state;
+    union lexer_data data;
+};
+
 struct lexer
 {
     struct INPUT *input;
     struct token *current_token;
-    struct word_lexer *word_lexer;
-    //struct keyword_lexer **keyword_list;
+    struct general_lexer **lexer_list;
+    size_t list_len;
 };
 
 
 // Lexer that recognize words, such as variable name,
 
-struct word_lexer
-{
-    char *value;
-    size_t len;
-    size_t capacity;
-    enum lexer_state state;
-};
 
-struct word_lexer *new_word_lexer();
-void free_word_lexer(struct word_lexer *lexer);
-void reset_word_lexer(struct word_lexer *lexer);
-enum lexer_state word_lexer_consume_char(struct word_lexer *lexer, struct INPUT *input);
+struct general_lexer *new_word_lexer();
+void free_word_lexer(struct general_lexer *lexer);
+void reset_word_lexer(struct general_lexer *lexer);
+enum lexer_state word_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
 
 // Lexer that recognize keywords : if, else, fi, etc...
 
-struct keyword_lexer
-{
-    const char *keyword;
-    size_t word_len;
-    size_t pos;
-    enum lexer_state state;
-};
-
-struct keyword_lexer *new_keyword_lexer(const char *word);
-void reset_keyword_lexer(struct keyword_lexer *lexer);
-enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, struct INPUT *input);
+struct general_lexer *new_keyword_lexer(const char *word, enum token_type type);
+void reset_keyword_lexer(struct general_lexer *lexer);
+enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
 
 
 
@@ -64,7 +83,9 @@ enum lexer_state keyword_lexer_consume_char(struct keyword_lexer *lexer, struct 
 
 struct lexer *lexer_new(struct INPUT *input_stream);
 void lexer_free(struct lexer *lexer);
-
+enum lexer_state general_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
+struct token *extract_token(struct general_lexer *lexer);
+void reset_lexer(struct general_lexer *lexer);
 
 struct token *read_until_new_token(struct lexer *lexer);
 struct token *token_swap(struct lexer *lexer, struct token *new_token);

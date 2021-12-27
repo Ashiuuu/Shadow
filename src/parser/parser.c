@@ -20,7 +20,7 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
         return parse_command_list(ast, input);
     }
 
-    fprintf(stderr, "Unexpected token");
+    fprintf(stderr, "Unexpected token\n");
     return PARSER_ERROR;
 }
 
@@ -99,7 +99,7 @@ enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input
             stat = parser_simple_command(&new_node, input);
             if (stat != 0)
             {
-                fprintf(stderr, "error parsing command");
+                fprintf(stderr, "error parsing command\n");
                 return PARSER_ERROR;
             }
             list_node_push(*ast, new_node);

@@ -24,6 +24,8 @@ Test(lexer, simple_word)
     struct INPUT *input = input_from_string("test");
     struct lexer *lexer = lexer_new(input);
 
+    printf("=======SIMPLE_WORD======\n");
+
     struct token *word = lexer_peek(lexer);
 
     cr_assert_eq(word->type, TOKEN_WORDS);
