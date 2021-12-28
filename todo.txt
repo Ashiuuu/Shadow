@@ -1,0 +1,85 @@
+Explications:
+Dans le main:
+- on récupéère le type d'entrée (string avec -c, fichier ou stdin) et on en sort un steam FILE*
+- on encapsule ce stream dans une structure INPUT, qui permet de faire abstraction de l'entrée d'origine, et qui permet
+  de faire fgetc pour obtenir le caractère suivant et le garder en mémoire indépendamment de la fonction dans laquelle on le fait
+  (ex: dans un lexer on regarde le caractère suivant, un ;, ce qui fini le token en cours, mais on veut quand même le ; pour sortir
+  un token ; après)
+- on crée un lexer avec l'INPUT obtenu, et on passe ce lexer au parser, qui va nous créer un ast
+- ensuite on execute l'ast (petit détail mais il faudra faire en sorte que le code de retour de la fonction d'exec soit dans le return du main)
+  
+  A faire dans le main:
+  - Prendre en compte les fichiers, et stdin de la même manière que bash (en utilisant les fonctions de io.h du coup)
+
+Dans le lexer:
+- On a une structure générale de lexer, LE lexer, qui contient l'INPUT qu'on traite, le token courrant (pour ne pas forcément consommer un token
+  et une liste de sous-lexer)
+- Les sous-lexer sont de deux types (pour l'instant) : les lexer de mot-clefs (type if, else, while, etc...) et le lexer de mot (type ls, cat,
+  find, et tout ce qui n'est pas un mot clef quoi)
+- Les sous-lexer sont encapsulé dans une structure general-lexer qui permet à la structure générale du lexer (celle du premier point) de ne pas se soucier
+  du type de sous-lexer en cours
+- Pour faire la différence, on a une enum de type de sous lexer dans general_lexer, et une union (voire le guide 42sh (pas le sujet) vers la find
+  avec les tagged unions)
+- Tous les lexers de mot clefs sont créés à l'initialisation du lexer général (dans le main) à l'aide d'une liste fixe (à update quand on ajoute des mot-clefs du coup)
+  
+  A faire dans les lexer:
+  - Dans le lexer principal, quand on choppe les tokens fi n'est pas identifié par un mot clé mais comme un mot normal, je sais pas trop pourquoi
+    (peut être parce que c'est le dernier de la liste ou quoi, faut debug ça)
+  - Instaurer un sous-lexer pour les single-quotes (à mon avis on pourra mettre ça dans un token WORDS, avec comme valeur ce qu'il y a entre les quotes,
+    mais à voir) et donc l'insérer avec les autres dans general_lexer
+
+Dans le parser:
+- On utilise une structure de parser décent résursif (en gros on met chaque règle de grammaire dans une fonction, et on test les types de token avec des if)
+- On appelle une fonction du parser en créant un pointeur vers un ast_node = NULL, et on donne l'addresse de ce pointeur en paramètre (ex: parse_command(&ast))
+- On fait ça parce que c'est la fonction appellante qui va savoir quoi faire du node (ex: on parse une liste de commande, de parse_list on appelle parse_command,
+  parse_command ne doit pas savoir qu'il doit renvoyer une liste, il renvoie juste un node de commande, mais le return est occupé par les erreurs (ou non) du parser)
+
+  A faire dans le parser:
+  - Les structures if (à voir la grammaire) (ça je pense je m'en occuperais, à voir si on peut faire ça à deux mais avec le décallage horaire, dites moi si vous voulez faire ça aussi)
+  - Les compound list (pareil, à voir la grammaire) les and_or pour l'instant sont juste des commandes je crois
+
+Dans l'exec:
+- Pareil que le lexer, on fait du polymorphisme pour les nodes de l'ast (si vous captez pas un truc dites moi)
+- Les nodes de command sont terminaux (pas de raison d'appeler autre chose à partir d'eux)
+- J'ai fait un début de echo, avec gestion des erreurs, mais il y a du debugging à faire de ce coté
+
+  A faire dans l'exec:
+  - Pareil, les structure if (perso je vois un node if avec un pointeur condition, corps, et un autre node if (si le node if est pas le premier ça revient à un elif
+    et une condition NULL revient à un else) mais si vous avez d'autres idées n'hésitez pas)
+  - Pour les compound list je pense qu'on peut juste reprendre le node list, à voir aussi
+
+J'ai aussi fait deux utilitaires pour afficher l'ast et les token que renvoient le lexer
+A faire en général:
+- Du unit testing
+- Vérifier qu'on est en accord avec la spec bash
+- De la doc (quoiqu'on puisse faire ça plus tard)
+- Améliorer l'ast_printer qui pour l'instant est pas ouf
+- Ce que vous voyez à améliorer
+
+
+
+
+
+
+Options bash:
+[*] Des que bash a recu son script, arrete tout
+- bash script1.sh script2.sh       ne lance que script1.sh
+- bash script.sh -c 'echo salut'   ne lance que script.sh
+- bash -c 'echo salut' script.sh   ne lance que 'echo salut'
+[*] -c doit etre suivi de commande, sinon erreur : 
+- bash -c test.sh "echo salut"     ne marche pas
+- bash -c --verbose 'echo salut'   ne marche pas
+- bash --verbose -c 'echo salut'   marche !
+
+
+
+Main.c:
+Gestion des differentes facon de lancer 42sh
+-c : command string     => dans io, transformer string en FILE*
+cat script.sh >> 42sh   => ouvrir stdin en FILE*
+42sh script.sh          => fopen le fichier en FILE*
+
+io:
+FILE *string_to_steam(char buffer[])
+FILE *open_stdin()
+FILE *open_file()
