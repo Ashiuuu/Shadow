@@ -1,6 +1,6 @@
 Explications:
 Dans le main:
-- on récupéère le type d'entrée (string avec -c, fichier ou stdin) et on en sort un steam FILE*
+- on récupère le type d'entrée (string avec -c, fichier ou stdin) et on en sort un steam FILE*
 - on encapsule ce stream dans une structure INPUT, qui permet de faire abstraction de l'entrée d'origine, et qui permet
   de faire fgetc pour obtenir le caractère suivant et le garder en mémoire indépendamment de la fonction dans laquelle on le fait
   (ex: dans un lexer on regarde le caractère suivant, un ;, ce qui fini le token en cours, mais on veut quand même le ; pour sortir
@@ -35,9 +35,9 @@ Dans le parser:
   parse_command ne doit pas savoir qu'il doit renvoyer une liste, il renvoie juste un node de commande, mais le return est occupé par les erreurs (ou non) du parser)
 
   A faire dans le parser:
-  - Les structures if (à voir la grammaire) (ça je pense je m'en occuperais, à voir si on peut faire ça à deux mais avec le décallage horaire, 
+  - (fait, a tester) Les structures if (à voir la grammaire) (ça je pense je m'en occuperais, à voir si on peut faire ça à deux mais avec le décallage horaire, 
     dites moi si vous voulez faire ça aussi)
-  - Les compound list (pareil, à voir la grammaire) les and_or pour l'instant sont juste des commandes je crois
+  - (fait, a tester) Les compound list (pareil, à voir la grammaire) les and_or pour l'instant sont juste des commandes je crois
 
 Dans l'exec:
 - Pareil que le lexer, on fait du polymorphisme pour les nodes de l'ast (si vous captez pas un truc dites moi)
@@ -57,6 +57,8 @@ A faire en général:
 - Améliorer l'ast_printer qui pour l'instant est pas ouf
 - Ce que vous voyez à améliorer
 
+Pour le parser, j'ai fait le gestion d'erreur un peu a la zob, donc faudrait
+aussi rendre ca plus clean.
 
 
 
