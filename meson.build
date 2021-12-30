@@ -28,6 +28,7 @@ lexer_files = [
 
 parser_files = [
     'src/parser/parser.c',
+    'src/parser/if_else_parser.c',
 ]
 
 exec_files = [
