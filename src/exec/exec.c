@@ -1,6 +1,8 @@
 #include "exec.h"
 #include "utils.h"
 
+#include <stdlib.h>
+
 void free_node(struct ast_node *node)
 {
     switch(node->type)
