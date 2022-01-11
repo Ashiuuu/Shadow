@@ -23,8 +23,6 @@ Dans le lexer:
 - Tous les lexers de mot clefs sont créés à l'initialisation du lexer général (dans le main) à l'aide d'une liste fixe (à update quand on ajoute des mot-clefs du coup)
   
   A faire dans les lexer:
-  - Dans le lexer principal, quand on choppe les tokens fi n'est pas identifié par un mot clé mais comme un mot normal, je sais pas trop pourquoi
-    (peut être parce que c'est le dernier de la liste ou quoi, faut debug ça)
   - Instaurer un sous-lexer pour les single-quotes (à mon avis on pourra mettre ça dans un token WORDS, avec comme valeur ce qu'il y a entre les quotes,
     mais à voir) et donc l'insérer avec les autres dans general_lexer
 
