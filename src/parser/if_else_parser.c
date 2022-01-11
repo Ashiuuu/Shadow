@@ -10,6 +10,7 @@ enum parser_status parse_else_clause(struct ast_node **ast, struct lexer *input)
 
     if (tok->type == TOKEN_ELSE)
     {
+        lexer_pop(input);
         struct ast_node *body = NULL;
         parse_compound_list(&body, input);
         (*ast)->data.ast_if.body_list = body;
@@ -17,6 +18,7 @@ enum parser_status parse_else_clause(struct ast_node **ast, struct lexer *input)
     }
     else if (tok->type == TOKEN_ELIF)
     {
+        lexer_pop(input);
         struct ast_node *cond = NULL;
         struct ast_node *body = NULL;
         struct ast_node *elsif = NULL;
@@ -87,7 +89,7 @@ enum parser_status parse_rule_if(struct ast_node **ast, struct lexer *input)
         tok = lexer_peek(input);
     }
 
-    if (tok->type == TOKEN_FI)
+    if (tok->type != TOKEN_FI)
     {
         fprintf(stderr, "expected FI\n");
         return PARSER_ERROR;

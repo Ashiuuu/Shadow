@@ -5,6 +5,8 @@
 #include "io.h"
 #include "lexer.h"
 
+void print_node(struct ast_node *node);
+
 void print_command_node(struct ast_node *node)
 {
     if (node->type != NODE_COMMAND)
@@ -31,8 +33,51 @@ void print_list_node(struct ast_node *node)
     printf("List of nodes:\n");
     for (size_t i = 0; i < node->data.ast_list.len; ++i)
     {
-        print_command_node(node->data.ast_list.nodes[i]);
+        print_node(node->data.ast_list.nodes[i]);
         printf("\n\n");
+    }
+}
+
+void print_if_node(struct ast_node *node)
+{
+    if (node->type != NODE_IF)
+    {
+        fprintf(stderr, "[*] trying to print non if node\n");
+        return;
+    }
+
+    if (node->data.ast_if.condition != NULL)
+    {
+        printf("IF CONDITION:\n");
+        print_node(node->data.ast_if.condition);
+    }
+    if (node->data.ast_if.body_list != NULL)
+    {
+        printf("IF BODY:\n");
+        print_node(node->data.ast_if.body_list);
+    }
+    if (node->data.ast_if.elif != NULL)
+    {
+        printf("====ELIF/ELSE:\n");
+        print_node(node->data.ast_if.elif);
+    }
+}
+
+void print_node(struct ast_node *node)
+{
+    switch (node->type)
+    {
+        case NODE_COMMAND:
+            print_command_node(node);
+            break;
+        case NODE_LIST:
+            print_list_node(node);
+            break;
+        case NODE_IF:
+            print_if_node(node);
+            break;
+        default:
+            fprintf(stderr, "Unknown node type\n");
     }
 }
 
@@ -52,7 +97,7 @@ int main(int argc, char **argv)
     {
         printf("\n");
         printf("%ld (/%ld)\n", ast->data.ast_list.len, ast->data.ast_list.capacity);
-        print_list_node(ast);
+        print_node(ast);
     }
     // print ast
 
