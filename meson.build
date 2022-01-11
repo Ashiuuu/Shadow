@@ -36,6 +36,7 @@ exec_files = [
     'src/exec/command_node.c',
     'src/exec/list_node.c',
     'src/exec/echo.c',
+    'src/exec/if_node.c',
 ]
 
 common = lexer_files + parser_files + exec_files + [
@@ -72,6 +73,6 @@ executable(
     'test_suite',
     common + test_files,
     include_directories: incdirs,
-    objects: '/usr/lib/libcriterion.so'
-    #objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
+    #objects: '/usr/lib/libcriterion.so'
+    objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
