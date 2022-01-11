@@ -163,7 +163,7 @@ enum parser_status parse_shell_command(struct ast_node **ast, struct lexer *inpu
         return parse_rule_if(ast, input);
     }
 
-    fprintf(stderr, "Unable to parse shell command\n");
+    // printf(stderr, "Unable to parse shell command\n");
     return PARSER_ERROR;
 }
 
