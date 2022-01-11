@@ -13,6 +13,7 @@ void free_node(struct ast_node *node)
             break;
         case NODE_IF:
             free_if_node(node);
+            break;
         default:
             fprintf(stderr, "unknown node type (free_node)");
     }
