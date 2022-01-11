@@ -16,12 +16,24 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
         return PARSER_OK;   
     }
 
-    if (token->type == TOKEN_WORDS)
+
+    enum parser_status ret_status = parse_list(ast, input);
+
+    if (ret_status != PARSER_OK)
     {
-        return parse_list(ast, input);
+        fprintf(stderr, "Unexpected token\n");
+        return PARSER_ERROR;
     }
 
-    fprintf(stderr, "Unexpected token\n");
+    token = lexer_peek(input);
+
+    if (token->type == TOKEN_EOF || token->type == TOKEN_EOL)
+    {
+        lexer_pop(input);
+        return PARSER_OK;   
+    }
+
+    fprintf(stderr, "Expected EOF or EOL token\n");    
     return PARSER_ERROR;
 }
 
@@ -43,6 +55,7 @@ enum parser_status parser_simple_command(struct ast_node **ast, struct lexer *in
     char **args = xcalloc(capacity, sizeof(char *));
 
     size_t i = 0;
+    // get command args
     while (token->type == TOKEN_WORDS)
     {
         if (i == capacity)
