@@ -77,3 +77,129 @@ Test(keyword_lexer, wrong_input)
     cr_assert_eq(lexer->state, LEXER_ERROR);
     cr_assert_eq(lexer->data.keyword_lexer.pos, 0);
 }
+
+Test(lexer, without_semicol)
+{
+    struct INPUT *input = input_from_string("if echo a then echo b else echo c");
+    struct lexer *lexer = lexer_new(input);
+
+    struct token *tok = lexer_peek(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_IF);
+    cr_assert_null(tok->value);
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "a");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "then");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "b");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "else");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "c");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_EOF);
+    cr_assert_null(tok->value);
+
+    lexer_free(lexer);
+}
+
+Test(lexer, with_semicol)
+{
+    struct INPUT *input = input_from_string("if echo a; then echo b; else echo c");
+    struct lexer *lexer = lexer_new(input);
+
+    struct token *tok = lexer_peek(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_IF);
+    cr_assert_null(tok->value);
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "a");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_SEMICOL);
+    cr_assert_null(tok->value);
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "then");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "b");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_SEMICOL);
+    cr_assert_null(tok->value);
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "else");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "echo");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_WORDS);
+    cr_assert_str_eq(tok->value, "c");
+
+    tok = lexer_pop(lexer);
+
+    cr_assert_eq(tok->type, TOKEN_EOF);
+    cr_assert_null(tok->value);
+
+    lexer_free(lexer);
+}
