@@ -24,6 +24,7 @@ lexer_files = [
     'src/lexer/lexer.c',
     'src/lexer/word_lexer.c',
     'src/lexer/keyword_lexer.c',
+    'src/lexer/sing_quote_lexer.c',
 ]
 
 parser_files = [

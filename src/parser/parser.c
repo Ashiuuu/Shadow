@@ -16,7 +16,6 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
         return PARSER_OK;   
     }
 
-
     enum parser_status ret_status = parse_list(ast, input);
 
     if (ret_status != PARSER_OK)

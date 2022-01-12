@@ -28,6 +28,14 @@ struct keyword_lexer
     size_t pos;
 };
 
+struct sing_quote_lexer
+{
+    char *value;
+    size_t len;
+    size_t capacity;
+    int quote_flag; // used to know if we are between '' or not
+};
+
 enum lexer_state
 {
     LEXER_CONT,
@@ -38,13 +46,15 @@ enum lexer_state
 enum lexer_type
 {
     WORD_LEXER,
-    KEYWORD_LEXER
+    KEYWORD_LEXER,
+    SING_QUOTE_LEXER,
 };
 
 union lexer_data
 {
     struct word_lexer word_lexer;
     struct keyword_lexer keyword_lexer;
+    struct sing_quote_lexer sing_quote_lexer;
 };
 
 struct general_lexer
@@ -65,7 +75,6 @@ struct lexer
 
 // Lexer that recognize words, such as variable name,
 
-
 struct general_lexer *new_word_lexer();
 void free_word_lexer(struct general_lexer *lexer);
 void reset_word_lexer(struct general_lexer *lexer);
@@ -77,13 +86,19 @@ struct general_lexer *new_keyword_lexer(const char *word, enum token_type type);
 void reset_keyword_lexer(struct general_lexer *lexer);
 enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
 
+// single quote lexer
 
+struct general_lexer *new_sing_quote_lexer();
+void free_sing_quote_lexer(struct general_lexer* lexer);
+void reset_sing_quote_lexer(struct general_lexer *lexer);
+enum lexer_state sing_quote_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
 
 
 
 struct lexer *lexer_new(struct INPUT *input_stream);
 void lexer_free(struct lexer *lexer);
 enum lexer_state general_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
+void general_lexer_free(struct general_lexer *lexer);
 struct token *extract_token(struct general_lexer *lexer);
 void reset_lexer(struct general_lexer *lexer);
 
