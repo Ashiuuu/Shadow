@@ -32,8 +32,6 @@ Dans le parser:
   parse_command ne doit pas savoir qu'il doit renvoyer une liste, il renvoie juste un node de commande, mais le return est occupé par les erreurs (ou non) du parser)
 
   A faire dans le parser:
-    - Tests exhaustifs des if, else, etc...
-    - Tests des compound lists (commandes separees par des \n ou ;)
 
 Dans l'exec:
 - Pareil que le lexer, on fait du polymorphisme pour les nodes de l'ast (si vous captez pas un truc dites moi)
@@ -54,14 +52,15 @@ A faire en général:
 Pour le parser, j'ai fait le gestion d'erreur un peu a la zob, donc faudrait
 aussi rendre ca plus clean.
 
-[*] Apparament pour les if, si on a genre 'if echo salut then echo coucou ...',
+[*] Apparemment pour les if, si on a genre 'if echo salut then echo coucou ...',
 le then ne doit pas etre reconnu comme mot cle mais comme word normal, car pas
 de ; apres echo salut (donc faut le fix)
 
 TODO Criterion :
-- Tester lexer_pop (pas que mais bon...)
-
-
+    - Tester lexer_pop (pas que mais bon...)
+    - Tester redirections > <>, etc
+    - Tests exhaustifs des if, else, etc...
+    - Tests des compound lists (commandes separees par des \n ou ;)
 
 Options bash:
 [*] Des que bash a recu son script, arrete tout
