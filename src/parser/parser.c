@@ -190,6 +190,11 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
     {
         return parser_simple_command(ast, input);
     }
+    /*
+    if (tok->type == TOKEN_FRED_OUT)
+    {
+
+    }*/
 
     return parse_shell_command(ast, input);
 }
@@ -215,7 +220,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
         // stop redirection if started
         if (tok->type == TOKEN_SEMICOL)
             lexer_pop(input);
-       
+        
         struct ast_node *new_com = NULL;
         stat = parse_command(&new_com, input);
         if (stat == PARSER_OK)
