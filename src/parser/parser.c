@@ -212,6 +212,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
     struct token *tok = lexer_peek(input);
     while (tok->type == TOKEN_SEMICOL || stat == PARSER_OK)
     {
+        // stop redirection if started
         if (tok->type == TOKEN_SEMICOL)
             lexer_pop(input);
        
