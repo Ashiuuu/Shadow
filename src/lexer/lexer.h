@@ -36,6 +36,13 @@ struct sing_quote_lexer
     int quote_flag; // used to know if we are between '' or not
 };
 
+struct io_number_lexer
+{
+    char *value; // to be converted to int afterwards
+    size_t len;
+    size_t capacity;
+}; // only accepted numbers, and if numbers are followed by a non redirection char (ex SPACE) returns an error
+
 enum lexer_state
 {
     LEXER_CONT,
@@ -48,6 +55,7 @@ enum lexer_type
     WORD_LEXER,
     KEYWORD_LEXER,
     SING_QUOTE_LEXER,
+    IO_NUMBER_LEXER,
 };
 
 union lexer_data
@@ -55,6 +63,7 @@ union lexer_data
     struct word_lexer word_lexer;
     struct keyword_lexer keyword_lexer;
     struct sing_quote_lexer sing_quote_lexer;
+    struct io_number_lexer io_number_lexer;
 };
 
 struct general_lexer
@@ -89,9 +98,16 @@ enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct 
 // single quote lexer
 
 struct general_lexer *new_sing_quote_lexer();
-void free_sing_quote_lexer(struct general_lexer* lexer);
+void free_sing_quote_lexer(struct general_lexer *lexer);
 void reset_sing_quote_lexer(struct general_lexer *lexer);
 enum lexer_state sing_quote_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
+
+// io number lexer
+
+struct general_lexer *new_io_number_lexer();
+void free_io_number_lexer(struct general_lexer *lexer);
+void reset_io_number_lexer(struct general_lexer *lexer);
+enum lexer_state io_number_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
 
 
 

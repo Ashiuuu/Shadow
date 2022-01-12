@@ -30,7 +30,7 @@ struct lexer *lexer_new(struct INPUT *input_stream)
 
     ret->input = input_stream;
     ret->current_token = NULL;
-    ret->list_len = array_len(keyword_list) + 2; // add word lexer and single quote lexer
+    ret->list_len = array_len(keyword_list) + 3; // add [single quote lexer, io number lexer, word lexer]
     ret->lexer_list = xmalloc(sizeof(struct general_lexer *) * ret->list_len);
 
     size_t i;
@@ -39,8 +39,9 @@ struct lexer *lexer_new(struct INPUT *input_stream)
         ret->lexer_list[i] = new_keyword_lexer(keyword_list[i], type_list[i]);
     }
 
-    ret->lexer_list[i++] = new_word_lexer();
     ret->lexer_list[i++] = new_sing_quote_lexer();
+    ret->lexer_list[i++] = new_io_number_lexer();
+    ret->lexer_list[i++] = new_word_lexer();
 
     return ret;
 }
@@ -70,6 +71,8 @@ enum lexer_state general_lexer_consume_char(struct general_lexer *lexer, struct 
             return keyword_lexer_consume_char(lexer, input);
         case SING_QUOTE_LEXER:
             return sing_quote_lexer_consume_char(lexer, input);
+        case IO_NUMBER_LEXER:
+            return io_number_lexer_consume_char(lexer, input);
         default:
             fprintf(stderr, "unknown lexer type [CONSUME]\n");
             return LEXER_ERROR;
@@ -89,6 +92,9 @@ void general_lexer_free(struct general_lexer *lexer)
         case SING_QUOTE_LEXER:
             free_sing_quote_lexer(lexer);
             break;
+        case IO_NUMBER_LEXER:
+            free_io_number_lexer(lexer);
+            break;
         default:
             fprintf(stderr, "unknown lexer type [FREE]\n");
     }
@@ -104,6 +110,8 @@ struct token *extract_token(struct general_lexer *lexer)
             return token_new(lexer->data.keyword_lexer.output_token);
         case SING_QUOTE_LEXER:
             return token_new_word(lexer->data.sing_quote_lexer.value);
+        case IO_NUMBER_LEXER:
+            return token_new_with_value(TOKEN_IO_NUMBER, lexer->data.io_number_lexer.value);
         default:
             fprintf(stderr, "unknown lexer type [EXTRACT]\n");
             return token_new(TOKEN_ERROR);
@@ -122,6 +130,9 @@ void reset_lexer(struct general_lexer *lexer)
             break;
         case SING_QUOTE_LEXER:
             reset_sing_quote_lexer(lexer);
+            break;
+        case IO_NUMBER_LEXER:
+            reset_io_number_lexer(lexer);
             break;
         default:
             fprintf(stderr, "unknown lexer type [RESET]\n");
@@ -157,7 +168,48 @@ struct token *read_until_new_token(struct lexer *lexer)
         pop_char(lexer->input);
     }
 
-    if (lexer->input->current_char == EOF)
+    switch (lexer->input->current_char)
+    {
+        case EOF:
+            return token_swap(lexer, token_new(TOKEN_EOF));
+        case ';':
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_SEMICOL));
+        case '\n':
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_EOL));
+        case '>':
+            pop_char(lexer->input);
+            switch (lexer->input->current_char)
+            {
+                case '>': // >>
+                    pop_char(lexer->input);
+                    return token_swap(lexer, token_new(TOKEN_FRED_APP));
+                case '|': // >|
+                    pop_char(lexer->input);
+                    return token_swap(lexer, token_new(TOKEN_FRED_FORCE));
+                case '&': // >&
+                    pop_char(lexer->input);
+                    return token_swap(lexer, token_new(TOKEN_FDRED_OUT));
+                default: // '>' and then something else
+                    return token_swap(lexer, token_new(TOKEN_FRED_OUT));
+            }
+        case '<':
+            pop_char(lexer->input);
+            switch (lexer->input->current_char)
+            {
+                case '>': // <>
+                    pop_char(lexer->input);
+                    return token_swap(lexer, token_new(TOKEN_BIRED));
+                case '&': // <&
+                    pop_char(lexer->input);
+                    return token_swap(lexer, token_new(TOKEN_FDRED_IN));
+                default: // only '<'
+                    return token_swap(lexer, token_new(TOKEN_FRED_IN));
+            }
+    }
+
+    /*if (lexer->input->current_char == EOF)
     {
         // new EOF token
         return token_swap(lexer, token_new(TOKEN_EOF));
@@ -172,6 +224,14 @@ struct token *read_until_new_token(struct lexer *lexer)
         pop_char(lexer->input);
         return token_swap(lexer, token_new(TOKEN_EOL));
     }
+    else if (lexer->input->current_char == '>')
+    {
+        if ()
+    }
+    else if (lexer->input->current_char == '<')
+    {
+
+    }*/
 
     int accepted = 0;
     while (accepted == 0)

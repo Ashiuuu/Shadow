@@ -20,6 +20,16 @@ struct token *token_new_word(char *value)
     return new;
 }
 
+struct token *token_new_with_value(enum token_type type, char *value)
+{
+    struct token *new = token_new(type);
+    new->value = xmalloc(sizeof(char) * (strlen(value) + 1));
+
+    strcpy(new->value, value);
+
+    return new;
+}
+
 void token_free(struct token *token)
 {
     if (token->value != NULL)
