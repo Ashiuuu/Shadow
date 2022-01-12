@@ -23,8 +23,7 @@ Dans le lexer:
 - Tous les lexers de mot clefs sont créés à l'initialisation du lexer général (dans le main) à l'aide d'une liste fixe (à update quand on ajoute des mot-clefs du coup)
   
   A faire dans les lexer:
-  - Instaurer un sous-lexer pour les single-quotes (à mon avis on pourra mettre ça dans un token WORDS, avec comme valeur ce qu'il y a entre les quotes,
-    mais à voir) et donc l'insérer avec les autres dans general_lexer
+    - Les redirections, ajouter les tokens correspondant, etc...
 
 Dans le parser:
 - On utilise une structure de parser décent résursif (en gros on met chaque règle de grammaire dans une fonction, et on test les types de token avec des if)
@@ -33,9 +32,8 @@ Dans le parser:
   parse_command ne doit pas savoir qu'il doit renvoyer une liste, il renvoie juste un node de commande, mais le return est occupé par les erreurs (ou non) du parser)
 
   A faire dans le parser:
-  - (fait, a tester) Les structures if (à voir la grammaire) (ça je pense je m'en occuperais, à voir si on peut faire ça à deux mais avec le décallage horaire, 
-    dites moi si vous voulez faire ça aussi)
-  - (fait, a tester) Les compound list (pareil, à voir la grammaire) les and_or pour l'instant sont juste des commandes je crois
+    - Tests exhaustifs des if, else, etc...
+    - Tests des compound lists (commandes separees par des \n ou ;)
 
 Dans l'exec:
 - Pareil que le lexer, on fait du polymorphisme pour les nodes de l'ast (si vous captez pas un truc dites moi)
@@ -43,9 +41,7 @@ Dans l'exec:
 - J'ai fait un début de echo, avec gestion des erreurs, mais il y a du debugging à faire de ce coté
 
   A faire dans l'exec:
-  - (fait, a tester) Pareil, les structure if (perso je vois un node if avec un pointeur condition, corps, 
-    et un autre node if (si le node if est pas le premier ça revient à un elif et une condition NULL revient à un else) mais si vous avez d'autres idées n'hésitez pas)
-  - Pour les compound list je pense qu'on peut juste reprendre le node list, à voir aussi
+    - Tests d'execution des if, else, etc...
 
 J'ai aussi fait deux utilitaires pour afficher l'ast et les token que renvoient le lexer
 A faire en général:
@@ -59,7 +55,7 @@ Pour le parser, j'ai fait le gestion d'erreur un peu a la zob, donc faudrait
 aussi rendre ca plus clean.
 
 TODO Criterion :
-- Tester lexer_pop
+- Tester lexer_pop (pas que mais bon...)
 
 
 
