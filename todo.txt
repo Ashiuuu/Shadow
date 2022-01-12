@@ -54,6 +54,10 @@ A faire en général:
 Pour le parser, j'ai fait le gestion d'erreur un peu a la zob, donc faudrait
 aussi rendre ca plus clean.
 
+[*] Apparament pour les if, si on a genre 'if echo salut then echo coucou ...',
+le then ne doit pas etre reconnu comme mot cle mais comme word normal, car pas
+de ; apres echo salut (donc faut le fix)
+
 TODO Criterion :
 - Tester lexer_pop (pas que mais bon...)
 
