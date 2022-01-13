@@ -7,13 +7,16 @@
 struct ast_node *new_command_node(char **args)
 {
     struct ast_node *ret = xmalloc(sizeof(struct ast_node));
+    size_t arr_len = array_len(args);
     ret->type = NODE_COMMAND;
-    ret->data.ast_command.args = xcalloc(array_len(args) + 1, sizeof(char *));
+    ret->data.ast_command.args = xcalloc(arr_len + 1, sizeof(char *));
     for (size_t i = 0; args[i] != NULL; ++i)
     {
         ret->data.ast_command.args[i] = strdup(args[i]);
+        free(args[i]);
     }
-    ret->data.ast_command.args[array_len(args)] = NULL;
+    free(args);
+    ret->data.ast_command.args[arr_len] = NULL;
     return ret;
 }
 
@@ -42,13 +45,16 @@ int exec_command_node(struct ast_node *node)
     if (node->type != NODE_COMMAND)
     {
         fprintf(stderr, "trying to exec node of wrong type (command)");
+        free_node(node);
         return -1;
     }
     int status;
 
     if (strcmp(node->data.ast_command.args[0], "echo") == 0)
     {
-        return echo(node);
+        status = echo(node);
+        free_node(node);
+        return status;
     }
 
     pid_t child = fork();
@@ -63,6 +69,7 @@ int exec_command_node(struct ast_node *node)
         // child process
         execvp(node->data.ast_command.args[0], node->data.ast_command.args);
         fprintf(stderr, "Could not execute %s\n", node->data.ast_command.args[0]);
+        free_node(node);
         return -1;
     }
     else
@@ -71,5 +78,6 @@ int exec_command_node(struct ast_node *node)
         wait(&status); // wait for child
     }
 
+    free_node(node);
     return status;
 }

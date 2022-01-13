@@ -55,7 +55,7 @@ void lexer_free(struct lexer *lexer)
     if (lexer->lexer_list != NULL)
     {
         for (size_t i = 0; i < lexer->list_len; ++i)
-            free(lexer->lexer_list[i]);
+            general_lexer_free(lexer->lexer_list[i]);
         free(lexer->lexer_list);
     }
     free(lexer);
@@ -143,7 +143,7 @@ void reset_lexer(struct general_lexer *lexer)
 struct token *token_swap(struct lexer *lexer, struct token *new_token)
 {
     if (lexer->current_token != NULL)
-        free(lexer->current_token);
+        token_free(lexer->current_token);
     lexer->current_token = new_token;
 
     return lexer->current_token;
@@ -208,30 +208,6 @@ struct token *read_until_new_token(struct lexer *lexer)
                     return token_swap(lexer, token_new(TOKEN_FRED_IN));
             }
     }
-
-    /*if (lexer->input->current_char == EOF)
-    {
-        // new EOF token
-        return token_swap(lexer, token_new(TOKEN_EOF));
-    }
-    else if (lexer->input->current_char == ';')
-    {
-        pop_char(lexer->input);
-        return token_swap(lexer, token_new(TOKEN_SEMICOL));
-    }
-    else if(lexer->input->current_char == '\n')
-    {
-        pop_char(lexer->input);
-        return token_swap(lexer, token_new(TOKEN_EOL));
-    }
-    else if (lexer->input->current_char == '>')
-    {
-        if ()
-    }
-    else if (lexer->input->current_char == '<')
-    {
-
-    }*/
 
     int accepted = 0;
     while (accepted == 0)
