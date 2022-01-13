@@ -10,6 +10,7 @@
 #include "lexer/lexer.h"
 #include "exec/exec.h"
 #include "utils/utils.h"
+#include "printer/printer.h"
 
 
 int main(int argc, char* argv[])
@@ -24,10 +25,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        int opt;
         struct ast_node *ast = NULL;
         int printer = 0;
-
         while(1)
         {
             static struct option long_options[] = {
@@ -37,14 +36,18 @@ int main(int argc, char* argv[])
                 {0, 0, 0, 0}
             };
             
-            opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
+            int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
                 break;
 
             switch(opt)
             {
                 case 'c':
-                    parse_input(&ast, lexer_new(input_from_string(optarg)),printer);
+                    parse_input(&ast, lexer_new(input_from_string(optarg)));
+                    if (printer == 1)
+                    {
+                        print_ast(ast);
+                    }
                     exec_node(ast);
 
                     if (printer == 1)
@@ -60,9 +63,9 @@ int main(int argc, char* argv[])
                         printf("Unknown option character\n");
                     break;
                 case 'p':
-                    printf("dot -Tpdf tree.dot -o tree.pdf; evince tree.pdf\n");
                     printer = 1;
-                    write_file("graph {\n\"42sh\";\n");
+                    printf("dot -Tpdf tree.dot -o tree.pdf; evince tree.pdf\n");
+                    write_file("graph {\n42sh");
                     break;
                 default:
                     printf("error\n");

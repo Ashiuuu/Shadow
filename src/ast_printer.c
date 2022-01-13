@@ -92,14 +92,13 @@ int main(int argc, char **argv)
     struct INPUT *input = input_from_string(argv[1]);
     struct lexer *lexer = lexer_new(input);
     struct ast_node *ast = NULL;
-    parse_input(&ast, lexer,0);
+    parse_input(&ast, lexer);
     if (ast->type == NODE_LIST)
     {
         printf("\n");
         printf("%ld (/%ld)\n", ast->data.ast_list.len, ast->data.ast_list.capacity);
         print_node(ast);
     }
-    // print ast
 
     return 0;
 }

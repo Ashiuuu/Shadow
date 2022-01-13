@@ -6,10 +6,8 @@
 // | list EOF
 // | '\n'
 // | EOF
-enum parser_status parse_input(struct ast_node **ast, struct lexer *input, int printer)
+enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 {
-    // TO REMOVE
-    printer += 1;
     struct token *token = lexer_peek(input);
 
     if (token->type == TOKEN_EOF || token->type == TOKEN_EOL)

@@ -41,7 +41,11 @@ exec_files = [
     'src/exec/if_node.c',
 ]
 
-common = lexer_files + parser_files + exec_files + [
+printer_files = [
+    'src/printer/printer.c',
+]
+
+common = lexer_files + parser_files + exec_files + printer_files + [
     'src/io/io.c',
     'src/utils/utils.c',
 ]
