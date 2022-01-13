@@ -49,3 +49,10 @@ size_t array_len(char **arr)
 
     return ret;
 }
+
+void write_file(char *content)
+{
+    int fd = open("tree.dot", O_CREAT | O_APPEND | O_RDWR, 0777);                        
+    write(fd, content, strlen(content));
+    close(fd);
+}

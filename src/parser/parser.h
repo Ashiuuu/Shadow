@@ -12,7 +12,7 @@ enum parser_status
     PARSER_ERROR
 };
 
-enum parser_status parse_input(struct ast_node **ast, struct lexer *lexer);
+enum parser_status parse_input(struct ast_node **ast, struct lexer *lexer, int printer);
 enum parser_status parser_simple_command(struct ast_node **ast, struct lexer *input);
 enum parser_status parse_command_list(struct ast_node **ast, struct lexer *input);
 enum parser_status parse_list(struct ast_node **ast, struct lexer *input);

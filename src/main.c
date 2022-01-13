@@ -3,15 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 
 #include "io/io.h"
 #include "parser/parser.h"
 #include "lexer/lexer.h"
 #include "exec/exec.h"
+#include "utils/utils.h"
 
 
 int main(int argc, char* argv[])
@@ -27,28 +25,32 @@ int main(int argc, char* argv[])
     else
     {
         int opt;
-        //while ((opt = getopt(argc, argv, "c:")) != -1)
-        //while ((opt = getopt_long(argc, argv, "chp:", long_options, NULL)) != -1)
+        struct ast_node *ast = NULL;
+        int printer = 0;
+
         while(1)
         {
             static struct option long_options[] = {
                 {"code",         required_argument,        0, 'c'},
                 {"help",         no_argument,  0, '?'},
-                {"pretty_print", optional_argument,  0, 'p'},
+                {"pretty_print", no_argument,  0, 'p'},
                 {0, 0, 0, 0}
             };
-
-            opt = getopt_long(argc, argv, "c:p::?", long_options, NULL);
+            
+            opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
                 break;
 
             switch(opt)
             {
                 case 'c':
-                    ;
-                    struct ast_node *ast = NULL;
-                    parse_input(&ast, lexer_new(input_from_string(optarg)));
+                    parse_input(&ast, lexer_new(input_from_string(optarg)),printer);
                     exec_node(ast);
+
+                    if (printer == 1)
+                    {
+                        write_file("}\n");
+                    }
                     return 0;
                     break;
                 case '?':
@@ -58,15 +60,9 @@ int main(int argc, char* argv[])
                         printf("Unknown option character\n");
                     break;
                 case 'p':
-                    ;
-                    int fd = open("tree.dot", O_CREAT | O_APPEND | O_RDWR, 0777);
-                    write(fd, "graph {\n\"42sh\";\n", 27);
-                    /*;
-                    struct ast_node *ast = NULL;
-                    parse_input(&ast, lexer_new(input_from_string(optarg)));*/
-
-                    write(fd, "}\n", 2);
-                    close(fd);
+                    printf("dot -Tpdf tree.dot -o tree.pdf; evince tree.pdf\n");
+                    printer = 1;
+                    write_file("graph {\n\"42sh\";\n");
                     break;
                 default:
                     printf("error\n");
