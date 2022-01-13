@@ -37,12 +37,14 @@ int exec_if_node(struct ast_node *node)
     if (node->type != NODE_IF)
     {
         fprintf(stderr, "trying to execute non if node\n");
+        free_node(node);
         return -1;
     }
 
     if (node->data.ast_if.body_list == NULL)
     {
         fprintf(stderr, "if/elif/else missing body\n");
+        free_node(node);
         return -1;
     }
 
@@ -52,13 +54,22 @@ int exec_if_node(struct ast_node *node)
         int return_status = exec_node(node->data.ast_if.condition);
         if (return_status == 0) // condition was true
         {
-            return exec_node(node->data.ast_if.body_list);
+            int status = exec_node(node->data.ast_if.body_list);
+            free_node(node);
+            return status;
         }
         if (node->data.ast_if.elif != NULL)
-            return exec_node(node->data.ast_if.elif);
+        {
+            int status = exec_node(node->data.ast_if.elif);
+            free_node(node);
+            return status;
+        }
         // if IF was not true and no further if, return 0? -1?
+        free_node(node);
         return -1;
     }
     // else case
-    return exec_node(node->data.ast_if.body_list);
+    int status = exec_node(node->data.ast_if.body_list);
+    free_node(node);
+    return status;
 }
