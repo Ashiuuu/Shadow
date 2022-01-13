@@ -17,7 +17,7 @@ void free_node(struct ast_node *node)
             free_if_node(node);
             break;
         default:
-            fprintf(stderr, "unknown node type (free_node)");
+            fprintf(stderr, "unknown node type (free_node)\n");
     }
 }
 
@@ -32,7 +32,7 @@ int exec_node(struct ast_node *node)
         case NODE_IF:
             return exec_if_node(node);
         default:
-            fprintf(stderr, "unknown node type (exec_node)");
+            fprintf(stderr, "unknown node type (exec_node)\n");
             return -1;
     }
 }

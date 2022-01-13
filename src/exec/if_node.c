@@ -52,15 +52,18 @@ int exec_if_node(struct ast_node *node)
     {
         // if or elif case
         int return_status = exec_node(node->data.ast_if.condition);
+        node->data.ast_if.condition = NULL;
         if (return_status == 0) // condition was true
         {
             int status = exec_node(node->data.ast_if.body_list);
+            node->data.ast_if.body_list = NULL;
             free_node(node);
             return status;
         }
         if (node->data.ast_if.elif != NULL)
         {
             int status = exec_node(node->data.ast_if.elif);
+            node->data.ast_if.elif = NULL;
             free_node(node);
             return status;
         }
@@ -70,6 +73,7 @@ int exec_if_node(struct ast_node *node)
     }
     // else case
     int status = exec_node(node->data.ast_if.body_list);
+    node->data.ast_if.body_list = NULL;
     free_node(node);
     return status;
 }
