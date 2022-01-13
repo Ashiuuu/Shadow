@@ -7,13 +7,16 @@
 struct ast_node *new_command_node(char **args)
 {
     struct ast_node *ret = xmalloc(sizeof(struct ast_node));
+    size_t arr_len = array_len(args);
     ret->type = NODE_COMMAND;
-    ret->data.ast_command.args = xcalloc(array_len(args) + 1, sizeof(char *));
+    ret->data.ast_command.args = xcalloc(arr_len + 1, sizeof(char *));
     for (size_t i = 0; args[i] != NULL; ++i)
     {
         ret->data.ast_command.args[i] = strdup(args[i]);
+        free(args[i]);
     }
-    ret->data.ast_command.args[array_len(args)] = NULL;
+    free(args);
+    ret->data.ast_command.args[arr_len] = NULL;
     return ret;
 }
 
