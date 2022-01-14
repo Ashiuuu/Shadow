@@ -5,6 +5,8 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
+#include "tokens.h"
+
 struct ast_node_command
 {
     char **args;
@@ -37,7 +39,7 @@ struct ast_node_redirec_list
     size_t capacity;
     size_t len;
     struct ast_node *child;         // node concerned by the redirection, swap back to normal after executing
-}
+};
 
 enum node_type {
     NODE_COMMAND,

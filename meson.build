@@ -31,6 +31,7 @@ lexer_files = [
 parser_files = [
     'src/parser/parser.c',
     'src/parser/if_else_parser.c',
+    'src/parser/redirection_parser.c',
 ]
 
 exec_files = [
@@ -39,6 +40,7 @@ exec_files = [
     'src/exec/list_node.c',
     'src/exec/echo.c',
     'src/exec/if_node.c',
+    'src/exec/redirec_nodes.c',
 ]
 
 printer_files = [

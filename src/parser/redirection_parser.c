@@ -1,16 +1,5 @@
 #include "parser.h"
 
-int is_redirec_token(enum token_type type)
-{
-    return type == TOKEN_FRED_IN
-        || type == TOKEN_FRED_OUT
-        || type == TOKEN_FDRED_IN
-        || type == TOKEN_FDRED_OUT
-        || type == TOKEN_FRED_APP
-        || type == TOKEN_BIRED
-        || type == TOKEN_FRED_FORCE;
-}
-
 // Grammar:
 //   [IO_NUMBER] '>' WORD
 // | [IO_NUMBER] '<' WORD
@@ -28,7 +17,7 @@ enum parser_status parse_redirection(struct redirection **red, struct lexer *inp
 
     if (tok->type == TOKEN_IO_NUMBER) // IO_NUMBER is optional
     {
-        rep_s = strcpy(rep_s, tok->value);
+        rep_s = strdup(tok->value);
         tok = lexer_pop(input);
         
         if (!is_redirec_token(tok->type))
@@ -51,7 +40,7 @@ enum parser_status parse_redirection(struct redirection **red, struct lexer *inp
         return PARSER_ERROR;
     }
 
-    source_s = strcpy(source_s, tok->value);
+    source_s = strdup(tok->value);
 
     *red = new_redirection(source_s, rep_s, type);
     lexer_pop(input);

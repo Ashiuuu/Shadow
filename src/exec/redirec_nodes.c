@@ -7,7 +7,7 @@ int is_digit(char c)
     return c >= '0' && c <= '9';
 }
 
-int atoi(char *s)
+int my_atoi(char *s)
 {
     int ret = 0;
 
@@ -38,13 +38,13 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
         rep_fd = STDOUT_FILENO;
     else
     {
-        fprintf(stderr, "wrong token type [new redirection]\n")''
+        fprintf(stderr, "wrong token type [new redirection]\n");
         return NULL;
     }
 
     if (replaced != NULL)
     {
-        int to_int = atoi(replaced);
+        int to_int = my_atoi(replaced);
         if (to_int == -1)
         {
             fprintf(stderr, "%s is not a number [new redirection]\n", replaced);
@@ -53,7 +53,7 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
         rep_fd = to_int;
     }
 
-    int src_int = atoi(source);
+    int src_int = my_atoi(source);
     if (src_int != -1)
     {
         s_fd = src_int;
@@ -82,7 +82,7 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
         s_fd = open(source, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         if (s_fd == -1)
         {
-            fprintf(stderr, "opening file %s failed [new redirection]\n");
+            fprintf(stderr, "opening file %s failed [new redirection]\n", source);
             return NULL;
         }
     }
@@ -151,15 +151,15 @@ void free_redirection(struct redirection *r)
 {
     if (r != NULL)
     {
-        if (r->s_fd != -1)
+        if (r->source_fd != -1)
         {
-            close(r->s_fd);
-            r->s_fd = -1;
+            close(r->source_fd);
+            r->source_fd = -1;
         }
-        if (r->rep_fd != -1)
+        if (r->replaced_fd != -1)
         {
-            close(r->rep_fd);
-            r->rep_fd = -1;
+            close(r->replaced_fd);
+            r->replaced_fd = -1;
         }
         free(r);
     }
@@ -197,7 +197,7 @@ void push_redirec_list_node(struct ast_node *node, struct redirection *add)
     if (node->data.ast_redirec_list.len == node->data.ast_redirec_list.capacity)
     {
         node->data.ast_redirec_list.capacity *= 2;
-        node->data.ast_redirec_list.redirections = xrealloc(sizeof(struct redirection) * node->data.ast_redirec_list.capacity);
+        node->data.ast_redirec_list.redirections = xrealloc(node->data.ast_redirec_list.redirections, sizeof(struct redirection) * node->data.ast_redirec_list.capacity);
     }
 
     node->data.ast_redirec_list.redirections[node->data.ast_redirec_list.len] = add;
@@ -228,12 +228,14 @@ int exec_redirec_list_node(struct ast_node *node)
 
     // execute child node
 
-    int return_status = execute_node(node->data.ast_redirec_list.child);
+    int return_status = exec_node(node->data.ast_redirec_list.child);
 
     // restore backup
 
     for (size_t i = node->data.ast_redirec_list.len - 1; i > 0; --i)
     {
+        if (node->data.ast_redirec_list.redirections[i] == NULL)
+            continue;
         int stat = undo_redirection(node->data.ast_redirec_list.redirections[i]);
         if (stat == -1)
         {

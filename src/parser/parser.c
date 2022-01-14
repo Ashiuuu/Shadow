@@ -1,6 +1,17 @@
 #include "parser.h"
 #include "utils.h"
 
+int is_redirec_token(enum token_type type)
+{
+    return type == TOKEN_FRED_IN
+        || type == TOKEN_FRED_OUT
+        || type == TOKEN_FDRED_IN
+        || type == TOKEN_FDRED_OUT
+        || type == TOKEN_FRED_APP
+        || type == TOKEN_BIRED
+        || type == TOKEN_FRED_FORCE;
+}
+
 // Grammar :
 //   list '\n'
 // | list EOF
@@ -36,14 +47,125 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
     return PARSER_ERROR;
 }
 
+// list grammar:
+// and_or ((';'|'&') and_or)* [';'|'&']
+// for now, and_or is just a command, and are separated by ';'
+enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
+{
+    *ast = new_list_node();
+
+    struct ast_node *com = NULL;
+    enum parser_status stat = parse_command(&com, input);
+    if (stat == PARSER_ERROR)
+    {
+        fprintf(stderr, "[FATAL] no command found in list??\n");
+        free_node(*ast);
+        return PARSER_ERROR;
+    }
+
+    list_node_push(*ast, com);
+    struct token *tok = lexer_peek(input);
+    while (tok->type == TOKEN_SEMICOL || stat == PARSER_OK)
+    {
+        // stop redirection if started
+        if (tok->type == TOKEN_SEMICOL)
+            lexer_pop(input);
+        
+        struct ast_node *new_com = NULL;
+        stat = parse_command(&new_com, input);
+        if (stat == PARSER_ERROR)
+        {
+            // list ends here
+            /*fprintf(stderr, "[FATAL] no command found in list?? (loop)\n");
+            free_node(*ast);
+            return PARSER_ERROR;*/
+            return PARSER_OK;
+        }
+        list_node_push(*ast, new_com);
+        tok = lexer_peek(input);
+    }
+
+    return PARSER_OK;
+}
+
+// command grammar:
+//   simple_command
+// | shell_command
+enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
+{
+    struct token *tok = lexer_peek(input);
+
+    if (tok->type == TOKEN_WORDS || tok->type == TOKEN_IO_NUMBER || is_redirec_token(tok->type))
+    {
+        return parser_simple_command(ast, input);
+    }
+    /*
+    if (tok->type == TOKEN_FRED_OUT)
+    {
+
+    }*/
+
+    return parse_shell_command(ast, input);
+}
+
+
 // Grammar :
 //   (prefix)+
 // | (prefix)* (element)+
+// Basically, redirections and WORDS
+// we put WORDS in a command node and redirections in a redirection list
+// then put the command as child of the redirection list
 enum parser_status parser_simple_command(struct ast_node **ast, struct lexer *input)
 {
-    // for now simple command is just WORD+ ie 'ls /bin' or 'pwd'
-    // for now, just create ast node, execute and exit
-    struct token *token = lexer_peek(input);
+    struct token *tok = lexer_peek(input);
+    *ast = new_redirec_list_node();
+
+    size_t capacity = 5;
+    size_t len = 0;
+    char **args = xmalloc(sizeof(char *) * capacity);
+
+    while (tok->type == TOKEN_IO_NUMBER || tok->type == TOKEN_WORDS || is_redirec_token(tok->type))
+    {
+        if (tok->type == TOKEN_IO_NUMBER || is_redirec_token(tok->type))
+        {
+            struct redirection *red = NULL;
+            enum parser_status stat = parse_redirection(&red, input);
+            if (stat == PARSER_ERROR)
+            {
+                for (size_t i = 0; i < len; ++i)
+                    free(args[i]);
+                free(args);
+                return PARSER_ERROR;
+            }
+
+            push_redirec_list_node(*ast, red); // we push the redirection we got to the stack
+        }
+        else // we found a word, push it to the args
+        {
+            if (len == capacity)
+            {
+                capacity *= 2;
+                args = xrealloc(args, sizeof(char *) * capacity);
+            }
+            args[len] = strdup(tok->value);
+            len++;
+        }
+
+        tok = lexer_pop(input);
+    }
+
+    struct ast_node *c = NULL;
+
+    if (len != 0)
+    {
+        c = new_command_node(args);
+    }
+
+    (*ast)->data.ast_redirec_list.child = c;
+
+    return PARSER_OK;
+
+    /*struct token *token = lexer_peek(input);
     if (token->type != TOKEN_WORDS)
     {
         // we had no command
@@ -68,8 +190,22 @@ enum parser_status parser_simple_command(struct ast_node **ast, struct lexer *in
     }
     // finished parsing words, now exec
     *ast = new_command_node(args);
-    return PARSER_OK;
+    return PARSER_OK;*/
 }
+
+enum parser_status parse_shell_command(struct ast_node **ast, struct lexer *input)
+{
+    struct token *tok = lexer_peek(input);
+
+    if (tok->type == TOKEN_IF)
+    {
+        return parse_rule_if(ast, input);
+    }
+
+    // printf(stderr, "Unable to parse shell command\n");
+    return PARSER_ERROR;
+}
+
 
 // Grammar :
 // list: command (';' command)* [';']
@@ -166,69 +302,5 @@ enum parser_status parse_compound_list(struct ast_node **ast, struct lexer *inpu
     return PARSER_ERROR;
 }
 
-enum parser_status parse_shell_command(struct ast_node **ast, struct lexer *input)
-{
-    struct token *tok = lexer_peek(input);
 
-    if (tok->type == TOKEN_IF)
-    {
-        return parse_rule_if(ast, input);
-    }
 
-    // printf(stderr, "Unable to parse shell command\n");
-    return PARSER_ERROR;
-}
-
-// command grammar:
-//   simple_command
-// | shell_command
-enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
-{
-    struct token *tok = lexer_peek(input);
-
-    if (tok->type == TOKEN_WORDS)
-    {
-        return parser_simple_command(ast, input);
-    }
-    /*
-    if (tok->type == TOKEN_FRED_OUT)
-    {
-
-    }*/
-
-    return parse_shell_command(ast, input);
-}
-
-// list grammar:
-// command (';' command)* [';']
-enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
-{
-    *ast = new_list_node();
-
-    struct ast_node *com = NULL;
-    enum parser_status stat = parse_command(&com, input);
-    if (stat == PARSER_ERROR)
-    {
-        fprintf(stderr, "error\n");
-        return PARSER_ERROR;
-    }
-
-    list_node_push(*ast, com);
-    struct token *tok = lexer_peek(input);
-    while (tok->type == TOKEN_SEMICOL || stat == PARSER_OK)
-    {
-        // stop redirection if started
-        if (tok->type == TOKEN_SEMICOL)
-            lexer_pop(input);
-        
-        struct ast_node *new_com = NULL;
-        stat = parse_command(&new_com, input);
-        if (stat == PARSER_OK)
-        {
-            list_node_push(*ast, new_com);
-        }
-        tok = lexer_peek(input);
-    }
-
-    return PARSER_OK;
-}
