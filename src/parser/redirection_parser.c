@@ -19,23 +19,42 @@ int is_redirec_token(enum token_type type)
 // | [IONUMBER] '>>' WORD
 // | [IONUMBER] '<>' WORD
 // | [IONUMBER] '>|' WORD
-enum parser_status parse_redirection(struct ast_node **ast, struct lexer *input)
+enum parser_status parse_redirection(struct redirection **red, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     
-    if (tok->type != TOKEN_IO_NUMBER)
-        return PARSER_ERROR; // redirection parsing unsuccessfull
+    char *source_s = NULL;
+    char *rep_s = NULL;
 
+    if (tok->type == TOKEN_IO_NUMBER) // IO_NUMBER is optional
+    {
+        rep_s = strcpy(rep_s, tok->value);
+        tok = lexer_pop(input);
+        
+        if (!is_redirec_token(tok->type))
+        {
+            // shouldn't happen the way io_number tokens are recognized
+            fprintf(stderr, "[FATAL] Expected redirection after IO_NUMBER\n");
+            abort();
+        }
+    }
+    if (!is_redirec_token(tok->type))
+        return PARSER_ERROR; // no redirection to be found
+
+    // we are now at a redirection token
+    enum token_type type = tok->type;
     tok = lexer_pop(input);
 
-    if (!is_redirec_token(tok->type))
+    if (tok->type != TOKEN_WORDS) // mandatory word after redirection token
     {
-        // shouldn't happen the way io_number tokens are recognized
-        fprintf(stderr, "[FATAL] Expected redirection after IO_NUMBER\n");
-        abort();
+        fprintf(stderr, "Expected word token after redirection\n");
+        return PARSER_ERROR;
     }
 
-    
+    source_s = strcpy(source_s, tok->value);
 
-    return PARSER_ERROR;
+    *red = new_redirection(source_s, rep_s, type);
+    lexer_pop(input);
+
+    return PARSER_OK;
 }
