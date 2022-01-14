@@ -26,9 +26,9 @@ struct ast_node_if
 
 struct redirection
 {
-    char *io_number;
-    enum token_type type;
-    char *dest;
+    int source_fd; // file descriptor of the source
+    int replaced_fd; // file descriptor to be replaces (destination)
+    int duped_fd; // holds the replaced_fd to later undo the redirection
 };
 
 struct ast_node_redirec_list
@@ -81,9 +81,12 @@ void free_if_node(struct ast_node *node);
 int exec_if_node(struct ast_node *node);
 
 // redirections
-struct redirection *new_redirection();
-struct ast_node *new_redirec_list_node();
+struct redirection *new_redirection(char *source, char *replaced, enum token_type type);
 void free_redirection(struct redirection *r);
+int execute_redirection(struct redirection *r);
+int undo_redirection(struct redirection *r);
+
+struct ast_node *new_redirec_list_node();
 void free_redirec_list_node(struct ast_node *node);
 void push_redirec_list_node(struct ast_node *node, struct redirection *add);
 int exec_redirec_list_node(struct ast_node *node);
