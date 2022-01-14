@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
                 case 'p':
                     printer = 1;
                     printf("dot -Tpdf tree.dot -o tree.pdf; evince tree.pdf\n");
-                    write_file("graph {\n42sh");
+                    write_file("graph {\n42sh -- ");
                     break;
                 default:
                     printf("error\n");

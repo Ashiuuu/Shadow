@@ -3,7 +3,7 @@
 // Write ast into .dot file to create tree on pdf
 void print_ast(struct ast_node *node)
 {
-    write_file(" -- ");
+    //write_file(" -- ");
     if (node == NULL)
         return;
     if (node->type == NODE_COMMAND)
@@ -22,8 +22,13 @@ void print_ast(struct ast_node *node)
             {
                 print_ast_if(node->data.ast_list.nodes[i]->data.ast_if);
             }
+            else if (node->data.ast_list.nodes[i]->type == NODE_REDIREC_LIST)
+            {
+                print_ast_redir(node->data.ast_list.nodes[i]->data.ast_redirec_list);
+            }
             else
             {
+                printf("%d\n",node->data.ast_list.nodes[i]->type);
                 printf("Error printer.c type not found l.26\n");
             }
         }
@@ -65,13 +70,17 @@ void print_ast_command(struct ast_node_command ast_command)
 // Print if node
 void print_ast_if(struct ast_node_if ast_if)
 {
-    write_file("if");
+    write_file("if -- ");
     // Condition
     print_ast(ast_if.condition);
     // Body list
     print_ast(ast_if.body_list);
     // elif
     print_ast(ast_if.elif);
-    
     write_file("fi;\n");
+}
+
+void print_ast_redir(struct ast_node_redirec_list ast_redir)
+{
+    print_ast(ast_redir.child);
 }
