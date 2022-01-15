@@ -243,8 +243,15 @@ int exec_redirec_list_node(struct ast_node *node)
     // execute child node
 
     int return_status = exec_node(node->data.ast_redirec_list.child);
+    node->data.ast_redirec_list.child = NULL;
 
     // restore backup
+
+    if (node->data.ast_redirec_list.len == 0)
+    {
+        free_node(node);
+        return return_status;
+    }
 
     for (size_t i = node->data.ast_redirec_list.len - 1; i > 0; --i)
     {
