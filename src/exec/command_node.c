@@ -45,7 +45,6 @@ int exec_command_node(struct ast_node *node)
     if (node->type != NODE_COMMAND)
     {
         fprintf(stderr, "trying to exec node of wrong type (command)");
-        free_node(node);
         return -1;
     }
     int status;
@@ -53,7 +52,6 @@ int exec_command_node(struct ast_node *node)
     if (strcmp(node->data.ast_command.args[0], "echo") == 0)
     {
         status = echo(node);
-        free_node(node);
         return status;
     }
 
@@ -70,7 +68,6 @@ int exec_command_node(struct ast_node *node)
         execvp(node->data.ast_command.args[0], node->data.ast_command.args);
         fprintf(stderr, "Could not execute %s\n",
                 node->data.ast_command.args[0]);
-        free_node(node);
         return -1;
     }
     else
@@ -79,6 +76,5 @@ int exec_command_node(struct ast_node *node)
         wait(&status); // wait for child
     }
 
-    free_node(node);
     return status;
 }

@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
                     print_ast(ast, "");
                 }
                 exec_node(ast);
+                free_node(ast);
 
                 if (printer == 1)
                 {

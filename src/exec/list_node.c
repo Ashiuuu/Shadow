@@ -60,7 +60,6 @@ int exec_list_node(struct ast_node *node)
     if (node->type != NODE_LIST)
     {
         fprintf(stderr, "trying to execute non list node");
-        free_node(node);
         return -1;
     }
 
@@ -74,6 +73,5 @@ int exec_list_node(struct ast_node *node)
             node->data.ast_list.nodes[i] = NULL;
         }
     }
-    free_node(node);
     return status;
 }

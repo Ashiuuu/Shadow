@@ -26,6 +26,12 @@ struct ast_node_if
     struct ast_node *elif;
 };
 
+struct ast_node_while
+{
+    struct ast_node *condition;
+    struct ast_node *body_list;
+};
+
 struct redirection
 {
     int source_fd; // file descriptor of the source
@@ -46,6 +52,7 @@ enum node_type {
     NODE_LIST,
     NODE_IF,
     NODE_REDIREC_LIST,
+    NODE_WHILE,
 };
 
 union ast_data
@@ -54,6 +61,7 @@ union ast_data
     struct ast_node_list ast_list;
     struct ast_node_if ast_if;
     struct ast_node_redirec_list ast_redirec_list;
+    struct ast_node_while ast_while;
 };
 
 struct ast_node
@@ -92,6 +100,11 @@ struct ast_node *new_redirec_list_node();
 void free_redirec_list_node(struct ast_node *node);
 void push_redirec_list_node(struct ast_node *node, struct redirection *add);
 int exec_redirec_list_node(struct ast_node *node);
+
+// while loop
+struct ast_node *new_while_node();
+void free_while_node(struct ast_node *node);
+int exec_while_node(struct ast_node *node);
 
 // built-ins
 int echo(struct ast_node *node);

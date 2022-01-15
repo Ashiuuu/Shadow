@@ -220,7 +220,6 @@ int exec_redirec_list_node(struct ast_node *node)
     if (node->type != NODE_REDIREC_LIST)
     {
         fprintf(stderr, "trying to execute non redirection list node\n");
-        free_node(node);
         return -1;
     }
 
@@ -235,7 +234,6 @@ int exec_redirec_list_node(struct ast_node *node)
             fprintf(stderr,
                     "a redirection failed, stoping execution of redirection "
                     "list\n");
-            free_node(node);
             return -1;
         }
     }
@@ -243,7 +241,6 @@ int exec_redirec_list_node(struct ast_node *node)
     // execute child node
 
     int return_status = exec_node(node->data.ast_redirec_list.child);
-    node->data.ast_redirec_list.child = NULL;
 
     fflush(stdout);
     fflush(stderr);
@@ -252,7 +249,6 @@ int exec_redirec_list_node(struct ast_node *node)
 
     if (node->data.ast_redirec_list.len == 0)
     {
-        free_node(node);
         return return_status;
     }
 
@@ -267,12 +263,10 @@ int exec_redirec_list_node(struct ast_node *node)
             fprintf(stderr,
                     "undoing a redirection failed, stoping execution of "
                     "redirection list\n");
-            free_node(node);
             return -1;
         }
     }
 
     // free node
-    free_node(node);
     return return_status;
 }
