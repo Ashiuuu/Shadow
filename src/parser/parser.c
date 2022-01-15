@@ -29,7 +29,7 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 
     if (ret_status != PARSER_OK)
     {
-        fprintf(stderr, "Unexpected token\n");
+        // fprintf(stderr, "Unexpected token\n");
         return PARSER_ERROR;
     }
 
@@ -56,7 +56,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
     enum parser_status stat = parse_command(&com, input);
     if (stat == PARSER_ERROR)
     {
-        fprintf(stderr, "[FATAL] no command found in list??\n");
+        // fprintf(stderr, "[FATAL] no command found in list??\n");
         free_node(*ast);
         return PARSER_ERROR;
     }
@@ -152,7 +152,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
             len++;
         }
 
-        tok = lexer_pop(input);
+        tok = lexer_pop_ignore_keyword(input);
     }
 
     struct ast_node *c = NULL;

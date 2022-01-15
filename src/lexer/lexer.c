@@ -2,6 +2,8 @@
 
 #include "utils.h"
 
+#define NB_OF_KEYWORDS 5
+
 int is_alpha(char c)
 {
     return ((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A'));
@@ -165,6 +167,11 @@ struct token *lexer_pop(struct lexer *lexer)
     return read_until_new_token(lexer);
 }
 
+struct token *lexer_pop_ignore_keyword(struct lexer *lexer)
+{
+    return read_until_new_token_ignore_keywords(lexer);
+}
+
 struct token *read_until_new_token(struct lexer *lexer)
 {
     while (lexer->input->current_char == ' '
@@ -219,6 +226,93 @@ struct token *read_until_new_token(struct lexer *lexer)
     {
         size_t errors = 0;
         for (size_t i = 0; i < lexer->list_len; ++i)
+        {
+            enum lexer_state state =
+                general_lexer_consume_char(lexer->lexer_list[i], lexer->input);
+            if (state == LEXER_ERROR)
+                errors++;
+            if (errors == lexer->list_len)
+            {
+                fprintf(stderr,
+                        "[FATAL] All lexers encountered error, no pattern "
+                        "recognized\n");
+                lexer->current_token =
+                    token_swap(lexer, token_new(TOKEN_ERROR));
+                return lexer->current_token;
+            }
+            if (state == LEXER_ACCEPT)
+            {
+                accepted = 1;
+                lexer->current_token =
+                    token_swap(lexer, extract_token(lexer->lexer_list[i]));
+                break;
+            }
+        }
+        if (accepted != 1)
+            pop_char(lexer->input);
+    }
+
+    // reset all lexers
+    for (size_t i = 0; i < lexer->list_len; ++i)
+        reset_lexer(lexer->lexer_list[i]);
+
+    return lexer->current_token;
+}
+
+struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
+{
+    while (lexer->input->current_char == ' '
+           || lexer->input->current_char == '\t')
+    {
+        pop_char(lexer->input);
+    }
+
+    switch (lexer->input->current_char)
+    {
+    case EOF:
+        return token_swap(lexer, token_new(TOKEN_EOF));
+    case ';':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_SEMICOL));
+    case '\n':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_EOL));
+    case '>':
+        pop_char(lexer->input);
+        switch (lexer->input->current_char)
+        {
+        case '>': // >>
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_FRED_APP));
+        case '|': // >|
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_FRED_FORCE));
+        case '&': // >&
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_FDRED_OUT));
+        default: // '>' and then something else
+            return token_swap(lexer, token_new(TOKEN_FRED_OUT));
+        }
+    case '<':
+        pop_char(lexer->input);
+        switch (lexer->input->current_char)
+        {
+        case '>': // <>
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_BIRED));
+        case '&': // <&
+            pop_char(lexer->input);
+            return token_swap(lexer, token_new(TOKEN_FDRED_IN));
+        default: // only '<'
+            return token_swap(lexer, token_new(TOKEN_FRED_IN));
+        }
+    }
+
+    int accepted = 0;
+    while (accepted == 0)
+    {
+        size_t errors = 0;
+        for (size_t i = NB_OF_KEYWORDS; i < lexer->list_len; ++i)
         {
             enum lexer_state state =
                 general_lexer_consume_char(lexer->lexer_list[i], lexer->input);
