@@ -245,6 +245,9 @@ int exec_redirec_list_node(struct ast_node *node)
     int return_status = exec_node(node->data.ast_redirec_list.child);
     node->data.ast_redirec_list.child = NULL;
 
+    fflush(stdout);
+    fflush(stderr);
+
     // restore backup
 
     if (node->data.ast_redirec_list.len == 0)

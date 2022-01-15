@@ -29,7 +29,7 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 
     if (ret_status != PARSER_OK)
     {
-        // fprintf(stderr, "Unexpected token\n");
+        fprintf(stderr, "Unexpected token\n");
         return PARSER_ERROR;
     }
 
@@ -98,13 +98,23 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
     {
         return parser_simple_command(ast, input);
     }
-    /*
-    if (tok->type == TOKEN_FRED_OUT)
+
+    struct ast_node *com = NULL;
+    enum parser_status stat = parse_shell_command(&com, input);
+
+    // now parse redirections
+    *ast = new_redirec_list_node();
+    (*ast)->data.ast_redirec_list.child = com;
+
+    struct redirection *red = NULL;
+    enum parser_status cont = parse_redirection(&red, input);
+    while (cont == PARSER_OK)
     {
+        push_redirec_list_node(*ast, red);
+        cont = parse_redirection(&red, input);
+    }
 
-    }*/
-
-    return parse_shell_command(ast, input);
+    return stat;
 }
 
 // Grammar :
