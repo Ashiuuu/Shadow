@@ -1,6 +1,6 @@
 #include "exec.h"
-#include "utils.h"
 #include "tokens.h"
+#include "utils.h"
 
 int is_digit(char c)
 {
@@ -21,7 +21,8 @@ int my_atoi(char *s)
     return ret;
 }
 
-struct redirection *new_redirection(char *source, char *replaced, enum token_type type)
+struct redirection *new_redirection(char *source, char *replaced,
+                                    enum token_type type)
 {
     int s_fd;
     int rep_fd;
@@ -34,7 +35,8 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
 
     if (type == TOKEN_FRED_IN || type == TOKEN_FDRED_IN || type == TOKEN_BIRED)
         rep_fd = STDIN_FILENO;
-    else if (type == TOKEN_FRED_OUT || type == TOKEN_FDRED_OUT || type == TOKEN_FRED_APP || type == TOKEN_FRED_FORCE)
+    else if (type == TOKEN_FRED_OUT || type == TOKEN_FDRED_OUT
+             || type == TOKEN_FRED_APP || type == TOKEN_FRED_FORCE)
         rep_fd = STDOUT_FILENO;
     else
     {
@@ -66,11 +68,14 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
     {
         if (type == TOKEN_FDRED_IN || type == TOKEN_FDRED_OUT) // >& or <&
         {
-            fprintf(stderr, "must use valid file descriptor with >& or <&, not word [new redirection]\n");
+            fprintf(stderr,
+                    "must use valid file descriptor with >& or <&, not word "
+                    "[new redirection]\n");
             return NULL;
         }
         int flags = O_CREAT;
-        if (type == TOKEN_FRED_OUT || type == TOKEN_FDRED_OUT || type == TOKEN_FRED_APP || type == TOKEN_FRED_FORCE)
+        if (type == TOKEN_FRED_OUT || type == TOKEN_FDRED_OUT
+            || type == TOKEN_FRED_APP || type == TOKEN_FRED_FORCE)
             flags |= O_WRONLY;
         else
             flags |= O_RDONLY;
@@ -82,7 +87,8 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
         s_fd = open(source, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
         if (s_fd == -1)
         {
-            fprintf(stderr, "opening file %s failed [new redirection]\n", source);
+            fprintf(stderr, "opening file %s failed [new redirection]\n",
+                    source);
             return NULL;
         }
     }
@@ -97,7 +103,8 @@ struct redirection *new_redirection(char *source, char *replaced, enum token_typ
 
 int execute_redirection(struct redirection *r)
 {
-    // replaced 'replaced_fd' with 'source_fd' while keeping 'replaced_fd' in 'duped_fd'
+    // replaced 'replaced_fd' with 'source_fd' while keeping 'replaced_fd' in
+    // 'duped_fd'
     if (r == NULL)
     {
         fprintf(stderr, "trying to execute NULL redirection\n");
@@ -141,7 +148,8 @@ struct ast_node *new_redirec_list_node()
     ret->type = NODE_REDIREC_LIST;
     ret->data.ast_redirec_list.capacity = 5;
     ret->data.ast_redirec_list.len = 0;
-    ret->data.ast_redirec_list.redirections = xmalloc(sizeof(struct redirection) * ret->data.ast_redirec_list.capacity);
+    ret->data.ast_redirec_list.redirections = xmalloc(
+        sizeof(struct redirection) * ret->data.ast_redirec_list.capacity);
     ret->data.ast_redirec_list.child = NULL;
 
     return ret;
@@ -197,10 +205,13 @@ void push_redirec_list_node(struct ast_node *node, struct redirection *add)
     if (node->data.ast_redirec_list.len == node->data.ast_redirec_list.capacity)
     {
         node->data.ast_redirec_list.capacity *= 2;
-        node->data.ast_redirec_list.redirections = xrealloc(node->data.ast_redirec_list.redirections, sizeof(struct redirection) * node->data.ast_redirec_list.capacity);
+        node->data.ast_redirec_list.redirections = xrealloc(
+            node->data.ast_redirec_list.redirections,
+            sizeof(struct redirection) * node->data.ast_redirec_list.capacity);
     }
 
-    node->data.ast_redirec_list.redirections[node->data.ast_redirec_list.len] = add;
+    node->data.ast_redirec_list.redirections[node->data.ast_redirec_list.len] =
+        add;
     node->data.ast_redirec_list.len++;
 }
 
@@ -217,10 +228,13 @@ int exec_redirec_list_node(struct ast_node *node)
 
     for (size_t i = 0; i < node->data.ast_redirec_list.len; ++i)
     {
-        int stat = execute_redirection(node->data.ast_redirec_list.redirections[i]);
+        int stat =
+            execute_redirection(node->data.ast_redirec_list.redirections[i]);
         if (stat == -1)
         {
-            fprintf(stderr, "a redirection failed, stoping execution of redirection list\n");
+            fprintf(stderr,
+                    "a redirection failed, stoping execution of redirection "
+                    "list\n");
             free_node(node);
             return -1;
         }
@@ -236,10 +250,13 @@ int exec_redirec_list_node(struct ast_node *node)
     {
         if (node->data.ast_redirec_list.redirections[i] == NULL)
             continue;
-        int stat = undo_redirection(node->data.ast_redirec_list.redirections[i]);
+        int stat =
+            undo_redirection(node->data.ast_redirec_list.redirections[i]);
         if (stat == -1)
         {
-            fprintf(stderr, "undoing a redirection failed, stoping execution of redirection list\n");
+            fprintf(stderr,
+                    "undoing a redirection failed, stoping execution of "
+                    "redirection list\n");
             free_node(node);
             return -1;
         }

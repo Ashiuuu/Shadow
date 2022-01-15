@@ -1,6 +1,6 @@
 #include "parser.h"
 
-//Grammar:
+// Grammar:
 //   ELSE compound_list
 // | ELIF compound_list THEN compound_list [else_clause]
 enum parser_status parse_else_clause(struct ast_node **ast, struct lexer *input)

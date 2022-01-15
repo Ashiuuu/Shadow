@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include "exec.h"
-#include "parser.h"
 #include "io.h"
 #include "lexer.h"
+#include "parser.h"
 
 void print_node(struct ast_node *node);
 
@@ -67,17 +67,17 @@ void print_node(struct ast_node *node)
 {
     switch (node->type)
     {
-        case NODE_COMMAND:
-            print_command_node(node);
-            break;
-        case NODE_LIST:
-            print_list_node(node);
-            break;
-        case NODE_IF:
-            print_if_node(node);
-            break;
-        default:
-            fprintf(stderr, "Unknown node type\n");
+    case NODE_COMMAND:
+        print_command_node(node);
+        break;
+    case NODE_LIST:
+        print_list_node(node);
+        break;
+    case NODE_IF:
+        print_if_node(node);
+        break;
+    default:
+        fprintf(stderr, "Unknown node type\n");
     }
 }
 
@@ -96,7 +96,8 @@ int main(int argc, char **argv)
     if (ast->type == NODE_LIST)
     {
         printf("\n");
-        printf("%ld (/%ld)\n", ast->data.ast_list.len, ast->data.ast_list.capacity);
+        printf("%ld (/%ld)\n", ast->data.ast_list.len,
+               ast->data.ast_list.capacity);
         print_node(ast);
     }
 

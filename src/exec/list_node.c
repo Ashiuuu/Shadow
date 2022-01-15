@@ -7,7 +7,8 @@ struct ast_node *new_list_node()
     ret->type = NODE_LIST;
     ret->data.ast_list.capacity = 10;
     ret->data.ast_list.len = 0;
-    ret->data.ast_list.nodes = xcalloc(ret->data.ast_list.capacity, sizeof(struct ast_node *));
+    ret->data.ast_list.nodes =
+        xcalloc(ret->data.ast_list.capacity, sizeof(struct ast_node *));
 
     return ret;
 }
@@ -23,7 +24,9 @@ void list_node_push(struct ast_node *node, struct ast_node *added)
     if (node->data.ast_list.len == node->data.ast_list.capacity)
     {
         node->data.ast_list.capacity *= 2;
-        node->data.ast_list.nodes = xrealloc(node->data.ast_list.nodes, sizeof(struct ast_node *) * node->data.ast_list.capacity);
+        node->data.ast_list.nodes =
+            xrealloc(node->data.ast_list.nodes,
+                     sizeof(struct ast_node *) * node->data.ast_list.capacity);
     }
     node->data.ast_list.nodes[node->data.ast_list.len] = added;
     node->data.ast_list.len++;

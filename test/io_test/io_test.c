@@ -1,4 +1,5 @@
 #include <criterion/criterion.h>
+
 #include "io.h"
 
 /*Test(Io_Test, No_String)
@@ -37,7 +38,7 @@ Test(io, word)
 {
     struct INPUT *input = input_from_string("test");
     char *string = "test";
-    
+
     for (size_t i = 0; i < 4; ++i)
     {
         cr_assert_eq(input->current_char, string[i]);
@@ -57,10 +58,11 @@ Test(io, double_eof)
     pop_char(input);
 
     cr_assert_eq(input->current_char, EOF);
-    cr_assert_eq(input->next_char, EOF);  
+    cr_assert_eq(input->next_char, EOF);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     struct criterion_test_set *tests = criterion_initialize();
 
     int result = 0;

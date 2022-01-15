@@ -52,7 +52,7 @@ size_t array_len(char **arr)
 
 void write_file(char *content)
 {
-    int fd = open("tree.dot", O_CREAT | O_APPEND | O_RDWR, 0777);                        
+    int fd = open("tree.dot", O_CREAT | O_APPEND | O_RDWR, 0777);
     write(fd, content, strlen(content));
     close(fd);
 }

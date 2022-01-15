@@ -1,7 +1,8 @@
 #include <criterion/criterion.h>
 #include <stdio.h>
-#include "lexer.h"
+
 #include "io.h"
+#include "lexer.h"
 
 Test(lexer, eof_token)
 {
@@ -57,9 +58,8 @@ Test(lexer, two_words)
     cr_assert_eq(tok->type, TOKEN_EOF);
     cr_assert_null(tok->value);
 
-    lexer_free(lexer); 
+    lexer_free(lexer);
 }
-
 
 Test(lexer, small_words)
 {
@@ -101,7 +101,7 @@ Test(lexer, small_words)
     cr_assert_eq(tok->type, TOKEN_EOF);
     cr_assert_null(tok->value);
 
-    lexer_free(lexer); 
+    lexer_free(lexer);
 }
 
 Test(lexer, keyword)
@@ -139,7 +139,7 @@ Test(lexer, semicol)
     cr_assert_eq(tok->type, TOKEN_EOF);
     cr_assert_null(tok->value);
 
-    lexer_free(lexer); 
+    lexer_free(lexer);
 }
 
 Test(lexer, double_semicol)
@@ -187,5 +187,5 @@ Test(lexer, double_semicol)
     cr_assert_eq(tok->type, TOKEN_EOF);
     cr_assert_null(tok->value);
 
-    lexer_free(lexer); 
+    lexer_free(lexer);
 }

@@ -1,7 +1,8 @@
 #include <criterion/criterion.h>
 #include <stdio.h>
-#include "lexer.h"
+
 #include "io.h"
+#include "lexer.h"
 
 Test(keyword_lexer, new_lexer)
 {
@@ -80,7 +81,8 @@ Test(keyword_lexer, wrong_input)
 
 Test(lexer, without_semicol)
 {
-    struct INPUT *input = input_from_string("if echo a then echo b else echo c");
+    struct INPUT *input =
+        input_from_string("if echo a then echo b else echo c");
     struct lexer *lexer = lexer_new(input);
 
     struct token *tok = lexer_peek(lexer);
@@ -138,7 +140,8 @@ Test(lexer, without_semicol)
 
 Test(lexer, with_semicol)
 {
-    struct INPUT *input = input_from_string("if echo a; then echo b; else echo c");
+    struct INPUT *input =
+        input_from_string("if echo a; then echo b; else echo c");
     struct lexer *lexer = lexer_new(input);
 
     struct token *tok = lexer_peek(lexer);

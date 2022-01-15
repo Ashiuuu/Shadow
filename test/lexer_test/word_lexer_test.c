@@ -1,7 +1,8 @@
 #include <criterion/criterion.h>
 #include <stdio.h>
-#include "lexer.h"
+
 #include "io.h"
+#include "lexer.h"
 
 Test(word_lexer, new_lexer)
 {

@@ -25,7 +25,8 @@ void reset_keyword_lexer(struct general_lexer *lexer)
     lexer->data.keyword_lexer.pos = 0;
 }
 
-enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input)
+enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer,
+                                            struct INPUT *input)
 {
     if (lexer->type != KEYWORD_LEXER)
     {
@@ -39,9 +40,12 @@ enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct 
         return LEXER_ERROR;
     }
 
-    if (lexer->data.keyword_lexer.pos >= lexer->data.keyword_lexer.word_len) // we already went through the last char
+    if (lexer->data.keyword_lexer.pos
+        >= lexer->data.keyword_lexer
+               .word_len) // we already went through the last char
     {
-        if (input->current_char == ' ' || input->current_char == ';' || input->current_char == EOF) // punctuation
+        if (input->current_char == ' ' || input->current_char == ';'
+            || input->current_char == EOF) // punctuation
         {
             lexer->state = LEXER_ACCEPT;
             return LEXER_ACCEPT;
@@ -50,7 +54,8 @@ enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer, struct 
         return LEXER_ERROR;
     }
 
-    if (lexer->data.keyword_lexer.keyword[lexer->data.keyword_lexer.pos] == input->current_char)
+    if (lexer->data.keyword_lexer.keyword[lexer->data.keyword_lexer.pos]
+        == input->current_char)
     {
         // valid character, simply continue
         lexer->data.keyword_lexer.pos++;

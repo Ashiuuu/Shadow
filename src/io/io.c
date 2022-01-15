@@ -54,7 +54,6 @@ void free_input(struct INPUT *input)
     free(input);
 }
 
-
 FILE *string_to_stream(char *buffer)
 {
     FILE *stream = fmemopen(buffer, strlen(buffer), "r");
@@ -73,7 +72,7 @@ FILE *open_file(char *filename)
     if (file == NULL)
     {
         fprintf(stderr, "Unable to open file %s\n", filename);
-        abort();   
+        abort();
     }
 
     return file;

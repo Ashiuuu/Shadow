@@ -12,7 +12,8 @@ int echo(struct ast_node *node)
         return -1;
     }
     struct ast_node_command command = node->data.ast_command;
-    if (node->data.ast_command.args != NULL && strcmp(node->data.ast_command.args[0], "echo") != 0)
+    if (node->data.ast_command.args != NULL
+        && strcmp(node->data.ast_command.args[0], "echo") != 0)
     {
         fprintf(stderr, "trying to call echo on non echo command node\n");
         return -1;
@@ -27,22 +28,22 @@ int echo(struct ast_node *node)
     size_t args_len = array_len(command.args);
     optind = 1;
     opt = getopt(args_len, command.args, "ne");
-    while(opt != -1)
+    while (opt != -1)
     {
-        switch(opt)
+        switch (opt)
         {
-            case 'n':
-                nflag = 1;
-                break;
-            case 'e':
-                eflag = 1;
-                break;
-            case '?':
-                printf("echo: Unknown option character\n");
-                break;
-            default:
-                fprintf(stderr, "error while parsing echo options\n");
-                abort();
+        case 'n':
+            nflag = 1;
+            break;
+        case 'e':
+            eflag = 1;
+            break;
+        case '?':
+            printf("echo: Unknown option character\n");
+            break;
+        default:
+            fprintf(stderr, "error while parsing echo options\n");
+            abort();
         }
         opt = getopt(args_len, command.args, "ne");
     }

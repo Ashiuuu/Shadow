@@ -1,4 +1,5 @@
 #include "tokens.h"
+
 #include "utils.h"
 
 struct token *token_new(enum token_type type)

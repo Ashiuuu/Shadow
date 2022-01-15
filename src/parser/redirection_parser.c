@@ -8,10 +8,11 @@
 // | [IONUMBER] '>>' WORD
 // | [IONUMBER] '<>' WORD
 // | [IONUMBER] '>|' WORD
-enum parser_status parse_redirection(struct redirection **red, struct lexer *input)
+enum parser_status parse_redirection(struct redirection **red,
+                                     struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
-    
+
     char *source_s = NULL;
     char *rep_s = NULL;
 
@@ -19,7 +20,7 @@ enum parser_status parse_redirection(struct redirection **red, struct lexer *inp
     {
         rep_s = strdup(tok->value);
         tok = lexer_pop(input);
-        
+
         if (!is_redirec_token(tok->type))
         {
             // shouldn't happen the way io_number tokens are recognized

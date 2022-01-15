@@ -1,15 +1,15 @@
 #include <stdio.h>
 
-#include "tokens.h"
-#include "lexer.h"
 #include "io.h"
+#include "lexer.h"
+#include "tokens.h"
 
 int main(int argc, char **argv)
 {
     if (argc != 2)
     {
         printf("Usage: token_printer [COMMAND]");
-        return 1;   
+        return 1;
     }
 
     /*
@@ -28,13 +28,14 @@ int main(int argc, char **argv)
     TOKEN_FRED_IN,      // < token
     TOKEN_FDRED_OUT,    // >& token (F(ile)D(escriptor) RED(irection) OUT)
     TOKEN_FDRED_IN,     // <& token
-    TOKEN_FRED_APP,     // >> token (F(file) RED(irection) APP(end), redirect to file and append to it)
-    TOKEN_BIRED,        // <> token, no idea what this is used for but well
-    TOKEN_FRED_FORCE,   // >| token, force truncating output file (search google for set -o)
+    TOKEN_FRED_APP,     // >> token (F(file) RED(irection) APP(end), redirect to
+    file and append to it) TOKEN_BIRED,        // <> token, no idea what this is
+    used for but well TOKEN_FRED_FORCE,   // >| token, force truncating output
+    file (search google for set -o)
     */
 
-    char *tab[] = { 
-        [TOKEN_ERROR] = "ERROR", 
+    char *tab[] = {
+        [TOKEN_ERROR] = "ERROR",
         [TOKEN_WORDS] = "WORD",
         [TOKEN_IO_NUMBER] = "IO_NUMBER",
         [TOKEN_EOF] = "EOF",
@@ -69,7 +70,7 @@ int main(int argc, char **argv)
         if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER)
             printf(" (%s)", token->value);
         printf("\n");
-    } 
+    }
 
     return 0;
 }
