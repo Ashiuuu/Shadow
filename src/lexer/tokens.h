@@ -25,6 +25,9 @@ enum token_type
     TOKEN_FRED_APP,     // >> token (F(file) RED(irection) APP(end), redirect to file and append to it)
     TOKEN_BIRED,        // <> token, no idea what this is used for but well
     TOKEN_FRED_FORCE,   // >| token, force truncating output file (search google for set -o)
+    TOKEN_WHILE,        // while keyword
+    TOKEN_DO,
+    TOKEN_DONE,
 };
 
 struct token

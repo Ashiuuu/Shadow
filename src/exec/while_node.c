@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "utils.h"
 
 struct ast_node *new_while_node()
 {

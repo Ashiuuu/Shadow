@@ -70,7 +70,6 @@ int exec_list_node(struct ast_node *node)
         for (size_t i = 0; i < node->data.ast_list.len; ++i)
         {
             status = exec_node(node->data.ast_list.nodes[i]);
-            node->data.ast_list.nodes[i] = NULL;
         }
     }
     return status;

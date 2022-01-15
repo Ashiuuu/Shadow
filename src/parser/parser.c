@@ -216,6 +216,10 @@ enum parser_status parse_shell_command(struct ast_node **ast,
     {
         return parse_rule_if(ast, input);
     }
+    if (tok->type == TOKEN_WHILE)
+    {
+        return parse_rule_while(ast, input);
+    }
 
     // printf(stderr, "Unable to parse shell command\n");
     return PARSER_ERROR;

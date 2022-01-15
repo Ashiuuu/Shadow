@@ -32,6 +32,7 @@ parser_files = [
     'src/parser/parser.c',
     'src/parser/if_else_parser.c',
     'src/parser/redirection_parser.c',
+    'src/parser/while_parser.c',
 ]
 
 exec_files = [
@@ -41,6 +42,7 @@ exec_files = [
     'src/exec/echo.c',
     'src/exec/if_node.c',
     'src/exec/redirec_nodes.c',
+    'src/exec/while_node.c',
 ]
 
 printer_files = [

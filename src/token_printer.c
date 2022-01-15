@@ -53,6 +53,9 @@ int main(int argc, char **argv)
         [TOKEN_FRED_APP] = ">>",
         [TOKEN_BIRED] = "<>",
         [TOKEN_FRED_FORCE] = ">|",
+        [TOKEN_WHILE] = "while",
+        [TOKEN_DO] = "do",
+        [TOKEN_DONE] = "done",
     };
 
     struct INPUT *input = input_from_string(argv[1]);
