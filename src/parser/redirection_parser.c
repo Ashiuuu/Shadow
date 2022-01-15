@@ -44,6 +44,8 @@ enum parser_status parse_redirection(struct redirection **red,
     source_s = strdup(tok->value);
 
     *red = new_redirection(source_s, rep_s, type);
+    free(source_s);
+    free(rep_s);
     lexer_pop(input);
 
     return PARSER_OK;
