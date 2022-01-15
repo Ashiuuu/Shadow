@@ -2,7 +2,7 @@
 
 #include "utils.h"
 
-#define NB_OF_KEYWORDS 8
+#define NB_OF_KEYWORDS 9
 
 int is_alpha(char c)
 {
@@ -28,9 +28,9 @@ struct lexer *lexer_new(struct INPUT *input_stream)
         abort();
     }
 
-    char *keyword_list[NB_OF_KEYWORDS + 1] = { "if", "else", "elif", "then", "fi", "while", "do", "done", NULL };
+    char *keyword_list[NB_OF_KEYWORDS + 1] = { "if", "else", "elif", "then", "fi", "while", "until", "do", "done", NULL };
     enum token_type type_list[NB_OF_KEYWORDS] = { TOKEN_IF, TOKEN_ELSE, TOKEN_ELIF,
-                                     TOKEN_THEN, TOKEN_FI, TOKEN_WHILE, TOKEN_DO, TOKEN_DONE };
+                                     TOKEN_THEN, TOKEN_FI, TOKEN_WHILE, TOKEN_UNTIL, TOKEN_DO, TOKEN_DONE };
 
     ret->input = input_stream;
     ret->current_token = NULL;

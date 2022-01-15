@@ -26,6 +26,7 @@ enum token_type
     TOKEN_BIRED,        // <> token, no idea what this is used for but well
     TOKEN_FRED_FORCE,   // >| token, force truncating output file (search google for set -o)
     TOKEN_WHILE,        // while keyword
+    TOKEN_UNTIL,
     TOKEN_DO,
     TOKEN_DONE,
 };

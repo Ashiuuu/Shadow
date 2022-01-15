@@ -54,6 +54,7 @@ int main(int argc, char **argv)
         [TOKEN_BIRED] = "<>",
         [TOKEN_FRED_FORCE] = ">|",
         [TOKEN_WHILE] = "while",
+        [TOKEN_UNTIL] = "until",
         [TOKEN_DO] = "do",
         [TOKEN_DONE] = "done",
     };

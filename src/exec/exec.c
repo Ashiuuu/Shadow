@@ -23,6 +23,9 @@ void free_node(struct ast_node *node)
     case NODE_WHILE:
         free_while_node(node);
         break;
+    case NODE_UNTIL:
+        free_until_node(node);
+        break;
     default:
         fprintf(stderr, "unknown node type (free_node)\n");
     }
@@ -42,6 +45,8 @@ int exec_node(struct ast_node *node)
         return exec_redirec_list_node(node);
     case NODE_WHILE:
         return exec_while_node(node);
+    case NODE_UNTIL:
+        return exec_until_node(node);
     default:
         fprintf(stderr, "unknown node type (exec_node)\n");
         return -1;

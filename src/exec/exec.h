@@ -32,6 +32,12 @@ struct ast_node_while
     struct ast_node *body_list;
 };
 
+struct ast_node_until
+{
+    struct ast_node *condition;
+    struct ast_node *body_list;
+};
+
 struct redirection
 {
     int source_fd; // file descriptor of the source
@@ -53,6 +59,7 @@ enum node_type {
     NODE_IF,
     NODE_REDIREC_LIST,
     NODE_WHILE,
+    NODE_UNTIL,
 };
 
 union ast_data
@@ -62,6 +69,7 @@ union ast_data
     struct ast_node_if ast_if;
     struct ast_node_redirec_list ast_redirec_list;
     struct ast_node_while ast_while;
+    struct ast_node_until ast_until;
 };
 
 struct ast_node
@@ -105,6 +113,11 @@ int exec_redirec_list_node(struct ast_node *node);
 struct ast_node *new_while_node();
 void free_while_node(struct ast_node *node);
 int exec_while_node(struct ast_node *node);
+
+// until loop
+struct ast_node *new_until_node();
+void free_until_node(struct ast_node *node);
+int exec_until_node(struct ast_node *node);
 
 // built-ins
 int echo(struct ast_node *node);
