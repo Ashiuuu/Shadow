@@ -8,3 +8,4 @@ test_suite
 build/
 pytest-env/
 test/functional/__pycache__/
+tess/
