@@ -53,6 +53,13 @@ struct ast_node_redirec_list
     struct ast_node *child;         // node concerned by the redirection, swap back to normal after executing
 };
 
+struct ast_node_pipe
+{
+    struct ast_node *left;
+    struct ast_node *right;
+    int negated;
+};
+
 enum node_type {
     NODE_COMMAND,
     NODE_LIST,
@@ -60,6 +67,7 @@ enum node_type {
     NODE_REDIREC_LIST,
     NODE_WHILE,
     NODE_UNTIL,
+    NODE_PIPE,
 };
 
 union ast_data
@@ -70,6 +78,7 @@ union ast_data
     struct ast_node_redirec_list ast_redirec_list;
     struct ast_node_while ast_while;
     struct ast_node_until ast_until;
+    struct ast_node_pipe ast_pipe;
 };
 
 struct ast_node
@@ -118,6 +127,11 @@ int exec_while_node(struct ast_node *node);
 struct ast_node *new_until_node();
 void free_until_node(struct ast_node *node);
 int exec_until_node(struct ast_node *node);
+
+// pipe
+struct ast_node *new_pipe_node();
+void free_pipe_node(struct ast_node *node);
+int exec_pipe_node(struct ast_node *node);
 
 // built-ins
 int echo(struct ast_node *node);

@@ -57,6 +57,8 @@ int main(int argc, char **argv)
         [TOKEN_UNTIL] = "until",
         [TOKEN_DO] = "do",
         [TOKEN_DONE] = "done",
+        [TOKEN_PIPE] = "|",
+        [TOKEN_PIPE_NEG] = "!",
     };
 
     struct INPUT *input = input_from_string(argv[1]);

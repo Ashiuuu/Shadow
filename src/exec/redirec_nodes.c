@@ -138,6 +138,7 @@ int undo_redirection(struct redirection *r)
         fprintf(stderr, "restoring fd backup failed\n");
         return -1;
     }
+    close(r->duped_fd);
 
     return 0;
 }

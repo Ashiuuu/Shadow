@@ -190,6 +190,12 @@ struct token *read_until_new_token(struct lexer *lexer)
     case '\n':
         pop_char(lexer->input);
         return token_swap(lexer, token_new(TOKEN_EOL));
+    case '|':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_PIPE));
+    case '!':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_PIPE_NEG));
     case '>':
         pop_char(lexer->input);
         switch (lexer->input->current_char)
@@ -277,6 +283,12 @@ struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
     case '\n':
         pop_char(lexer->input);
         return token_swap(lexer, token_new(TOKEN_EOL));
+    case '|':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_PIPE));
+    case '!':
+        pop_char(lexer->input);
+        return token_swap(lexer, token_new(TOKEN_PIPE_NEG));
     case '>':
         pop_char(lexer->input);
         switch (lexer->input->current_char)
@@ -318,7 +330,7 @@ struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
                 general_lexer_consume_char(lexer->lexer_list[i], lexer->input);
             if (state == LEXER_ERROR)
                 errors++;
-            if (errors == lexer->list_len)
+            if (errors == lexer->list_len - NB_OF_KEYWORDS)
             {
                 fprintf(stderr,
                         "[FATAL] All lexers encountered error, no pattern "
