@@ -6,3 +6,6 @@ test_suite
 *.dot
 .DS_Store
 build/
+pytest-env/
+test/functional/__pycache__/
+tess/
