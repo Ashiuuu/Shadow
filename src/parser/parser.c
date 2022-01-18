@@ -175,6 +175,9 @@ enum parser_status parser_simple_command(struct ast_node **ast,
 
     if (len != 0)
     {
+        capacity = len + 1;
+        args = xrealloc(args, sizeof(char *) * capacity);
+        args[len] = NULL;
         c = new_command_node(args);
     }
 
