@@ -8,6 +8,12 @@ def test_echo():
     assert result == 'Hello\n'
 
 @pytest.mark.timeout(2)
+def test_echo_bis():
+    result = subprocess.run(["./42sh", "-c", "echo Hello"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    model = subprocess.run(["bash", "--posix","-c", "echo Hello"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    assert result == model
+
+@pytest.mark.timeout(2)
 def test_echo_middle():
     result = os.popen("./42sh -c \"echo Hello Friend\"").read()
     assert result == 'Hello Friend\n'
@@ -67,6 +73,11 @@ def test_echo_param_e_long_quotes():
     assert result == 'Hello\nFriend\n'
 
 @pytest.mark.timeout(2)
-def test_echo_param_ie_long_double_quotes():
+def test_echo_param_e_long_double_quotes():
     result = os.popen("./42sh -c \"echo -e \"Hello Friend\"\"").read()
     assert result == 'Hello\nFriend\n'
+
+@pytest.mark.timeout(2)
+def test_echo_param_n():
+    result = os.popen("./42sh -c \"echo -n \'Hello Friend\'\"").read()
+    assert result == 'Hello Friend'
