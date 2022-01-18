@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct INPUT
 {
@@ -17,7 +17,6 @@ struct INPUT *input_from_stdin();
 struct INPUT *input_from_file(char *filename);
 char pop_char(struct INPUT *input);
 void free_input(struct INPUT *input);
-
 
 FILE *string_to_stream(char *buffer);
 FILE *open_file(char *filename);

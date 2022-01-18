@@ -1,11 +1,11 @@
 #pragma once
 
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-#include "utils.h"
 #include "exec.h"
+#include "utils.h"
 
 void print_ast(struct ast_node *node, char *type);
 void print_ast_command(struct ast_node_command ast_command);

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "tokens.h"
 
@@ -47,13 +47,16 @@ struct redirection
 
 struct ast_node_redirec_list
 {
-    struct redirection **redirections; // list of redirections, ex: "2>&3 1>&2 3>&1" (swaps stderr and stdout)
+    struct redirection **redirections; // list of redirections, ex: "2>&3 1>&2
+                                       // 3>&1" (swaps stderr and stdout)
     size_t capacity;
     size_t len;
-    struct ast_node *child;         // node concerned by the redirection, swap back to normal after executing
+    struct ast_node *child; // node concerned by the redirection, swap back to
+                            // normal after executing
 };
 
-enum node_type {
+enum node_type
+{
     NODE_COMMAND,
     NODE_LIST,
     NODE_IF,
@@ -99,7 +102,8 @@ void free_if_node(struct ast_node *node);
 int exec_if_node(struct ast_node *node);
 
 // redirections
-struct redirection *new_redirection(char *source, char *replaced, enum token_type type);
+struct redirection *new_redirection(char *source, char *replaced,
+                                    enum token_type type);
 void free_redirection(struct redirection *r);
 int execute_redirection(struct redirection *r);
 int undo_redirection(struct redirection *r);
