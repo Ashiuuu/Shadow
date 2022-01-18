@@ -1,5 +1,12 @@
 #include "lexer.h"
 
+int is_accepted_char(struct INPUT *input)
+{
+    char c = input->current_char;
+    //char n = input->next_char;
+    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',';
+}
+
 struct general_lexer *new_word_lexer()
 {
     struct general_lexer *ret = xmalloc(sizeof(struct general_lexer));
@@ -58,11 +65,20 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
     if (lexer->state == LEXER_ERROR)
         return LEXER_ERROR;
 
-    if (input->current_char == '\\')
-        pop_char(input);
+    int accepted = is_accepted_char(input);
 
-    if (is_alphanum(input->current_char) || input->current_char == '-'
-        || input->current_char == '.' || input->current_char == '/' || input->current_char == ',')
+    if (input->current_char == '\\')
+    {
+        pop_char(input);
+        switch (input->current_char)
+        {
+            case '\'':
+                accepted = 1;
+                break;
+        }
+    }
+
+    if (accepted)
     {
         // valid character
         if (lexer->data.word_lexer.len == lexer->data.word_lexer.capacity)
