@@ -68,7 +68,8 @@ int exec_command_node(struct ast_node *node)
         execvp(node->data.ast_command.args[0], node->data.ast_command.args);
         fprintf(stderr, "Could not execute %s\n",
                 node->data.ast_command.args[0]);
-        return -1;
+        exit(-1);
+        //return -1;
     }
     else
     {

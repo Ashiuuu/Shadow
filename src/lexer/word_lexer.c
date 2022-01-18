@@ -62,7 +62,7 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         pop_char(input);
 
     if (is_alphanum(input->current_char) || input->current_char == '-'
-        || input->current_char == '.')
+        || input->current_char == '.' || input->current_char == '/')
     {
         // valid character
         if (lexer->data.word_lexer.len == lexer->data.word_lexer.capacity)

@@ -72,7 +72,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
         {
             // stop redirection if started
             if (tok->type == TOKEN_SEMICOL)
-                lexer_pop(input);
+                tok = lexer_pop(input);
 
             struct ast_node *new_com = NULL;
             stat = parse_pipeline(&new_com, input);
@@ -81,7 +81,8 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
                 // list ends here
                 /*fprintf(stderr, "[FATAL] no command found in list??
                 (loop)\n"); free_node(*ast); return PARSER_ERROR;*/
-                return PARSER_OK;
+                //return PARSER_OK;
+                continue;
             }
             list_node_push(*ast, new_com);
             tok = lexer_peek(input);

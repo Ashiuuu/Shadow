@@ -152,12 +152,12 @@ Test(lexer, double_semicol)
     cr_assert_eq(tok->type, TOKEN_WORDS);
     cr_assert_str_eq(tok->value, "echo");
 
-    tok = lexer_pop(lexer);
+    tok = lexer_pop_ignore_keyword(lexer);
 
     cr_assert_eq(tok->type, TOKEN_WORDS);
     cr_assert_str_eq(tok->value, "test");
 
-    tok = lexer_pop(lexer);
+    tok = lexer_pop_ignore_keyword(lexer);
 
     cr_assert_eq(tok->type, TOKEN_SEMICOL);
     cr_assert_null(tok->value);
@@ -167,17 +167,17 @@ Test(lexer, double_semicol)
     cr_assert_eq(tok->type, TOKEN_WORDS);
     cr_assert_str_eq(tok->value, "echo");
 
-    tok = lexer_pop(lexer);
+    tok = lexer_pop_ignore_keyword(lexer);
 
     cr_assert_eq(tok->type, TOKEN_WORDS);
     cr_assert_str_eq(tok->value, "ah");
 
-    tok = lexer_pop(lexer);
+    tok = lexer_pop_ignore_keyword(lexer); // parser behavior
 
     cr_assert_eq(tok->type, TOKEN_WORDS);
     cr_assert_str_eq(tok->value, "if");
 
-    tok = lexer_pop(lexer);
+    tok = lexer_pop_ignore_keyword(lexer);
 
     cr_assert_eq(tok->type, TOKEN_SEMICOL);
     cr_assert_null(tok->value);

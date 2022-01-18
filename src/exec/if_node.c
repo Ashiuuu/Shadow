@@ -60,8 +60,7 @@ int exec_if_node(struct ast_node *node)
             int status = exec_node(node->data.ast_if.elif);
             return status;
         }
-        // if IF was not true and no further if, return 0? -1?
-        return -1;
+        return 0;
     }
     // else case
     int status = exec_node(node->data.ast_if.body_list);
