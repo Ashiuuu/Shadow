@@ -151,6 +151,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 for (size_t i = 0; i < len; ++i)
                     free(args[i]);
                 free(args);
+                free_node(*ast);
                 return PARSER_ERROR;
             }
 

@@ -193,6 +193,7 @@ void free_redirec_list_node(struct ast_node *node)
     }
     if (node->data.ast_redirec_list.child != NULL)
         free_node(node->data.ast_redirec_list.child);
+    free(node);
 }
 
 void push_redirec_list_node(struct ast_node *node, struct redirection *add)
