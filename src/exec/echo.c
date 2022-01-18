@@ -4,18 +4,6 @@
 #include "exec.h"
 #include "utils.h"
 
-char *arg_to_str(char **args)
-{
-    printf("test\n");
-    for (size_t i = 1; args[i] != NULL; i++)
-    {
-        printf("%s", args[i]);
-        printf(" ");
-    }
-    printf("\n");
-    return "ta mere";
-}
-
 int echo(struct ast_node *node)
 {
     if (node->type != NODE_COMMAND)
@@ -59,7 +47,6 @@ int echo(struct ast_node *node)
         }
         opt = getopt(args_len, command.args, "ne");
     }
-    eflag = eflag;
 
     for (size_t i = optind; command.args[i] != NULL; i++)
     {
@@ -69,19 +56,17 @@ int echo(struct ast_node *node)
             for (size_t j = 0; string[j] != '\0'; ++j)
             {
                 printf("%c", string[j]);
-                // printf("  %d - ", string[j]);
-                // printf("%c\n", string[j]);
             }
+            if (command.args[i + 1] != NULL)
+                printf(" ");
         }
         else
         {
             printf("%s", string);
         }
-        if (nflag == 0)
-            printf("\n");
     }
-
-    //arg_to_str(command.args);
+    if (nflag == 0)
+        printf("\n");
 
     optind = optind_backup;
 
