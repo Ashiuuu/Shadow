@@ -4,6 +4,18 @@
 #include "exec.h"
 #include "utils.h"
 
+char *arg_to_str(char **args)
+{
+    printf("test\n");
+    for (size_t i = 1; args[i] != NULL; i++)
+    {
+        printf(args[i]);
+        printf(" ");
+    }
+    printf("\n");
+    return "ta mere";
+}
+
 int echo(struct ast_node *node)
 {
     if (node->type != NODE_COMMAND)
@@ -57,8 +69,8 @@ int echo(struct ast_node *node)
             for (size_t j = 0; string[j] != '\0'; ++j)
             {
                 printf("%c", string[j]);
-                /*printf("  %d - ", string[j]);
-                printf("%c\n", string[j]);*/
+                // printf("  %d - ", string[j]);
+                // printf("%c\n", string[j]);
             }
         }
         else
@@ -68,6 +80,8 @@ int echo(struct ast_node *node)
         if (nflag == 0)
             printf("\n");
     }
+
+    arg_to_str(command.args);
 
     optind = optind_backup;
 
