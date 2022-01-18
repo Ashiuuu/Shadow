@@ -79,9 +79,8 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
             if (stat == PARSER_ERROR)
             {
                 // list ends here
-                /*fprintf(stderr, "[FATAL] no command found in list?? (loop)\n");
-                free_node(*ast);
-                return PARSER_ERROR;*/
+                /*fprintf(stderr, "[FATAL] no command found in list??
+                (loop)\n"); free_node(*ast); return PARSER_ERROR;*/
                 return PARSER_OK;
             }
             list_node_push(*ast, new_com);

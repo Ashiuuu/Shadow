@@ -62,7 +62,8 @@ struct ast_node_pipe
     int negated;
 };
 
-enum node_type {
+enum node_type
+{
     NODE_COMMAND,
     NODE_LIST,
     NODE_IF,

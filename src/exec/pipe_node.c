@@ -81,7 +81,7 @@ int exec_pipe_node(struct ast_node *node)
             close(fds[0]);
             close(fds[1]);
 
-            exit(exec_node(node->data.ast_pipe.left));   
+            exit(exec_node(node->data.ast_pipe.left));
         }
     }
     else // parent process

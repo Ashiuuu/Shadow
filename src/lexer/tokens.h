@@ -31,8 +31,8 @@ enum token_type
     TOKEN_UNTIL,
     TOKEN_DO,
     TOKEN_DONE,
-    TOKEN_PIPE,         // | token
-    TOKEN_PIPE_NEG,     // ! token, used for pipe negation
+    TOKEN_PIPE, // | token
+    TOKEN_PIPE_NEG, // ! token, used for pipe negation
 };
 
 struct token
