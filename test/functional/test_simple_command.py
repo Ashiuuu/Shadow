@@ -37,9 +37,8 @@ def test_touch():
 
 @pytest.mark.timeout(3)
 def test_ls():
-    os.popen("rm -r tess")
     os.popen("mkdir tess")
     os.popen("touch tess/bite")
-    result = os.popen("./42sh -c \"ls tess\"").read()
+    result = os.popen("./42sh -c \"ls tess/\"").read()
     assert result == 'bite\n'
     os.popen("rm -r tess")
