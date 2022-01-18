@@ -31,7 +31,7 @@ def test_echo_long():
 @pytest.mark.timeout(2)
 def test_echo_long_point():
     result = os.popen("./42sh -c \"echo Hello My Friend. It is a beautifull day to die.\"").read()
-    assert result == 'Hello\nMy\nFriend.\nIt\nis\na\nbeautifull\nday\nto\ndie.\n'
+    assert result == 'Hello\nMy\nFriend.\nIt\'is\na\nbeautifull\nday\nto\ndie.\n'
 
 # apostrophe casse tout
 @pytest.mark.timeout(2)
