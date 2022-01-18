@@ -23,32 +23,8 @@ int main(int argc, char *argv[])
 {
     if (argc == 1)
     {
-        //printf("not implemented yet");
-        /*
-        while (1)
-        {
-            char *ex = "exit";
-            char *cmdline = xcalloc(0, 16);
-            char str[16];
-            printf("42sh$ ");
-            while(fgets(str, sizeof(str), stdin) != NULL) 
-            {
-                if (*str == *ex)
-                    return 0;
-                //when new line --> exec cmdline
-                strcat(cmdline, str);
-                if (end_with_n(cmdline))
-                {
-                    printf("exec: %s\n", cmdline);
-                    cmdline = xcalloc(0, 16);
-                }
-            }
-            printf("fdp : %s\n", cmdline);
-        }*/
-        
         struct ast_node *ast = NULL;
         char *ex = "exit";
-        //char *cmdline = xcalloc(0, );
         char *cmdline = xcalloc(0,2);
         printf("42sh$ ");
         char c;
