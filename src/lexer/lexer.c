@@ -159,6 +159,15 @@ struct token *token_swap(struct lexer *lexer, struct token *new_token)
     return lexer->current_token;
 }
 
+void true_lexer_reset(struct lexer *lexer)
+{
+    if (lexer->current_token != NULL)
+    {
+        token_free(lexer->current_token);
+        lexer->current_token = NULL;
+    }
+}
+
 struct token *lexer_peek(struct lexer *lexer)
 {
     if (lexer->current_token == NULL)

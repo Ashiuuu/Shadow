@@ -123,6 +123,7 @@ void reset_lexer(struct general_lexer *lexer);
 struct token *read_until_new_token(struct lexer *lexer);
 struct token *read_until_new_token_ignore_keywords(struct lexer *lexer);
 struct token *token_swap(struct lexer *lexer, struct token *new_token);
+void true_lexer_reset(struct lexer *lexer);
 struct token *lexer_peek(struct lexer *lexer);
 struct token *lexer_pop(struct lexer *lexer);
 struct token *lexer_pop_ignore_keyword(struct lexer *lexer);
