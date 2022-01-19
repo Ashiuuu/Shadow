@@ -11,6 +11,10 @@ project(
 cflags = ['-D_GNU_SOURCE', '-D_POSIX_C_SOURCE=200809L']
 add_project_arguments(cflags, language: 'c')
 
+ldlibs = ['-lasan']
+add_project_link_arguments(ldlibs, language: 'c')
+
+
 incdirs = [
     include_directories('src/exec'),
     include_directories('src/io'),
