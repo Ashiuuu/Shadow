@@ -3,7 +3,7 @@
 int is_accepted_char(struct INPUT *input)
 {
     char c = input->current_char;
-    //char n = input->next_char;
+    // char n = input->next_char;
     return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',';
 }
 
@@ -72,9 +72,9 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         pop_char(input);
         switch (input->current_char)
         {
-            case '\'':
-                accepted = 1;
-                break;
+        case '\'':
+            accepted = 1;
+            break;
         }
     }
 

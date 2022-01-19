@@ -59,7 +59,15 @@ printer_files = [
     'src/printer/printer.c',
 ]
 
-common = lexer_files + parser_files + exec_files + printer_files + [
+file_input_files = [
+    'src/script/file_input.c',
+]
+
+interactive_files = [
+    'src/interactive/interactive.c',
+]
+
+common = lexer_files + parser_files + exec_files + printer_files + file_input_files + interactive_files + [
     'src/io/io.c',
     'src/utils/utils.c',
 ]

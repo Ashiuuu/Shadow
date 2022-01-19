@@ -38,7 +38,8 @@ int exec_and_or_node(struct ast_node *node)
         return -1;
     }
 
-    if (node->data.ast_and_or.left == NULL || node->data.ast_and_or.right == NULL)
+    if (node->data.ast_and_or.left == NULL
+        || node->data.ast_and_or.right == NULL)
     {
         fprintf(stderr, "and_or node missing left or right operand\n");
         return -1;
@@ -52,6 +53,6 @@ int exec_and_or_node(struct ast_node *node)
         status = exec_node(node->data.ast_and_or.right);
     else if (node->data.ast_and_or.type == TOKEN_OR && status != 0)
         status = exec_node(node->data.ast_and_or.right);
-    
+
     return status;
 }

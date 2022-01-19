@@ -13,6 +13,10 @@ clang-format -i src/printer/*.c;
 clang-format -i src/printer/*.h;
 clang-format -i src/utils/*.c;
 clang-format -i src/utils/*.h;
+clang-format -i src/interactive/*.c;
+clang-format -i src/interactive/*.h;
+clang-format -i src/script/*.c;
+clang-format -i src/script/*.h;
 
 clang-format -i test/*.c;
 clang-format -i test/io_test/*.c;

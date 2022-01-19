@@ -78,7 +78,7 @@ int exec_command_node(struct ast_node *node)
         fprintf(stderr, "Could not execute %s\n",
                 node->data.ast_command.args[0]);
         exit(-1);
-        //return -1;
+        // return -1;
     }
     else
     {
