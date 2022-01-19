@@ -35,13 +35,15 @@ int main(int argc, char *argv[])
             int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
             {
-                file_input();
+                file_input(argv[1]);
                 break;
             }
 
             switch (opt)
             {
             case 'c':
+                if (strcmp(optarg, "\0") == 0)
+                    return 0;
                 parse_input(&ast, lexer_new(input_from_string(optarg)));
                 if (printer == 1)
                 {

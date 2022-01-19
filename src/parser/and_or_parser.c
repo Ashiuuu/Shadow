@@ -5,7 +5,7 @@
 enum parser_status parse_and_or(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
-    
+
     struct ast_node *com = NULL;
     enum parser_status stat = parse_pipeline(&com, input);
     if (stat == PARSER_ERROR)
