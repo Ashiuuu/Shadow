@@ -86,8 +86,8 @@ def test_echo_param_e_long_quotes():
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_long_double_quotes_backslash():
-    result = os.popen("./42sh -c \"echo -e \"Hello\\nFriend\"\"").read()
-    model = subprocess.run(["bash", "--posix","-c", "echo -e \"Hello\\nFriend\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    result = os.popen("./42sh -c \"echo -e \'Hello\\nFriend\'\"").read()
+    model = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     assert result == model
 
 @pytest.mark.timeout(2)
