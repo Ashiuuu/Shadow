@@ -99,6 +99,9 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
 
+    if (tok->type == TOKEN_EOF || tok->type == TOKEN_EOL)
+        return PARSER_ERROR;
+
     if (tok->type == TOKEN_WORDS || tok->type == TOKEN_IO_NUMBER
         || is_redirec_token(tok->type))
     {
