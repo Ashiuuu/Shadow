@@ -32,6 +32,11 @@ int main(int argc, char *argv[])
         {
             if (c == '\n')
             {
+                if (strcmp(cmdline, "\0") == 0 || strcmp(cmdline, "") == 0)
+                {
+                    printf("42sh$ ");
+                    continue;
+                }
                 size = 0;
                 parse_input(&ast, lexer_new(input_from_string(cmdline)));
                 exec_node(ast);
