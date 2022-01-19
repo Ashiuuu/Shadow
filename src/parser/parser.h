@@ -31,6 +31,7 @@ enum parser_status parse_rule_until(struct ast_node **ast, struct lexer *input);
 enum parser_status parse_do_group(struct ast_node **ast, struct lexer *input);
 
 enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input);
+enum parser_status parse_and_or(struct ast_node **ast, struct lexer *input);
 
 enum parser_status parse_redirection(struct redirection **red,
                                      struct lexer *input);

@@ -56,7 +56,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
     *ast = new_list_node();
 
     struct ast_node *com = NULL;
-    enum parser_status stat = parse_pipeline(&com, input);
+    enum parser_status stat = parse_and_or(&com, input);
     if (stat == PARSER_ERROR)
     {
         // fprintf(stderr, "[FATAL] no command found in list??\n");
@@ -75,7 +75,7 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
                 tok = lexer_pop(input);
 
             struct ast_node *new_com = NULL;
-            stat = parse_pipeline(&new_com, input);
+            stat = parse_and_or(&new_com, input);
             if (stat == PARSER_ERROR)
             {
                 // list ends here

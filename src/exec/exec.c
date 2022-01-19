@@ -29,6 +29,9 @@ void free_node(struct ast_node *node)
     case NODE_PIPE:
         free_pipe_node(node);
         break;
+    case NODE_AND_OR:
+        free_and_or_node(node);
+        break;
     default:
         fprintf(stderr, "unknown node type (free_node)\n");
     }
@@ -52,6 +55,8 @@ int exec_node(struct ast_node *node)
         return exec_until_node(node);
     case NODE_PIPE:
         return exec_pipe_node(node);
+    case NODE_AND_OR:
+        return exec_and_or_node(node);
     default:
         fprintf(stderr, "unknown node type (exec_node)\n");
         return -1;

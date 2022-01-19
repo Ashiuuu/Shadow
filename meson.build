@@ -35,6 +35,7 @@ parser_files = [
     'src/parser/while_parser.c',
     'src/parser/until_parser.c',
     'src/parser/pipe_parser.c',
+    'src/parser/and_or_parser.c',
 ]
 
 exec_files = [
@@ -47,6 +48,7 @@ exec_files = [
     'src/exec/while_node.c',
     'src/exec/until_node.c',
     'src/exec/pipe_node.c',
+    'src/exec/and_or_node.c',
 ]
 
 printer_files = [

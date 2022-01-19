@@ -62,6 +62,13 @@ struct ast_node_pipe
     int negated;
 };
 
+struct ast_node_and_or
+{
+    struct ast_node *left;
+    struct ast_node *right;
+    enum token_type type;
+};
+
 enum node_type
 {
     NODE_COMMAND,
@@ -71,6 +78,7 @@ enum node_type
     NODE_WHILE,
     NODE_UNTIL,
     NODE_PIPE,
+    NODE_AND_OR,
 };
 
 union ast_data
@@ -82,6 +90,7 @@ union ast_data
     struct ast_node_while ast_while;
     struct ast_node_until ast_until;
     struct ast_node_pipe ast_pipe;
+    struct ast_node_and_or ast_and_or;
 };
 
 struct ast_node
@@ -136,6 +145,11 @@ int exec_until_node(struct ast_node *node);
 struct ast_node *new_pipe_node();
 void free_pipe_node(struct ast_node *node);
 int exec_pipe_node(struct ast_node *node);
+
+// and_or
+struct ast_node *new_and_or_node();
+void free_and_or_node(struct ast_node *node);
+int exec_and_or_node(struct ast_node *node);
 
 // built-ins
 int echo(struct ast_node *node);
