@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     if (argc == 1)
     {
         struct ast_node *ast = NULL;
-        char *cmdline = xcalloc(2,sizeof(char));
+        char *cmdline = xcalloc(0, sizeof(char));
         printf("42sh$ ");
         char c;
         int size = 0;
@@ -41,16 +41,15 @@ int main(int argc, char *argv[])
                 parse_input(&ast, lexer_new(input_from_string(cmdline)));
                 exec_node(ast);
                 free_node(ast);
-                free(cmdline);
-                cmdline = xcalloc(2, sizeof(char));
                 printf("42sh$ ");
                 continue;
             }
-            xrealloc(cmdline, (size + 2) * sizeof(char));
+            cmdline = xrealloc(cmdline, (size + 2));
             cmdline[size] = c;
             cmdline[size + 1] = '\0';
             size += 1;
-        } 
+        }
+        free(cmdline);
     }
     else
     {
