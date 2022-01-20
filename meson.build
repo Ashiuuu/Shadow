@@ -43,6 +43,7 @@ parser_files = [
     'src/parser/until_parser.c',
     'src/parser/pipe_parser.c',
     'src/parser/and_or_parser.c',
+    'src/parser/parse_command.c',
 ]
 
 exec_files = [
