@@ -15,7 +15,8 @@ enum token_type
     TOKEN_SEMICOL, // ; token
     TOKEN_EOL, // \n token
     TOKEN_EOF, // EOF token
-    TOKEN_SINGLEQUOTE, // ' token
+    TOKEN_SINGLEQUOTE, // ' token NOT USED
+    TOKEN_DOUBLEQUOTE, // " token NOT USED
     TOKEN_WORDS, // identifier token, ex : variable name
     TOKEN_IO_NUMBER, // numerals recognized only in redirection patterns
     TOKEN_FRED_OUT, // > token (read F(ile) RED(irection) OUT)

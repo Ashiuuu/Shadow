@@ -35,6 +35,14 @@ struct sing_quote_lexer
     int quote_flag; // used to know if we are between '' or not
 };
 
+struct double_quote_lexer
+{ // works exactly the same as single quotes for now
+    char *value;
+    size_t len;
+    size_t capacity;
+    int quote_flag;
+};
+
 struct io_number_lexer
 {
     char *value; // to be converted to int afterwards
@@ -55,6 +63,7 @@ enum lexer_type
     WORD_LEXER,
     KEYWORD_LEXER,
     SING_QUOTE_LEXER,
+    DOUBLE_QUOTE_LEXER,
     IO_NUMBER_LEXER,
 };
 
@@ -63,6 +72,7 @@ union lexer_data
     struct word_lexer word_lexer;
     struct keyword_lexer keyword_lexer;
     struct sing_quote_lexer sing_quote_lexer;
+    struct double_quote_lexer double_quote_lexer;
     struct io_number_lexer io_number_lexer;
 };
 
@@ -102,6 +112,14 @@ struct general_lexer *new_sing_quote_lexer();
 void free_sing_quote_lexer(struct general_lexer *lexer);
 void reset_sing_quote_lexer(struct general_lexer *lexer);
 enum lexer_state sing_quote_lexer_consume_char(struct general_lexer *lexer,
+                                               struct INPUT *input);
+
+// double quote lexer
+
+struct general_lexer *new_double_quote_lexer();
+void free_double_quote_lexer(struct general_lexer *lexer);
+void reset_double_quote_lexer(struct general_lexer *lexer);
+enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
                                                struct INPUT *input);
 
 // io number lexer

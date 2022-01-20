@@ -24,7 +24,7 @@ struct lexer *lexer_new(struct INPUT *input_stream)
     ret->input = input_stream;
     ret->current_token = NULL;
     ret->list_len = array_len(keyword_list)
-        + 3; // add [single quote lexer, io number lexer, word lexer]
+        + 4; // add [single quote lexer, double quote, io number lexer, word lexer]
     ret->lexer_list = xmalloc(sizeof(struct general_lexer *) * ret->list_len);
 
     size_t i;
@@ -34,6 +34,7 @@ struct lexer *lexer_new(struct INPUT *input_stream)
     }
 
     ret->lexer_list[i++] = new_sing_quote_lexer();
+    ret->lexer_list[i++] = new_double_quote_lexer();
     ret->lexer_list[i++] = new_io_number_lexer();
     ret->lexer_list[i++] = new_word_lexer();
 
