@@ -140,18 +140,33 @@ def test_echo_param_e_long():
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_long_quotes():
-    result = os.popen("./42sh -c \"echo -e \'Hello Friend\'\"").read()
+    result = subprocess.run(["./42sh","-c", "echo -e \'Hello Friend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     model = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello Friend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    
+    result_err = subprocess.run(["./42sh","-c", "echo -e \'Hello Friend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    model_err = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello Friend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    
     assert result == model
+    assert result_err == model_err
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_long_double_quotes_backslash():
     result = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    model = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    result = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    
+    model_err = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    model_err = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    
     assert result == model
+    assert result_err == model_err
 
 @pytest.mark.timeout(2)
 def test_echo_param_n():
-    result = os.popen("./42sh -c \"echo -n \'Hello Friend\'\"").read()
+    result = subprocess.run(["./42sh","-c", "echo -n \'Hello Friend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     model = subprocess.run(["bash", "--posix","-c", "echo -n \'Hello Friend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    
+    result_err = subprocess.run(["./42sh","-c", "echo -n \'Hello Friend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    model_err = subprocess.run(["bash", "--posix","-c", "echo -n \'Hello Friend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    
     assert result == model
+    assert result_err == model_err
