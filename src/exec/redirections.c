@@ -60,13 +60,6 @@ struct redirection *new_redirection(char *source, char *replaced,
     }
     else // neither a number or '-'
     {
-        if (type == TOKEN_FDRED_IN || type == TOKEN_FDRED_OUT) // >& or <&
-        {
-            fprintf(stderr,
-                    "must use valid file descriptor with >& or <&, not word "
-                    "[new redirection]\n");
-            return NULL;
-        }
         int flags = O_CREAT;
         if (type == TOKEN_FRED_OUT || type == TOKEN_FDRED_OUT
             || type == TOKEN_FRED_APP || type == TOKEN_FRED_FORCE)
