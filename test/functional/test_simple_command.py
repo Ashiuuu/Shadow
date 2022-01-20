@@ -42,5 +42,5 @@ def test_ls():
     os.popen("touch tess/bite")
     result = os.popen("echo $?").read()
     result = os.popen("./42sh -c \"ls tess/\"").read()
-    assert result == 'bite\n'
     os.popen("rm -r tess")
+    assert result == 'bite\n'
