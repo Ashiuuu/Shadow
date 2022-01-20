@@ -62,7 +62,28 @@ int echo(struct ast_node *node)
         }
         else
         {
-            printf("%s", string);
+            for (size_t k = 0; string[k] != '\0'; ++k)
+            {
+                if (string[k] == '\\')
+                {
+                    switch (string[k + 1])
+                    {
+                    case 'n':
+                        printf("\n");
+                        break;
+                    case 't':
+                        printf("\t");
+                        break;
+                    default:
+                        printf("%c", string[k + 1]);
+                    }
+                    k++;
+                }
+                else
+                    printf("%c", string[k]);
+            }
+            if (command.args[i + 1] != NULL)
+                printf(" ");
         }
     }
     if (nflag == 0)
