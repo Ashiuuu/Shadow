@@ -18,6 +18,8 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
 
     struct ast_node *com = NULL;
     enum parser_status stat = parse_shell_command(&com, input);
+    if (stat == PARSER_ERROR)
+        return PARSER_ERROR;
 
     // now parse redirections
     *ast = new_redirec_list_node();

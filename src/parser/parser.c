@@ -53,8 +53,6 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 // for now, and_or is pipelines separated by ';'
 enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
 {
-    *ast = new_list_node();
-
     struct ast_node *com = NULL;
     enum parser_status stat = parse_and_or(&com, input);
     if (stat == PARSER_ERROR)
@@ -64,7 +62,9 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
         return PARSER_ERROR;
     }
 
+    *ast = new_list_node();
     list_node_push(*ast, com);
+
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_SEMICOL)
     {
@@ -93,8 +93,6 @@ enum parser_status parse_list(struct ast_node **ast, struct lexer *input)
 enum parser_status parse_command_list(struct ast_node **ast,
                                       struct lexer *input)
 {
-    *ast = new_list_node();
-
     struct ast_node *new = NULL;
     enum parser_status stat = parser_simple_command(&new, input);
     // handle status error
@@ -104,6 +102,7 @@ enum parser_status parse_command_list(struct ast_node **ast,
         return PARSER_ERROR;
     }
 
+    *ast = new_list_node();
     list_node_push(*ast, new);
 
     struct token *token = lexer_peek(input);
@@ -142,11 +141,14 @@ enum parser_status parse_command_list(struct ast_node **ast,
 enum parser_status parse_compound_list(struct ast_node **ast,
                                        struct lexer *input)
 {
-    *ast = new_list_node();
-
     struct token *tok = lexer_peek(input);
     while (tok->type == TOKEN_EOL) // ('\n')*
-        lexer_pop(input);
+        tok = lexer_pop(input);
+
+    if (tok->type == TOKEN_ERROR)
+        return PARSER_ERROR;
+
+    *ast = new_list_node();
 
     // first and_or
     struct ast_node *com = NULL;

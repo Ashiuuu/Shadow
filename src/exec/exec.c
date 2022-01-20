@@ -6,6 +6,8 @@
 
 void free_node(struct ast_node *node)
 {
+    if (node == NULL)
+        return;
     switch (node->type)
     {
     case NODE_COMMAND:

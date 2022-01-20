@@ -61,9 +61,12 @@ enum parser_status parse_rule_if(struct ast_node **ast, struct lexer *input)
         return PARSER_ERROR;
     }
 
+    tok = lexer_pop(input);
+    if (tok->type == TOKEN_ERROR)
+        return PARSER_ERROR;
+
     *ast = new_if_node();
 
-    lexer_pop(input);
     struct ast_node *compound = NULL;
     parse_compound_list(&compound, input);
     (*ast)->data.ast_if.condition = compound;
