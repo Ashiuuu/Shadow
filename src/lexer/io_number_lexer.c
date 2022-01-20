@@ -5,11 +5,6 @@ int is_numeral(char c)
     return c >= '0' && c <= '9';
 }
 
-int is_ending_char(char c)
-{
-    return c == '>' || c == '<';
-}
-
 struct general_lexer *new_io_number_lexer()
 {
     struct general_lexer *ret = xmalloc(sizeof(struct general_lexer));
@@ -68,7 +63,7 @@ enum lexer_state io_number_lexer_consume_char(struct general_lexer *lexer,
     if (lexer->state == LEXER_ERROR)
         return LEXER_ERROR;
 
-    if (!is_ending_char(input->current_char)
+    if (!(input->current_char == '<' || input->current_char == '>')
         && !is_numeral(input->current_char))
     {
         // invalid char
@@ -77,7 +72,7 @@ enum lexer_state io_number_lexer_consume_char(struct general_lexer *lexer,
     }
 
     if (lexer->data.io_number_lexer.len == 0
-        && is_ending_char(input->current_char))
+        && (input->current_char == '<' || input->current_char == '>'))
     {
         // we have ended parsing but no number was found, so no token
         lexer->state = LEXER_ERROR;

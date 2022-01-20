@@ -26,10 +26,13 @@ incdirs = [
 lexer_files = [
     'src/lexer/tokens.c',
     'src/lexer/lexer.c',
+    'src/lexer/lexer2.c',
+    'src/lexer/lexer3.c',
     'src/lexer/word_lexer.c',
     'src/lexer/keyword_lexer.c',
     'src/lexer/sing_quote_lexer.c',
     'src/lexer/io_number_lexer.c',
+    'src/lexer/general_lexer.c',
 ]
 
 parser_files = [
@@ -49,6 +52,7 @@ exec_files = [
     'src/exec/echo.c',
     'src/exec/if_node.c',
     'src/exec/redirec_nodes.c',
+    'src/exec/redirections.c',
     'src/exec/while_node.c',
     'src/exec/until_node.c',
     'src/exec/pipe_node.c',

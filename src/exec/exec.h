@@ -153,3 +153,7 @@ int exec_and_or_node(struct ast_node *node);
 
 // built-ins
 int echo(struct ast_node *node);
+
+// utility
+
+int is_digit(char c);
