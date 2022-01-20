@@ -28,7 +28,7 @@ def test_echo_middle_single_quote():
 
 @pytest.mark.timeout(2)
 def test_echo_middle_double_quote():
-    result = os.popen("./42sh -c \"echo \"Hello Friend\"\"").read()
+    result = subprocess.run(["./42sh", "-c", "echo \"Hello Friend\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
     model = subprocess.run(["bash", "--posix","-c", "echo \"Hello Friend\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
     assert result == model
 
@@ -74,7 +74,7 @@ def test_echo_param_e_simple():
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_long():
-    result = os.popen("./42sh -c \"echo -e Hello Friend\"").read()
+    result = subprocess.run(["./42sh", "-c", "echo -e Hello Friend"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     model = subprocess.run(["bash", "--posix","-c", "echo -e Hello Friend"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     assert result == model
 
@@ -86,7 +86,7 @@ def test_echo_param_e_long_quotes():
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_long_double_quotes_backslash():
-    result = os.popen("./42sh -c \"echo -e \'Hello\\nFriend\'\"").read()
+    result = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     model = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     assert result == model
 
