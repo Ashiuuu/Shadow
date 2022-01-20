@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
                 {
                     print_ast(ast, "");
                 }
+                if (ast == NULL)
+                    return 0;
                 exec_node(ast);
                 free_node(ast);
 
