@@ -80,5 +80,7 @@ int main(int argc, char **argv)
         printf("\n");
     }
 
+    lexer_free(lexer);
+
     return 0;
 }
