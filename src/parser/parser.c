@@ -19,7 +19,10 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
+    {
+        lexer_free(input);
         return PARSER_ERROR;
+    }
 
     if (tok->type == TOKEN_EOF || tok->type == TOKEN_EOL)
     {
