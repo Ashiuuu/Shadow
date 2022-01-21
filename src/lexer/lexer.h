@@ -120,7 +120,7 @@ struct general_lexer *new_double_quote_lexer();
 void free_double_quote_lexer(struct general_lexer *lexer);
 void reset_double_quote_lexer(struct general_lexer *lexer);
 enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
-                                               struct INPUT *input);
+                                                 struct INPUT *input);
 
 // io number lexer
 
