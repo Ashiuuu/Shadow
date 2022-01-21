@@ -14,7 +14,7 @@ enum parser_status parse_rule_until(struct ast_node **ast, struct lexer *input)
     *ast = new_until_node();
     struct ast_node *comp = NULL;
     enum parser_status ret = parse_compound_list(&comp, input);
-    if (ret == PARSER_ERROR)
+    if (ret != PARSER_FOUND)
     {
         free_node(*ast);
         return PARSER_ERROR;
@@ -23,12 +23,12 @@ enum parser_status parse_rule_until(struct ast_node **ast, struct lexer *input)
 
     struct ast_node *body = NULL;
     ret = parse_do_group(&body, input);
-    if (ret == PARSER_ERROR)
+    if (ret != PARSER_FOUND)
     {
         free_node(*ast);
         return PARSER_ERROR;
     }
     (*ast)->data.ast_until.body_list = body;
 
-    return PARSER_OK;
+    return PARSER_FOUND;
 }
