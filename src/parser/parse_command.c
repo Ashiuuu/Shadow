@@ -7,7 +7,7 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return PARSER_ERROR;
 
     enum parser_status stat = parser_simple_command(ast, input);
     if (stat != PARSER_OK) // either propagate error
@@ -134,7 +134,7 @@ enum parser_status parse_shell_command(struct ast_node **ast,
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return PARSER_ERROR;
 
     if (tok->type == TOKEN_IF)
     {

@@ -6,7 +6,7 @@ enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return 0;
 
     int negated = 0;
 
@@ -15,7 +15,7 @@ enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
         negated = 1;
         tok = lexer_pop(input);
         if (tok->type == TOKEN_ERROR)
-            return TOKEN_ERROR;
+            return 0;
     }
 
     struct ast_node *com = NULL;
@@ -27,7 +27,7 @@ enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
     if (tok->type == TOKEN_ERROR)
     {
         free_node(com);
-        return TOKEN_ERROR;
+        return 0;
     }
 
     if (tok->type != TOKEN_PIPE)

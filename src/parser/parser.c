@@ -95,7 +95,7 @@ enum parser_status parse_compound_list(struct ast_node **ast,
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return PARSER_ERROR;
     while (tok->type == TOKEN_EOL) // ('\n')*
         tok = lexer_pop(input);
 
@@ -113,7 +113,7 @@ enum parser_status parse_compound_list(struct ast_node **ast,
 
     tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return PARSER_ERROR;
 
     while (tok->type == TOKEN_SEMICOL
            || tok->type == TOKEN_EOL) // ((';'|'\n') ('\n')* and_or)*

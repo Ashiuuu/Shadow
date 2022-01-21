@@ -7,7 +7,7 @@ enum parser_status parse_else_clause(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
-        return TOKEN_ERROR;
+        return PARSER_ERROR;
 
     *ast = new_if_node();
 
