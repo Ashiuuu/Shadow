@@ -18,6 +18,5 @@
  * functions.
  *
  * @param cmd_file
- * @return int
  */
-int file_input(char *cmd_file);
+void file_input(char *cmd_file);

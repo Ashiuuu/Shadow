@@ -1,17 +1,23 @@
 #include "file_input.h"
+#include "variables.h"
 
-int file_input(char *cmd_file)
+void file_input(char **cmd_file)
 {
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
     int return_status = 0;
-    FILE *fd = fopen(cmd_file, "r");
+    FILE *fd = fopen(cmd_file[0], "r");
     if (fd == NULL)
     {
-        printf("Unable to open %s\n", cmd_file);
-        return -1;
+        if(variables)
+            free_linked_list(variables);
+        printf("Unable to open %s\n", cmd_file[0]);
+        push_linked_list(variables, "?", -1);
+        return;
     }
+
+    init_positial_arguments(cmd_file);
 
     while ((read = getline(&line, &len, fd)) != -1)
     {
@@ -29,11 +35,10 @@ int file_input(char *cmd_file)
         {
             continue;
         }
-        return_status = exec_node(ast);
+        push_linked_list(variables, "?", exec_node(ast));
         free_node(ast);
     }
     fclose(fd);
     if (line)
         free(line);
-    return return_status;
 }
