@@ -8,14 +8,42 @@
 #include "utils.h"
 
 // Utilities
+/**
+ * @brief check if char c is a number character
+ * 
+ * @param c 
+ * @return int 
+ */
 int is_num(char c);
+
+/**
+ * @brief check if char c is a character
+ * 
+ * @param c 
+ * @return int 
+ */
 int is_alpha(char c);
+
+/**
+ * @brief check if char c is a alphanumeric charracter
+ * 
+ * @param c 
+ * @return int 
+ */
 int is_alphanum(char c);
 
+
+/**
+ * @brief 
+ * 
+ */
 struct word_lexer
 {
+    /// value of character
     char *value;
+    ///
     size_t len;
+    ///
     size_t capacity;
 };
 
