@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
             int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
             {
-                return file_input(argv[1]);
+                file_input(argv + 1);
+                break;
             }
 
             switch (opt)
@@ -101,6 +102,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-
-    return 0;
+    int status_code = atoi(get_linked_list(variables, "?"));
+    free_linked_list(variables);
+    return status_code;
 }
