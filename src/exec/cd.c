@@ -30,7 +30,6 @@ int cd(struct ast_node *node)
         fprintf(stderr, "cd: aucun fichier au dossier de ce type: %s\n", path);
         return 1;
     }
-    printf("%d", ret);
 
     return ret;
 }
