@@ -22,7 +22,8 @@ def test_if_simple_without_comma():
     model_err = subprocess.run(["bash", "--posix","-c", "if echo a then echo b else echo c fi"], stderr=subprocess.PIPE).stderr.decode('utf-8')
 
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
+    #assert result_err == model_err
 
 
 @pytest.mark.timeout(2)
@@ -44,5 +45,6 @@ def test_if_wrong_syntax():
     result_err = subprocess.run(["./42sh", "-c", "if echo a; then echo couille;"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     model_err = subprocess.run(["bash", "--posix", "if echo a; then echo couille;"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
-    assert result_err == model_err
     assert result == model
+    assert (result_err == '') == (model_err == '')
+    #assert result_err == model_err

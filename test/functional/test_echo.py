@@ -90,7 +90,8 @@ def test_echo_long_apostrophe():
     model_err = subprocess.run(["bash", "--posix","-c", "echo Hello My Friend. It\'s a beautifull day to die."], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
+    #assert result_err == model_err
 
 # virgule casse tout
 @pytest.mark.timeout(2)
@@ -114,7 +115,8 @@ def test_echo_long_hard():
     model_err = subprocess.run(["bash", "--posix","-c", "echo Hello My Friend, It's a beautifull day. To die !"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
+    #assert result_err == model_err
 
 @pytest.mark.timeout(2)
 def test_echo_param_e_simple():
@@ -152,9 +154,9 @@ def test_echo_param_e_long_quotes():
 @pytest.mark.timeout(2)
 def test_echo_param_e_long_double_quotes_backslash():
     result = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    result = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    model = subprocess.run(["bash", "--posix", "-c", "echo -e \'Hello\\nFriend\'"], stdout=subprocess.PIPE).stdout.decode('utf-8')
     
-    model_err = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    result_err = subprocess.run(["./42sh", "-c", "echo -e \'Hello\\nFriend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     model_err = subprocess.run(["bash", "--posix","-c", "echo -e \'Hello\\nFriend\'"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
