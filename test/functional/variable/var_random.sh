@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo $UID
-echo ${UID}
-
-echo $RANDOM
-echo ${RANDOM}
+echo "$UID"
+echo "${UID}"
+echo '$UID'
