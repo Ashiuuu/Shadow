@@ -110,3 +110,7 @@ executable(
     #objects: '/usr/lib/libcriterion.so'
     objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
+
+if get_option('doc')
+    subdir('doc')
+endif

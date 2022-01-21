@@ -7,16 +7,30 @@
 
 #include "tokens.h"
 
+/**
+ * @brief Command node for the AST
+ *
+ * Simple command node for the AST. It contains a list of argument to be executed (including name of the command/executable)
+ */
 struct ast_node_command
 {
+    /// Arguments of the command
     char **args;
 };
 
+/**
+ * @brief List node for the AST
+ *
+ * Simple list node for the AST. It is a dynamically allocated, and contains a set of nodes to be executed.
+ */
 struct ast_node_list
 {
+    /// AST Nodes vector
     struct ast_node **nodes;
-    size_t len;
-    size_t capacity;
+    /// Length of the nodes vector
+    size_t len; 
+    /// Capacity of the vector, to keep track of the memory allocation
+    size_t capacity; 
 };
 
 struct ast_node_if

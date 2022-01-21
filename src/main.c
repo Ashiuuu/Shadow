@@ -10,9 +10,26 @@
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "printer/printer.h"
+/**
+ * @file main.c
+ * @author Team
+ * @brief 42sh project for EPITA
+ * @version 1.0
+ * @date 2022-01-23
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "script/file_input.h"
 #include "utils/utils.h"
 
+/**
+ * @brief Main function
+ * 
+ * @param argc Number of arguments
+ * @param argv Arguments
+ * @return int Return status of the AST execution
+ */
 int main(int argc, char *argv[])
 {
     if (argc == 1)

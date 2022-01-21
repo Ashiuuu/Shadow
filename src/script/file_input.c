@@ -10,7 +10,7 @@ int file_input(char *cmd_file)
     if (fd == NULL)
     {
         printf("Unable to open %s\n", cmd_file);
-        return;
+        return -1;
     }
 
     while ((read = getline(&line, &len, fd)) != -1)
