@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set "un" "deux" "trois" "quatre" "cinq"
-
 echo $1
 echo ${1}
 echo $2
