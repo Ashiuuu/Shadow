@@ -60,7 +60,8 @@ char *variable_search_and_replace(char *string)
 
 char *parse_variable_bracket(char *string)
 {
-    string = string;
+    if (string)
+        return NULL;
     return NULL;
 }
 
