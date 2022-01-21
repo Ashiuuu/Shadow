@@ -202,4 +202,3 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input);
  */
 enum parser_status parse_shell_command(struct ast_node **ast,
                                        struct lexer *input);
-

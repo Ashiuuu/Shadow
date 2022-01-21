@@ -10,34 +10,35 @@
 // Utilities
 /**
  * @brief check if char c is a number character
- * 
- * @param c 
- * @return int 
+ *
+ * @param c
+ * @return int
  */
 int is_num(char c);
 
 /**
  * @brief check if char c is a character
- * 
- * @param c 
- * @return int 
+ *
+ * @param c
+ * @return int
  */
 int is_alpha(char c);
 
 /**
  * @brief check if char c is a alphanumeric charracter
- * 
- * @param c 
- * @return int 
+ *
+ * @param c
+ * @return int
  */
 int is_alphanum(char c);
 
-
 /**
  * @brief Lexer that recognizes WORD tokens
- * 
- * Allocates a string and pushes characters to it when encountered, until a sequence ending character is found, such as ';' or '\n' or ...
- * When such a character is met, we consider the token as complete and change the lexer state to match that.
+ *
+ * Allocates a string and pushes characters to it when encountered, until a
+ * sequence ending character is found, such as ';' or '\n' or ... When such a
+ * character is met, we consider the token as complete and change the lexer
+ * state to match that.
  */
 struct word_lexer
 {
@@ -51,9 +52,10 @@ struct word_lexer
 
 /**
  * @brief Lexer that recognizes keyword tokens
- * 
- * Is initialized with a keyword, and recognizes that keyword, by comparing character by character. If the lexer gets in an accepting state,
- * the output token type is stored in the struct at initialization
+ *
+ * Is initialized with a keyword, and recognizes that keyword, by comparing
+ * character by character. If the lexer gets in an accepting state, the output
+ * token type is stored in the struct at initialization
  */
 struct keyword_lexer
 {
@@ -69,8 +71,9 @@ struct keyword_lexer
 
 /**
  * @brief Lexer that recognizes single quotes expressions
- * 
- * Behaves the same as the WORD lexer, but the value of the token is every character inside the ' characters.
+ *
+ * Behaves the same as the WORD lexer, but the value of the token is every
+ * character inside the ' characters.
  */
 struct sing_quote_lexer
 {
@@ -86,8 +89,9 @@ struct sing_quote_lexer
 
 /**
  * @brief Lexer that recognizes double quotes expressions
- * 
- * Behaves the same as single quote lexer, but escapes escaping characters and exands variables
+ *
+ * Behaves the same as single quote lexer, but escapes escaping characters and
+ * exands variables
  */
 struct double_quote_lexer
 {
@@ -103,8 +107,9 @@ struct double_quote_lexer
 
 /**
  * @brief Lexer that recognizes IO_NUMBERS for redirections
- * 
- * Stores digit characters in a string. Enters an accepting state only if a redirection character is dirrectly folowing
+ *
+ * Stores digit characters in a string. Enters an accepting state only if a
+ * redirection character is dirrectly folowing
  */
 struct io_number_lexer
 {
@@ -118,7 +123,7 @@ struct io_number_lexer
 
 /**
  * @brief Enum that holds the state of a lexer
- * 
+ *
  */
 enum lexer_state
 {
@@ -132,7 +137,7 @@ enum lexer_state
 
 /**
  * @brief Enum that holds the type of a lexer
- * 
+ *
  * Is used with the union 'lexer_data' to have C polymorphism for lexers
  */
 enum lexer_type
@@ -146,7 +151,7 @@ enum lexer_type
 
 /**
  * @brief Union that holds different type of lexers
- * 
+ *
  * Used with the enum 'lexer_type' to have C polymorphism for lexers
  */
 union lexer_data
@@ -160,9 +165,9 @@ union lexer_data
 
 /**
  * @brief Contains a lexer that recognizes a specific token type
- * 
- * We can extract the token type only when the lexer is in an accepting state. If the lexer encounters an error, nothing will be done
- * until a reset.
+ *
+ * We can extract the token type only when the lexer is in an accepting state.
+ * If the lexer encounters an error, nothing will be done until a reset.
  */
 struct general_lexer
 {
@@ -176,10 +181,11 @@ struct general_lexer
 
 /**
  * @brief Master lexer
- * 
- * Contains all needed type of lexers (one lexer for every keyword recognized, etc...) in a list. When feeding a character, every
- * lexer is feeded that character, and the state of each is monitored. When a lexer enters an accepting state, the 'current_token' is replaced
- * with the new token.
+ *
+ * Contains all needed type of lexers (one lexer for every keyword recognized,
+ * etc...) in a list. When feeding a character, every lexer is feeded that
+ * character, and the state of each is monitored. When a lexer enters an
+ * accepting state, the 'current_token' is replaced with the new token.
  */
 struct lexer
 {

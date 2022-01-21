@@ -16,16 +16,16 @@
  * @brief 42sh project for EPITA
  * @version 1.0
  * @date 2022-01-23
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #include "script/file_input.h"
 #include "utils/utils.h"
 
 /**
  * @brief Main function
- * 
+ *
  * @param argc Number of arguments
  * @param argv Arguments
  * @return int Return status of the AST execution
@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
             case 'c':
                 if (strcmp(optarg, "\0") == 0)
                     return 0;
-                enum parser_status stat = parse_input(&ast, lexer_new(input_from_string(optarg)));
+                enum parser_status stat =
+                    parse_input(&ast, lexer_new(input_from_string(optarg)));
                 if (printer == 1)
                 {
                     print_ast(ast, "");

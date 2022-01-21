@@ -33,7 +33,8 @@ enum parser_status parse_redirection(struct redirection **red,
         }
     }
     if (!is_redirec_token(tok->type))
-        return PARSER_OK; // no redirection to be found, but no parsing error either
+        return PARSER_OK; // no redirection to be found, but no parsing error
+                          // either
 
     // we are now at a redirection token
     enum token_type type = tok->type;

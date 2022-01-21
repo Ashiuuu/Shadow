@@ -10,6 +10,6 @@
 
 /**
  * @brief Enable 42sh interactive mode
- * 
+ *
  */
 void interact();
