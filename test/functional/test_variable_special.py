@@ -10,9 +10,9 @@ def test_special_code_value():
     model1 = subprocess.run(["bash", "--posix","-c", "$?"], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     os.popen("s")
-    result2 = subprocess.run(["./42sh", "-c", "$?"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    result2 = subprocess.run(["./42sh", "-c", "$?"], stdout=subprocess.PIPE).stderr.decode('utf-8')
     os.popen("s")
-    model2 = subprocess.run(["bash", "--posix","-c", "$?"], stderr=subprocess.PIPE).stderr.decode('utf-8')
+    model2 = subprocess.run(["bash", "--posix","-c", "$?"], stdout=subprocess.PIPE).stderr.decode('utf-8')
 
     assert result1 == model1
     assert result2 == model2
