@@ -32,4 +32,9 @@ def test_cd_slash():
     run_test.run_test_command("cd /")
     run_test.run_test_command("ls")
 
+@pytest.mark.timeout(2)
+def test_cd_wrong_path():
+    run_test.run_test_command("cd jefnzejknf")
+    run_test.run_test_command("ls")
+
     
