@@ -34,6 +34,7 @@
 int main(int argc, char *argv[])
 {
     variables = new_linked_list();
+    init_variables();
     if (argc == 1)
     {
         interact();

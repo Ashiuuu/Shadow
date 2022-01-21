@@ -40,8 +40,6 @@ void push_linked_list(struct linked_list *list, char *name, char *value)
         {
             free(list->value);
             list->value = strdup(value);
-            free(name);
-            free(value);
             return;
         }
         if (list->next != NULL) // if there is a next node
@@ -53,8 +51,6 @@ void push_linked_list(struct linked_list *list, char *name, char *value)
         struct linked_list *new = new_linked_list();
         new->key = strdup(name);
         new->value = strdup(value);
-        free(name);
-        free(value);
         list->next = new;
         return; // variable is pushed, all good
     }
@@ -62,8 +58,6 @@ void push_linked_list(struct linked_list *list, char *name, char *value)
     if (list->value != NULL) // no key but value for some reason ??
         free(list->value);
     list->value = strdup(value);
-    free(name);
-    free(value);
 }
 
 char *get_linked_list(struct linked_list *list, char *name)
@@ -97,6 +91,7 @@ void init_variables()
     char *pid = xmalloc(sizeof(char) * 10);
     sprintf(pid, "%d", getpid());
     push_linked_list(variables, "$", pid);
+    free(pid);
 }
 
 void init_positional_arguments(char **args)
@@ -111,6 +106,7 @@ void init_positional_arguments(char **args)
         char *pos = xmalloc(sizeof(char) * 3);
         sprintf(pos, "%ld", i);
         push_linked_list(variables, pos, args[i]);
+        free(pos);
         len++;
 
         all_cap = all_cap + strlen(args[i]);
@@ -120,8 +116,11 @@ void init_positional_arguments(char **args)
 
     char *all_args2 = strdup(all_args);
     push_linked_list(variables, "@", all_args);
+    free(all_args);
     push_linked_list(variables, "*", all_args2);
+    free(all_args2);
     char *len_string = xmalloc(sizeof(char) * 3);
     sprintf(len_string, "%ld", len);
     push_linked_list(variables, "%d", len_string);
+    free(len_string);    
 }
