@@ -92,7 +92,7 @@ int exec_command_node(struct ast_node *node)
     {
         node->data.ast_command.args_strings[i] = strdup(node->data.ast_command.args[i]->value);
     }
-    node->data.ast_command.args_strings[len] = "\0";
+    node->data.ast_command.args_strings[len] = NULL;
 
     if (strcmp(node->data.ast_command.args_strings[0], "echo") == 0)
     {
