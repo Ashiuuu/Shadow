@@ -52,6 +52,7 @@ exec_files = [
     'src/exec/command_node.c',
     'src/exec/list_node.c',
     'src/exec/echo.c',
+    'src/exec/cd.c',
     'src/exec/if_node.c',
     'src/exec/redirec_nodes.c',
     'src/exec/redirections.c',

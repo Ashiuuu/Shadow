@@ -54,6 +54,11 @@ int exec_command_node(struct ast_node *node)
         status = echo(node);
         return status;
     }
+    if (strcmp(node->data.ast_command.args[0], "cd") == 0)
+    {
+        status = cd(node);
+        return status;
+    }
     if (strcmp(node->data.ast_command.args[0], "exit") == 0)
     {
         int return_status;
