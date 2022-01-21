@@ -1,6 +1,7 @@
 #!/bin/sh
 
 rm tree.dot
+meson setup build
 meson setup -Ddoc=true build --reconfigure
 meson compile -C build doxygen_doc
 ninja -C build
