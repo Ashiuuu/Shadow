@@ -114,7 +114,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 return PARSER_FOUND;
             }
         }
-        tok = lexer_pop(input);
+        tok = lexer_pop_ignore_keyword(input);
         if (tok->type == TOKEN_ERROR)
         {
             for (size_t i = 0; i < len; ++i)
