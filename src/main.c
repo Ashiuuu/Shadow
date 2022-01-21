@@ -35,8 +35,7 @@ int main(int argc, char *argv[])
             int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
             {
-                file_input(argv[1]);
-                break;
+                return file_input(argv[1]);
             }
 
             switch (opt)
@@ -56,14 +55,14 @@ int main(int argc, char *argv[])
                 }
                 if (ast == NULL)
                     return 0;
-                exec_node(ast);
+                int return_status = exec_node(ast);
                 free_node(ast);
 
                 if (printer == 1)
                 {
                     write_file("}\n");
                 }
-                return 0;
+                return return_status;
                 break;
             case '?':
                 if (optopt == 'c')

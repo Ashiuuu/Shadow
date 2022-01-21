@@ -11,4 +11,4 @@
 #include "lexer.h"
 #include "parser.h"
 
-void file_input(char *cmd_file);
+int file_input(char *cmd_file);

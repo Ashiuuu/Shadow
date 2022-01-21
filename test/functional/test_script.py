@@ -10,7 +10,7 @@ def test_script_echo():
     model_err = subprocess.run(["bash", "--posix","test/functional/test.sh"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
 
 @pytest.mark.timeout(5)
 def test_script_if_success():
@@ -21,7 +21,7 @@ def test_script_if_success():
     model_err = subprocess.run(["bash", "--posix","test/functional/test_if.sh"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
 
 @pytest.mark.timeout(5)
 def test_script_if_fail():
@@ -32,4 +32,4 @@ def test_script_if_fail():
     model_err = subprocess.run(["bash", "--posix","test/functional/test_if_fail.sh"], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
