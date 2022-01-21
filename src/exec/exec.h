@@ -526,6 +526,8 @@ int exec_and_or_node(struct ast_node *node);
  */
 int echo(struct ast_node *node);
 
+int cd(struct ast_node *node);
+
 // Utility functions
 /**
  * @brief Simple utility function that checks if a character is a digit
