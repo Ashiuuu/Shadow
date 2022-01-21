@@ -16,9 +16,9 @@ void print_command_node(struct ast_node *node)
     }
 
     printf("Command node args:\n");
-    for (size_t i = 0; node->data.ast_command.args[i] != NULL; ++i)
+    for (size_t i = 0; node->data.ast_command.args_strings[i] != NULL; ++i)
     {
-        printf("  - %s\n", node->data.ast_command.args[i]);
+        printf("  - %s\n", node->data.ast_command.args_strings[i]);
     }
 }
 

@@ -3,6 +3,7 @@
 #include "io.h"
 #include "lexer.h"
 #include "tokens.h"
+#include "variables.h"
 
 int main(int argc, char **argv)
 {
@@ -61,6 +62,7 @@ int main(int argc, char **argv)
         [TOKEN_PIPE_NEG] = "!",
         [TOKEN_AND] = "&&",
         [TOKEN_OR] = "||",
+        [TOKEN_EXPAND] = "EXPAND",
     };
 
     struct INPUT *input = input_from_string(argv[1]);
@@ -75,7 +77,7 @@ int main(int argc, char **argv)
         printf("%s", tab[type]);
         if (type == TOKEN_ERROR)
             break;
-        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER)
+        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER || type == TOKEN_EXPAND)
             printf(" (%s)", token->value);
         printf("\n");
     }

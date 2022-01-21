@@ -34,6 +34,8 @@ enum token_type
     TOKEN_DOUBLEQUOTE,
     /// identifier token, ex : variable name
     TOKEN_WORDS,
+    /// identifier token, but variable will be expanded
+    TOKEN_EXPAND,
     /// numerals recognized only in redirection patterns
     TOKEN_IO_NUMBER,
     /// > token (read F(ile) RED(irection) OUT)
@@ -115,3 +117,5 @@ struct token *token_new_with_value(enum token_type type, char *value);
  * @param token
  */
 void token_free(struct token *token);
+
+struct token *token_dup(struct token *o);

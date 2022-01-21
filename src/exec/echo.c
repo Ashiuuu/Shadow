@@ -11,9 +11,8 @@ int echo(struct ast_node *node)
         fprintf(stderr, "trying to call echo on non command node\n");
         return -1;
     }
-    struct ast_node_command command = node->data.ast_command;
-    if (node->data.ast_command.args != NULL
-        && strcmp(node->data.ast_command.args[0], "echo") != 0)
+    if (node->data.ast_command.args_strings != NULL
+        && strcmp(node->data.ast_command.args_strings[0], "echo") != 0)
     {
         fprintf(stderr, "trying to call echo on non echo command node\n");
         return -1;
@@ -25,9 +24,9 @@ int echo(struct ast_node *node)
     int nflag = 0;
     int eflag = 0;
 
-    size_t args_len = array_len(command.args);
+    size_t args_len = array_len(node->data.ast_command.args_strings);
     optind = 1;
-    opt = getopt(args_len, command.args, "ne");
+    opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
     while (opt != -1)
     {
         switch (opt)
@@ -45,19 +44,19 @@ int echo(struct ast_node *node)
             fprintf(stderr, "error while parsing echo options\n");
             abort();
         }
-        opt = getopt(args_len, command.args, "ne");
+        opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
     }
 
-    for (size_t i = optind; command.args[i] != NULL; i++)
+    for (size_t i = optind; node->data.ast_command.args_strings[i] != NULL; i++)
     {
-        char *string = command.args[i];
+        char *string = node->data.ast_command.args_strings[i];
         if (eflag == 0)
         {
             for (size_t j = 0; string[j] != '\0'; ++j)
             {
                 printf("%c", string[j]);
             }
-            if (command.args[i + 1] != NULL)
+            if (node->data.ast_command.args_strings[i + 1] != NULL)
                 printf(" ");
         }
         else
@@ -82,7 +81,7 @@ int echo(struct ast_node *node)
                 else
                     printf("%c", string[k]);
             }
-            if (command.args[i + 1] != NULL)
+            if (node->data.ast_command.args_strings[i + 1] != NULL)
                 printf(" ");
         }
     }

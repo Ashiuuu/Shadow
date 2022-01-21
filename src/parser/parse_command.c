@@ -58,18 +58,18 @@ enum parser_status parser_simple_command(struct ast_node **ast,
 
     size_t capacity = 5;
     size_t len = 0;
-    char **args = xmalloc(sizeof(char *) * capacity);
+    struct token **args = xmalloc(sizeof(struct token *) * capacity);
 
     while (1)
     {
-        if (tok->type == TOKEN_WORDS)
+        if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND)
         {
             if (len == capacity)
             {
                 capacity *= 2;
-                args = xrealloc(args, sizeof(char *) * capacity);
+                args = xrealloc(args, sizeof(struct token *) * capacity);
             }
-            args[len] = strdup(tok->value);
+            args[len] = token_dup(tok);
             len++;
         }
         else
@@ -81,7 +81,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
             {
                 // free args
                 for (size_t i = 0; i < len; ++i)
-                    free(args[i]);
+                    token_free(args[i]);
                 free(args);
                 // free redirection node
                 free_node(*ast);
@@ -107,7 +107,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 struct ast_node *c = NULL;
 
                 capacity = len + 1;
-                args = xrealloc(args, sizeof(char *) * capacity);
+                args = xrealloc(args, sizeof(struct token *) * capacity);
                 args[len] = NULL;
                 c = new_command_node(
                     args); // new_command_node frees args array, don't need to
@@ -121,7 +121,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
         if (tok->type == TOKEN_ERROR)
         {
             for (size_t i = 0; i < len; ++i)
-                free(args[i]);
+                token_free(args[i]);
             free(args);
             // free redirection node
             free_node(*ast);

@@ -16,7 +16,9 @@
 struct ast_node_command
 {
     /// Arguments of the command
-    char **args;
+    struct token **args;
+    /// Arguments of the command once variables have been expanded
+    char **args_strings;
 };
 
 /**
@@ -235,7 +237,7 @@ int exec_node(struct ast_node *node);
  * @param args Args of the commands to execute
  * @return struct ast_node* New node allocated
  */
-struct ast_node *new_command_node(char **args);
+struct ast_node *new_command_node(struct token **args);
 /**
  * @brief Frees a 'NODE_COMMAND' type node, allocated by 'new_command_node'
  *
@@ -526,6 +528,12 @@ int exec_and_or_node(struct ast_node *node);
  */
 int echo(struct ast_node *node);
 
+/**
+ * @brief 
+ * 
+ * @param node 
+ * @return int 
+ */
 int cd(struct ast_node *node);
 
 // Utility functions
@@ -536,3 +544,8 @@ int cd(struct ast_node *node);
  * @return int Returns a non 0 value if character is a digit, 0 instead
  */
 int is_digit(char c);
+
+char *variable_search_and_replace(char *string);
+char *parse_special(char *string);
+char *parse_variable_bracket(char *string);
+int is_special(char c);

@@ -37,3 +37,8 @@ void token_free(struct token *token)
         free(token->value);
     free(token);
 }
+
+struct token *token_dup(struct token *o)
+{
+    return token_new_with_value(o->type, o->value);
+}

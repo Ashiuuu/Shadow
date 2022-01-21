@@ -10,6 +10,7 @@
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "printer/printer.h"
+#include "variables/variables.h"
 /**
  * @file main.c
  * @author Team
@@ -32,6 +33,7 @@
  */
 int main(int argc, char *argv[])
 {
+    variables = new_linked_list();
     if (argc == 1)
     {
         interact();

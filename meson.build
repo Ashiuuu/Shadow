@@ -21,6 +21,7 @@ incdirs = [
     include_directories('src/lexer'),
     include_directories('src/parser'),
     include_directories('src/utils'),
+    include_directories('src/variables'),
 ]
 
 lexer_files = [
@@ -60,6 +61,9 @@ exec_files = [
     'src/exec/until_node.c',
     'src/exec/pipe_node.c',
     'src/exec/and_or_node.c',
+    'src/exec/variable_exec.c',
+
+    'src/variables/variables.c',
 ]
 
 printer_files = [

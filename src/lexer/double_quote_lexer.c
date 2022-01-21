@@ -59,6 +59,12 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
     if (lexer->state == LEXER_ERROR)
         return LEXER_ERROR;
 
+    if (input->current_char == EOF)
+    {
+        lexer->state = LEXER_ERROR;
+        return LEXER_ERROR;
+    }
+
     if (lexer->data.double_quote_lexer.len == 0
         && input->current_char == '"') // if it is the first char and a "
     {

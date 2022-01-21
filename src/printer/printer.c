@@ -55,17 +55,17 @@ void print_ast(struct ast_node *node, char *type)
 // Print command node
 void print_ast_command(struct ast_node_command ast_command)
 {
-    if (array_len(ast_command.args) == 1)
+    if (array_len(ast_command.args_strings) == 1)
     {
         write_file("\"");
-        write_file(ast_command.args[0]);
+        write_file(ast_command.args_strings[0]);
         write_file("\";\n");
     }
     write_file("\"");
-    for (size_t i = 0; i < array_len(ast_command.args); i++)
+    for (size_t i = 0; i < array_len(ast_command.args_strings); i++)
     {
-        write_file(ast_command.args[i]);
-        if (i + 1 != array_len(ast_command.args))
+        write_file(ast_command.args_strings[i]);
+        if (i + 1 != array_len(ast_command.args_strings))
             write_file(" ");
     }
     write_file("\";\n");

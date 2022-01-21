@@ -16,7 +16,7 @@ enum parser_status parse_rule_while(struct ast_node **ast, struct lexer *input)
     *ast = new_while_node();
     struct ast_node *comp = NULL;
     enum parser_status ret = parse_compound_list(&comp, input);
-    if (ret == PARSER_ERROR)
+    if (ret != PARSER_FOUND)
     {
         free_node(*ast);
         return PARSER_ERROR;
@@ -25,14 +25,14 @@ enum parser_status parse_rule_while(struct ast_node **ast, struct lexer *input)
 
     struct ast_node *body = NULL;
     ret = parse_do_group(&body, input);
-    if (ret == PARSER_ERROR)
+    if (ret != PARSER_FOUND)
     {
         free_node(*ast);
         return PARSER_ERROR;
     }
     (*ast)->data.ast_while.body_list = body;
 
-    return PARSER_OK;
+    return PARSER_FOUND;
 }
 
 enum parser_status parse_do_group(struct ast_node **ast, struct lexer *input)
@@ -45,13 +45,24 @@ enum parser_status parse_do_group(struct ast_node **ast, struct lexer *input)
     }
 
     lexer_pop(input);
-    parse_compound_list(ast, input);
+    enum parser_status stat = parse_compound_list(ast, input);
+    if (stat != PARSER_FOUND)
+        return PARSER_ERROR;
 
-    tok = lexer_pop(input);
-    if (tok->type == TOKEN_DONE)
+    tok = lexer_peek(input);
+    if (tok->type == TOKEN_ERROR)
     {
-        fprintf(stderr, "expected done\n");
+        free_node(*ast);
         return PARSER_ERROR;
     }
-    return PARSER_OK;
+    if (tok->type != TOKEN_DONE)
+    {
+        fprintf(stderr, "expected done\n");
+        free_node(*ast);
+        return PARSER_ERROR;
+    }
+
+    lexer_pop(input);
+
+    return PARSER_FOUND;
 }
