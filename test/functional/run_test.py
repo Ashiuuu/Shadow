@@ -9,4 +9,4 @@ def run_test_command(command):
     model_err = subprocess.run(["bash", "--posix","-c", command], stderr=subprocess.PIPE).stderr.decode('utf-8')
     
     assert result == model
-    assert result_err == model_err
+    assert (result_err == '') == (model_err == '')
