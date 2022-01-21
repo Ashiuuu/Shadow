@@ -8,8 +8,9 @@
 
 enum parser_status
 {
-    PARSER_OK,
-    PARSER_ERROR
+    PARSER_ERROR, // we got a syntax error
+    PARSER_FOUND, // parsing went good and we parsed something
+    PARSER_OK, // nothing found, but no error either
 };
 
 int is_redirec_token(enum token_type type);
@@ -17,8 +18,6 @@ int is_redirec_token(enum token_type type);
 enum parser_status parse_input(struct ast_node **ast, struct lexer *lexer);
 enum parser_status parser_simple_command(struct ast_node **ast,
                                          struct lexer *input);
-enum parser_status parse_command_list(struct ast_node **ast,
-                                      struct lexer *input);
 enum parser_status parse_list(struct ast_node **ast, struct lexer *input);
 enum parser_status parse_compound_list(struct ast_node **ast,
                                        struct lexer *input);

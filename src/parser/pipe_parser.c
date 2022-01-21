@@ -5,6 +5,8 @@
 enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
+    if (tok->type == TOKEN_ERROR)
+        return TOKEN_ERROR;
 
     int negated = 0;
 
@@ -12,59 +14,81 @@ enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
     {
         negated = 1;
         tok = lexer_pop(input);
+        if (tok->type == TOKEN_ERROR)
+            return TOKEN_ERROR;
     }
 
     struct ast_node *com = NULL;
-    enum parser_status com_stat = parse_command(&com, input);
-    if (com_stat == PARSER_ERROR)
-        return PARSER_ERROR;
+    enum parser_status stat = parse_command(&com, input);
+    if (stat != PARSER_FOUND)
+        return stat;
 
     tok = lexer_peek(input);
-
-    if (tok->type == TOKEN_PIPE)
+    if (tok->type == TOKEN_ERROR)
     {
-        // pipe
-        lexer_pop(input);
-        struct ast_node *pipe = new_pipe_node();
-        pipe->data.ast_pipe.negated = negated;
-        pipe->data.ast_pipe.left = com;
-        *ast = pipe;
-        enum token_type last_type = TOKEN_PIPE;
+        free_node(com);
+        return TOKEN_ERROR;
+    }
 
-        while (last_type == TOKEN_PIPE)
+    if (tok->type != TOKEN_PIPE)
+    {
+        *ast = com;
+        return PARSER_FOUND;
+    }
+
+    lexer_pop(input);
+    struct ast_node *pipe = new_pipe_node();
+    pipe->data.ast_pipe.negated = negated;
+    pipe->data.ast_pipe.left = com;
+    *ast = pipe;
+
+    while (1)
+    {
+        tok = lexer_peek(input);
+        if (tok->type == TOKEN_ERROR)
         {
-            tok = lexer_peek(input);
-            while (tok->type == TOKEN_EOL)
-                tok = lexer_pop(input);
+            free_node(*ast);
+            return PARSER_ERROR;
+        }
 
-            struct ast_node *right_com = NULL;
-            enum parser_status right_stat = parse_command(&right_com, input);
-            if (right_stat == PARSER_ERROR)
+        while (tok->type == TOKEN_EOL)
+        {
+           tok = lexer_peek(input);
+            if (tok->type == TOKEN_ERROR)
             {
-                fprintf(stderr, "expected command at left of pipe\n");
                 free_node(*ast);
                 return PARSER_ERROR;
-            }
+            } 
+        }
 
-            tok = lexer_pop(input);
-            last_type = tok->type;
+        struct ast_node *right = NULL;
+        stat = parse_command(&right, input);
+        if (stat != PARSER_FOUND)
+        {
+            free_node(*ast);
+            return PARSER_ERROR;
+        }
 
-            if (tok->type == TOKEN_PIPE) // we have more than one pipe
-            {
-                struct ast_node *temp = new_pipe_node();
-                pipe->data.ast_pipe.right = temp;
-                pipe = temp;
-            }
-            else
-            {
-                pipe->data.ast_pipe.right = right_com;
-            }
+        (*ast)->data.ast_pipe.right = right;
+
+        tok = lexer_peek(input);
+        if (tok->type == TOKEN_ERROR)
+        {
+            free_node(*ast);
+            return PARSER_ERROR;
+        }
+        if (tok->type == TOKEN_PIPE)
+        {
+            struct ast_node *temp = *ast;
+            *ast = new_pipe_node();
+            (*ast)->data.ast_pipe.left = temp;
+            lexer_pop(input);
+        }
+        else
+        {
+            return PARSER_FOUND;
         }
     }
-    else
-    {
-        // there was no pipe, just return the command
-        *ast = com;
-    }
-    return PARSER_OK;
+
+    return PARSER_FOUND; // shouldn't come here
 }

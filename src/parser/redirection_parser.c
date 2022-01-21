@@ -12,6 +12,8 @@ enum parser_status parse_redirection(struct redirection **red,
                                      struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
+    if (tok->type == TOKEN_ERROR)
+        return PARSER_ERROR;
 
     char *source_s = NULL;
     char *rep_s = NULL;
@@ -20,6 +22,8 @@ enum parser_status parse_redirection(struct redirection **red,
     {
         rep_s = strdup(tok->value);
         tok = lexer_pop(input);
+        if (tok->type == TOKEN_ERROR)
+            return PARSER_ERROR;
 
         if (!is_redirec_token(tok->type))
         {
@@ -29,11 +33,13 @@ enum parser_status parse_redirection(struct redirection **red,
         }
     }
     if (!is_redirec_token(tok->type))
-        return PARSER_ERROR; // no redirection to be found
+        return PARSER_OK; // no redirection to be found, but no parsing error either
 
     // we are now at a redirection token
     enum token_type type = tok->type;
     tok = lexer_pop(input);
+    if (tok->type == TOKEN_ERROR)
+        return PARSER_ERROR;
 
     if (tok->type != TOKEN_WORDS) // mandatory word after redirection token
     {
@@ -48,5 +54,5 @@ enum parser_status parse_redirection(struct redirection **red,
     free(rep_s);
     lexer_pop(input);
 
-    return PARSER_OK;
+    return PARSER_FOUND;
 }
