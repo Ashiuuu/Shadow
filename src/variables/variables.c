@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include "variables.h"
 #include "utils.h"
@@ -34,6 +36,14 @@ void push_linked_list(struct linked_list *list, char *name, char *value)
 
     if (list->key != NULL) // if the current node already has an entry
     {
+        if (strcmp(list->key, name) == 0) // key is already taken
+        {
+            free(list->value);
+            list->value = strdup(value);
+            free(name);
+            free(value);
+            return;
+        }
         if (list->next != NULL) // if there is a next node
         {
             push_linked_list(list->next, name, value); // push the variable to that next node
@@ -76,4 +86,42 @@ char *get_linked_list(struct linked_list *list, char *name)
     }
 
     return NULL; // no key and no next node, so no variable
+}
+
+void init_variables()
+{
+    push_linked_list(variables, "?", "0");
+    /*char *uid = xmalloc(sizeof(char) * 5);
+    sprintf(uid, "%lu", getuid);
+    push_linked_list(variables, "UID", uid);*/
+    char *pid = xmalloc(sizeof(char) * 10);
+    sprintf(pid, "%d", getpid());
+    push_linked_list(variables, "$", pid);
+}
+
+void init_positional_arguments(char **args)
+{
+    size_t len = 0;
+
+    char *all_args = xcalloc(1, sizeof(char));
+    size_t all_cap = 1;
+
+    for (size_t i = 0; args[i] != NULL; ++i)
+    {
+        char *pos = xmalloc(sizeof(char) * 3);
+        sprintf(pos, "%ld", i);
+        push_linked_list(variables, pos, args[i]);
+        len++;
+
+        all_cap = all_cap + strlen(args[i]);
+        all_args = xrealloc(all_args, sizeof(char) * all_cap);
+        all_args = strcat(all_args, args[i]);
+    }
+
+    char *all_args2 = strdup(all_args);
+    push_linked_list(variables, "@", all_args);
+    push_linked_list(variables, "*", all_args2);
+    char *len_string = xmalloc(sizeof(char) * 3);
+    sprintf(len_string, "%ld", len);
+    push_linked_list(variables, "%d", len_string);
 }

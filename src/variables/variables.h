@@ -13,3 +13,6 @@ struct linked_list *new_linked_list();
 void free_linked_list(struct linked_list *list);
 void push_linked_list(struct linked_list *list, char *name, char *value);
 char *get_linked_list(struct linked_list *list, char *name);
+
+void init_variables();
+void init_positional_arguments(char **args);
