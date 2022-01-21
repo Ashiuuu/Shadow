@@ -48,7 +48,7 @@ void reset_double_quote_lexer(struct general_lexer *lexer)
 }
 
 enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
-                                               struct INPUT *input)
+                                                 struct INPUT *input)
 {
     if (lexer->type != DOUBLE_QUOTE_LEXER)
     {
@@ -68,7 +68,7 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
     }
     else if (lexer->data.double_quote_lexer.quote_flag != 0
              && input->current_char == '"') // flag was set (we encountered a '
-                                             // before) and we see another one
+                                            // before) and we see another one
     {
         // end parsing
         lexer->state = LEXER_ACCEPT;
@@ -79,8 +79,8 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
         lexer->data.double_quote_lexer.value =
             xrealloc(lexer->data.double_quote_lexer.value,
                      sizeof(char) * lexer->data.double_quote_lexer.capacity);
-        lexer->data.double_quote_lexer.value[lexer->data.double_quote_lexer.len] =
-            '\0';
+        lexer->data.double_quote_lexer
+            .value[lexer->data.double_quote_lexer.len] = '\0';
         // in lexing like words, we stop when we encounter for example a ;, but
         // we don't want to consume the ; here, the ' signals the end, but we DO
         // want to consume it
@@ -96,12 +96,12 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
         {
             // resize
             lexer->data.double_quote_lexer.capacity *= 2;
-            lexer->data.double_quote_lexer.value =
-                xrealloc(lexer->data.double_quote_lexer.value,
-                         sizeof(char) * lexer->data.double_quote_lexer.capacity);
+            lexer->data.double_quote_lexer.value = xrealloc(
+                lexer->data.double_quote_lexer.value,
+                sizeof(char) * lexer->data.double_quote_lexer.capacity);
         }
-        lexer->data.double_quote_lexer.value[lexer->data.double_quote_lexer.len] =
-            input->current_char;
+        lexer->data.double_quote_lexer
+            .value[lexer->data.double_quote_lexer.len] = input->current_char;
         lexer->data.double_quote_lexer.len++;
         return LEXER_CONT;
     }

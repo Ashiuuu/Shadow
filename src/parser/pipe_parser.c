@@ -53,12 +53,12 @@ enum parser_status parse_pipeline(struct ast_node **ast, struct lexer *input)
 
         while (tok->type == TOKEN_EOL)
         {
-           tok = lexer_peek(input);
+            tok = lexer_peek(input);
             if (tok->type == TOKEN_ERROR)
             {
                 free_node(*ast);
                 return PARSER_ERROR;
-            } 
+            }
         }
 
         struct ast_node *right = NULL;

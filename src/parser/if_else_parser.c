@@ -18,7 +18,7 @@ enum parser_status parse_else_clause(struct ast_node **ast, struct lexer *input)
         enum parser_status stat = parse_compound_list(&body, input);
         if (stat != PARSER_FOUND)
             goto error;
-        
+
         (*ast)->data.ast_if.body_list = body;
         return PARSER_FOUND;
     }

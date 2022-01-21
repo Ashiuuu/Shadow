@@ -11,13 +11,13 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
 
     enum parser_status stat = parser_simple_command(ast, input);
     if (stat != PARSER_OK) // either propagate error
-        return stat;       // or we found a simple command and stop there
-
+        return stat; // or we found a simple command and stop there
 
     struct ast_node *com = NULL;
     stat = parse_shell_command(&com, input);
     if (stat != PARSER_FOUND)
-        return stat; // we did not find anything, and parse_command did not find anything
+        return stat; // we did not find anything, and parse_command did not find
+                     // anything
 
     // now parse redirections
     *ast = new_redirec_list_node();
@@ -33,7 +33,8 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
             return PARSER_ERROR;
         }
         if (stat == PARSER_OK) // no more redirections
-            return PARSER_FOUND; // we had a command and maybe some redirections : we found something
+            return PARSER_FOUND; // we had a command and maybe some redirections
+                                 // : we found something
 
         push_redirec_list_node(*ast, red);
     }
@@ -108,7 +109,9 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 capacity = len + 1;
                 args = xrealloc(args, sizeof(char *) * capacity);
                 args[len] = NULL;
-                c = new_command_node(args); // new_command_node frees args array, don't need to do it ourselves
+                c = new_command_node(
+                    args); // new_command_node frees args array, don't need to
+                           // do it ourselves
 
                 (*ast)->data.ast_redirec_list.child = c;
                 return PARSER_FOUND;
@@ -120,7 +123,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
             for (size_t i = 0; i < len; ++i)
                 free(args[i]);
             free(args);
-                // free redirection node
+            // free redirection node
             free_node(*ast);
             return PARSER_ERROR;
         }
