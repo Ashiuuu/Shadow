@@ -24,6 +24,46 @@
 #include "script/file_input.h"
 #include "utils/utils.h"
 
+int as_argument(char *com, char **com_argv, int printer)
+{
+    struct lexer *lexer = lexer_new(input_from_string(com));
+    struct token *tok = lexer_peek(lexer);
+
+    init_positional_arguments(com_argv);
+
+    int return_status = 0;
+
+    while (tok->type != TOKEN_EOF)
+    {
+        struct ast_node *ast = NULL;
+        enum parser_status stat = parse_input(&ast, lexer);
+        
+        if (stat == PARSER_ERROR)
+        {
+            free_node(ast);
+            return 2;
+        }
+        if (printer == 1)
+        {
+            print_ast(ast, "");
+        }
+        if (ast == NULL)
+            continue;
+        return_status = exec_node(ast);
+        free_node(ast);
+
+        if (printer == 1)
+        {
+            write_file("}\n");
+        }
+        tok = lexer_peek(lexer);
+    }
+
+
+    lexer_free(lexer);
+    return return_status;
+}
+
 /**
  * @brief Main function
  *
@@ -41,7 +81,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        struct ast_node *ast = NULL;
+        //struct ast_node *ast = NULL;
         int printer = 0;
         while (1)
         {
@@ -62,30 +102,7 @@ int main(int argc, char *argv[])
             switch (opt)
             {
             case 'c':
-                if (strcmp(optarg, "\0") == 0)
-                    return 0;
-                enum parser_status stat =
-                    parse_input(&ast, lexer_new(input_from_string(optarg)));
-                if (printer == 1)
-                {
-                    print_ast(ast, "");
-                }
-                if (stat == PARSER_ERROR)
-                {
-                    free_node(ast);
-                    return 2;
-                }
-                if (ast == NULL)
-                    return 0;
-                int return_status = exec_node(ast);
-                free_node(ast);
-
-                if (printer == 1)
-                {
-                    write_file("}\n");
-                }
-                return return_status;
-                break;
+                return as_argument(optarg, argv + optind, printer);
             case '?':
                 if (optopt == 'c')
                     printf("Option -c needs an argument\n");
