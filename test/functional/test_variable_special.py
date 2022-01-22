@@ -4,15 +4,11 @@ import pytest
 
 @pytest.mark.timeout(2)
 def test_special_code_value():
-    os.popen("echo toto")
-    result1 = subprocess.run(["./42sh", "-c", "echo $?"], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    os.popen("echo toto")
-    model1 = subprocess.run(["bash", "--posix","-c", "$?"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    result1 = subprocess.run(["./42sh", "-c", "echo toto; echo \"$?\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    model1 = subprocess.run(["bash", "--posix","-c", "echo toto; echo \"$?\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
-    os.popen("s")
-    result2 = subprocess.run(["./42sh", "-c", "$?"], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    os.popen("s")
-    model2 = subprocess.run(["bash", "--posix","-c", "$?"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    result2 = subprocess.run(["./42sh", "-c", "s; echo \"$?\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    model2 = subprocess.run(["bash", "--posix","-c", "s; echo \"$?\""], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     assert result1 == model1
     assert result2 == model2
