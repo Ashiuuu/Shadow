@@ -97,11 +97,13 @@ int exec_command_node(struct ast_node *node)
     if (strcmp(node->data.ast_command.args_strings[0], "echo") == 0)
     {
         status = echo(node);
+        variable_push_int("?", status);
         return status;
     }
     if (strcmp(node->data.ast_command.args_strings[0], "cd") == 0)
     {
         status = cd(node);
+        variable_push_int("?", status);
         return status;
     }
     if (strcmp(node->data.ast_command.args_strings[0], "exit") == 0)
@@ -135,5 +137,6 @@ int exec_command_node(struct ast_node *node)
         // parent process
         wait(&status); // wait for child
     }
+    variable_push_int("?", WEXITSTATUS(status));
     return WEXITSTATUS(status);
 }
