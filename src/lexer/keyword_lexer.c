@@ -45,7 +45,7 @@ enum lexer_state keyword_lexer_consume_char(struct general_lexer *lexer,
                .word_len) // we already went through the last char
     {
         if (input->current_char == ' ' || input->current_char == ';'
-            || input->current_char == EOF) // punctuation
+            || input->current_char == EOF || (input->current_char == '\\' && input->next_char == 'n')) // punctuation
         {
             lexer->state = LEXER_ACCEPT;
             return LEXER_ACCEPT;
