@@ -73,7 +73,7 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
     // escape or detect \n and things like that
     if (input->current_char == '\\')
     {
-        if (input->next_char == 'n')
+        if (input->next_char == 'x')
             valid_state = 1;
         else if (input->next_char == '\'')
         {
