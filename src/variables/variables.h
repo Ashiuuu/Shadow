@@ -7,7 +7,7 @@ struct linked_list
     char *value;
 };
 
-struct linked_list *variables;
+extern struct linked_list *variables;
 
 struct linked_list *new_linked_list();
 void free_linked_list(struct linked_list *list);

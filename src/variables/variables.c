@@ -5,6 +5,8 @@
 #include "variables.h"
 #include "utils.h"
 
+struct linked_list *variables = NULL;
+
 struct linked_list *new_linked_list()
 {
     struct linked_list *ret = xmalloc(sizeof(struct linked_list));
