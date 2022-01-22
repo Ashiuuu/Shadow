@@ -11,3 +11,6 @@ def test_special_UID_and_RANDOM():
 
 def test_number_var():
     run_test_var.run_test_var("test/functional/variable/var_number.sh", "un\"deux\"trois\"quatre\"cinq")
+
+def test_print_param():
+    run_test_var.run_test_var("test/functional/variable/var_print_param.sh", "Hello World !")
