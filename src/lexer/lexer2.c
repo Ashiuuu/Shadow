@@ -42,6 +42,14 @@ int right_redirection_switch(struct lexer *lexer)
 
 int short_token_switch(struct lexer *lexer)
 {
+    if (lexer->input->current_char == '\\' && lexer->input->next_char == 'n')
+    {
+        pop_char(lexer->input);
+        pop_char(lexer->input);
+        token_swap(lexer, token_new(TOKEN_EOL));
+        return 1;
+    }
+
     switch (lexer->input->current_char)
     {
     case EOF:

@@ -67,17 +67,21 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_ERROR;
 
     int accepted = is_accepted_char(input);
+    int valid_state = 0;
 
+
+    // escape or detect \n and things like that
     if (input->current_char == '\\')
     {
-        pop_char(input);
-        switch (input->current_char)
+        if (input->next_char == 'n')
+            valid_state = 1;
+        else if (input->next_char == '\'')
         {
-        case '\'':
+            pop_char(input);
             accepted = 1;
-            break;
         }
     }
+
 
     if (accepted)
     {
@@ -95,7 +99,7 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_CONT;
     }
 
-    if (input->current_char == ' ' || input->current_char == ';'
+    if (valid_state == 1 || input->current_char == ' ' || input->current_char == ';'
         || input->current_char == '\n'
         || input->current_char == EOF) // end of word
     {
