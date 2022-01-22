@@ -6,6 +6,8 @@
 
 struct lexer *lexer_new(struct INPUT *input_stream)
 {
+    if (input_stream == NULL)
+        return NULL;
     struct lexer *ret = malloc(sizeof(struct lexer));
     if (ret == NULL)
     {
@@ -68,6 +70,11 @@ void true_lexer_reset(struct lexer *lexer)
 
 struct token *read_until_new_token(struct lexer *lexer)
 {
+    if (lexer->input->current_char == '#')
+    {
+        while (lexer->input->current_char != '\n')
+            pop_char(lexer->input);
+    }
     while (lexer->input->current_char == ' '
            || lexer->input->current_char == '\t')
     {

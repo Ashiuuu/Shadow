@@ -1,7 +1,49 @@
 #include "file_input.h"
 #include "variables.h"
+#include "lexer.h"
 
-void file_input(char **cmd_file)
+int file_input(char **cmd_file)
+{
+    init_positional_arguments(cmd_file);
+
+    struct lexer *lexer = lexer_new(input_from_file(cmd_file[0]));
+    if (lexer == NULL)
+    {
+        if(variables != NULL)
+            free_linked_list(variables);
+        fprintf(stderr, "Unable to open %s\n", cmd_file[0]);
+        return 127;
+    }
+
+    init_positional_arguments(cmd_file);
+
+    struct token *tok = lexer_peek(lexer);
+    int return_status = 0;
+
+    while (tok->type != TOKEN_EOF)
+    {
+        struct ast_node *ast = NULL;
+        enum parser_status stat = parse_input(&ast, lexer);
+        
+        if (stat == PARSER_ERROR)
+        {
+            free_node(ast);
+            return 2;
+        }
+
+        if (ast == NULL)
+            continue;
+        return_status = exec_node(ast);
+        free_node(ast);
+
+        tok = lexer_peek(lexer);
+    }
+
+    lexer_free(lexer);
+    return return_status;
+}
+
+/*void file_input(char **cmd_file)
 {
     char *line = NULL;
     size_t len = 0;
@@ -12,7 +54,7 @@ void file_input(char **cmd_file)
         if(variables)
             free_linked_list(variables);
         printf("Unable to open %s\n", cmd_file[0]);
-        push_linked_list(variables, "?", "-1");
+        push_linked_list(variables, "?", "127");
         return;
     }
 
@@ -43,4 +85,4 @@ void file_input(char **cmd_file)
     fclose(fd);
     if (line)
         free(line);
-}
+}*/

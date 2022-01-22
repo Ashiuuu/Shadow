@@ -21,6 +21,8 @@ struct INPUT *new_input(FILE *stream)
 struct INPUT *input_from_string(char *s)
 {
     FILE *stream = string_to_stream(s);
+    if (stream == NULL)
+        return NULL;
     return new_input(stream);
 }
 

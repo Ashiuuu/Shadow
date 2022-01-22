@@ -73,6 +73,7 @@ int as_argument(char *com, char **com_argv, int printer)
  */
 int main(int argc, char *argv[])
 {
+    int return_status = 0;
     variables = new_linked_list();
     init_variables();
     if (argc == 1)
@@ -95,14 +96,14 @@ int main(int argc, char *argv[])
             int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
             {
-                file_input(argv + 1);
+                return_status = my_file_input(argv + 1);
                 break;
             }
 
             switch (opt)
             {
             case 'c':
-                return as_argument(optarg, argv + optind, printer);
+                return_status = as_argument(optarg, argv + optind, printer);
             case '?':
                 if (optopt == 'c')
                     printf("Option -c needs an argument\n");
@@ -120,7 +121,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    int status_code = atoi(get_linked_list(variables, "?"));
-    free_linked_list(variables);
-    return status_code;
+    //int status_code = atoi(get_linked_list(variables, "?"));
+    //free_linked_list(variables);
+    return status_status;
 }
