@@ -98,6 +98,9 @@ int main(int argc, char *argv[])
             if (opt == -1)
             {
                 file_input(argv + 1);
+                int status_code = atoi(get_linked_list(variables, "?"));
+                free_linked_list(variables);
+                return status_code;
             }
 
             switch (opt)
