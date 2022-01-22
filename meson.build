@@ -64,6 +64,7 @@ exec_files = [
     'src/exec/variable_exec.c',
 
     'src/variables/variables.c',
+    'src/variables/variables2.c',
 ]
 
 printer_files = [

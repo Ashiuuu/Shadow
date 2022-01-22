@@ -19,5 +19,5 @@
  *
  * @param cmd_file
  */
-int file_input(char **cmd_file);
+void file_input(char **cmd_file);
 //int my_file_input(char **cmd_file);

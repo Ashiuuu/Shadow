@@ -2,7 +2,7 @@
 #include "variables.h"
 #include "lexer.h"
 
-int file_input(char **cmd_file)
+void file_input(char **cmd_file)
 {
     init_positional_arguments(cmd_file);
 
@@ -12,10 +12,9 @@ int file_input(char **cmd_file)
         if(variables != NULL)
             free_linked_list(variables);
         fprintf(stderr, "Unable to open %s\n", cmd_file[0]);
-        return 127;
+        variable_push_int("?", 127);
+        return;
     }
-
-    init_positional_arguments(cmd_file);
 
     struct token *tok = lexer_peek(lexer);
     int return_status = 0;
@@ -28,7 +27,9 @@ int file_input(char **cmd_file)
         if (stat == PARSER_ERROR)
         {
             free_node(ast);
-            return 2;
+            variable_push_int("?", 2);
+            lexer_free(lexer);
+            return;
         }
 
         if (ast == NULL)
@@ -39,8 +40,8 @@ int file_input(char **cmd_file)
         tok = lexer_peek(lexer);
     }
 
+    variable_push_int("?", return_status);
     lexer_free(lexer);
-    return return_status;
 }
 
 /*void file_input(char **cmd_file)

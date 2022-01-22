@@ -24,7 +24,7 @@
 #include "script/file_input.h"
 #include "utils/utils.h"
 
-int as_argument(char *com, char **com_argv, int printer)
+void as_argument(char *com, char **com_argv, int printer)
 {
     struct lexer *lexer = lexer_new(input_from_string(com));
     struct token *tok = lexer_peek(lexer);
@@ -41,7 +41,9 @@ int as_argument(char *com, char **com_argv, int printer)
         if (stat == PARSER_ERROR)
         {
             free_node(ast);
-            return 2;
+            variable_push_int("?", 2);
+            lexer_free(lexer);
+            return;
         }
         if (printer == 1)
         {
@@ -61,7 +63,7 @@ int as_argument(char *com, char **com_argv, int printer)
 
 
     lexer_free(lexer);
-    return return_status;
+    variable_push_int("?", return_status);
 }
 
 /**
@@ -73,7 +75,6 @@ int as_argument(char *com, char **com_argv, int printer)
  */
 int main(int argc, char *argv[])
 {
-    int return_status = 0;
     variables = new_linked_list();
     init_variables();
     if (argc == 1)
@@ -96,14 +97,16 @@ int main(int argc, char *argv[])
             int opt = getopt_long(argc, argv, "c:p?", long_options, NULL);
             if (opt == -1)
             {
-                return_status = my_file_input(argv + 1);
-                break;
+                file_input(argv + 1);
             }
 
             switch (opt)
             {
             case 'c':
-                return_status = as_argument(optarg, argv + optind, printer);
+                as_argument(optarg, argv + optind, printer);
+                int status_code = atoi(get_linked_list(variables, "?"));
+                free_linked_list(variables);
+                return status_code;
             case '?':
                 if (optopt == 'c')
                     printf("Option -c needs an argument\n");
@@ -121,7 +124,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    //int status_code = atoi(get_linked_list(variables, "?"));
-    //free_linked_list(variables);
-    return status_status;
+    int status_code = atoi(get_linked_list(variables, "?"));
+    free_linked_list(variables);
+    return status_code;
 }

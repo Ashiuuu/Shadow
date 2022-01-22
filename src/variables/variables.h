@@ -16,3 +16,4 @@ char *get_linked_list(struct linked_list *list, char *name);
 
 void init_variables();
 void init_positional_arguments(char **args);
+void variable_push_int(char *name, int a);
