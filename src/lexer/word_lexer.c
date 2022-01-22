@@ -5,7 +5,7 @@ int is_accepted_char(struct INPUT *input)
 {
     char c = input->current_char;
     // char n = input->next_char;
-    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',' || c == '$' || is_special(c);
+    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',' || c == '$' || is_special(c) || c == '_';
 }
 
 struct general_lexer *new_word_lexer()
