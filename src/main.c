@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
                 if (stat == PARSER_ERROR)
                 {
                     free_node(ast);
-                    return -1;
+                    return 2;
                 }
                 if (ast == NULL)
                     return 0;
