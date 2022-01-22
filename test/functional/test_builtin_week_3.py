@@ -15,10 +15,6 @@ def test_var_display():
     run_test.run_test_command("echo \"$PWD\"")
 
 @pytest.mark.timeout(2)
-def test_function():
-    run_test.run_test_command("foo() { echo this is inside a command block; }")
-
-@pytest.mark.timeout(2)
 def test_echo_tr():
     run_test.run_test_command("{ echo a; echo b; } | tr b h")
 
