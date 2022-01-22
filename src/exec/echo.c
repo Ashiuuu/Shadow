@@ -26,6 +26,8 @@ int echo(struct ast_node *node)
 
     size_t args_len = array_len(node->data.ast_command.args_strings);
     optind = 1;
+    opterr = 0;
+    size_t com_args_len = 0;
     opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
     while (opt != -1)
     {
@@ -38,7 +40,7 @@ int echo(struct ast_node *node)
             eflag = 1;
             break;
         case '?':
-            printf("echo: Unknown option character\n");
+            com_args_len++;
             break;
         default:
             fprintf(stderr, "error while parsing echo options\n");
@@ -46,6 +48,8 @@ int echo(struct ast_node *node)
         }
         opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
     }
+
+    optind -= com_args_len;
 
     for (size_t i = optind; node->data.ast_command.args_strings[i] != NULL; i++)
     {
