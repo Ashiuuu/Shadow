@@ -127,7 +127,7 @@ int exec_command_node(struct ast_node *node)
         execvp(node->data.ast_command.args_strings[0], node->data.ast_command.args_strings);
         fprintf(stderr, "Could not execute %s\n",
                 node->data.ast_command.args_strings[0]);
-        exit(-1);
+        exit(127);
         // return -1;
     }
     else
@@ -135,6 +135,5 @@ int exec_command_node(struct ast_node *node)
         // parent process
         wait(&status); // wait for child
     }
-
-    return status;
+    return WEXITSTATUS(status);
 }
