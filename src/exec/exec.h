@@ -547,5 +547,6 @@ int is_digit(char c);
 
 char *variable_search_and_replace(char *string);
 char *parse_special(char *string);
+char *parse_alpha(char *string);
 char *parse_variable_bracket(char *string);
 int is_special(char c);

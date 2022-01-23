@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "variables.h"
 #include "utils.h"
@@ -9,10 +10,7 @@ void init_variables()
     /*char *uid = xmalloc(sizeof(char) * 5);
     sprintf(uid, "%lu", getuid);
     push_linked_list(variables, "UID", uid);*/
-    char *pid = xmalloc(sizeof(char) * 10);
-    sprintf(pid, "%d", getpid());
-    push_linked_list(variables, "$", pid);
-    free(pid);
+    variable_push_int("$", getpid());
 }
 
 void init_positional_arguments(char **args)
@@ -48,8 +46,18 @@ void init_positional_arguments(char **args)
 
 void variable_push_int(char *name, int a)
 {
-    char *temp = xcalloc(10, sizeof(char));
+    char *temp = xcalloc(15, sizeof(char));
     sprintf(temp, "%d", a);
     push_linked_list(variables, name, temp);
     free(temp);
+}
+
+char *get_variable(char *name)
+{
+    if (strcmp(name, "RANDOM") == 0)
+    {
+        variable_push_int("RANDOM", random());
+        return get_linked_list(variables, "RANDOM");
+    }
+    return get_linked_list(variables, name);
 }
