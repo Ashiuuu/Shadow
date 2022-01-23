@@ -86,3 +86,7 @@ def test_cd_point_point():
     run_test.run_test_command("cd ..")
     run_test.run_test_command("ls")
     os.popen("rm -r tess")
+
+@pytest.mark.timeout(5)
+def test_cd_non_existent_file():
+    run_test.run_test_command("cd 42sh_le_sang")
