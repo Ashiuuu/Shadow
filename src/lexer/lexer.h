@@ -121,6 +121,15 @@ struct io_number_lexer
     size_t capacity;
 };
 
+
+struct assignment_word_lexer
+{
+    char *value;
+    size_t len;
+    size_t capacity;
+    int equal_flag;
+};
+
 /**
  * @brief Enum that holds the state of a lexer
  *
@@ -147,6 +156,7 @@ enum lexer_type
     SING_QUOTE_LEXER,
     DOUBLE_QUOTE_LEXER,
     IO_NUMBER_LEXER,
+    ASSIGNMENT_WORD_LEXER,
 };
 
 /**
@@ -161,6 +171,7 @@ union lexer_data
     struct sing_quote_lexer sing_quote_lexer;
     struct double_quote_lexer double_quote_lexer;
     struct io_number_lexer io_number_lexer;
+    struct assignment_word_lexer assignment_word_lexer;
 };
 
 /**
@@ -237,6 +248,14 @@ void free_io_number_lexer(struct general_lexer *lexer);
 void reset_io_number_lexer(struct general_lexer *lexer);
 enum lexer_state io_number_lexer_consume_char(struct general_lexer *lexer,
                                               struct INPUT *input);
+
+// Assignment word lexer
+
+struct general_lexer *new_assigment_word_lexer();
+void free_assignment_word_lexer(struct general_lexer *lexer);
+void reset_assignment_word_lexer(struct general_lexer *lexer);
+enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
+
 
 struct lexer *lexer_new(struct INPUT *input_stream);
 void lexer_free(struct lexer *lexer);

@@ -16,6 +16,8 @@ enum lexer_state general_lexer_consume_char(struct general_lexer *lexer,
         return double_quote_lexer_consume_char(lexer, input);
     case IO_NUMBER_LEXER:
         return io_number_lexer_consume_char(lexer, input);
+    case ASSIGNMENT_WORD_LEXER:
+        return assignment_word_lexer_consume_char(lexer, input);
     default:
         fprintf(stderr, "unknown lexer type [CONSUME]\n");
         return LEXER_ERROR;
@@ -41,6 +43,9 @@ void general_lexer_free(struct general_lexer *lexer)
     case IO_NUMBER_LEXER:
         free_io_number_lexer(lexer);
         break;
+    case ASSIGNMENT_WORD_LEXER:
+        free_assignment_word_lexer(lexer);
+        break;
     default:
         fprintf(stderr, "unknown lexer type [FREE]\n");
     }
@@ -65,6 +70,9 @@ void reset_lexer(struct general_lexer *lexer)
     case IO_NUMBER_LEXER:
         reset_io_number_lexer(lexer);
         break;
+    case ASSIGNMENT_WORD_LEXER:
+        reset_assignment_word_lexer(lexer);
+        break;
     default:
         fprintf(stderr, "unknown lexer type [RESET]\n");
     }
@@ -85,6 +93,8 @@ struct token *extract_token(struct general_lexer *lexer)
     case IO_NUMBER_LEXER:
         return token_new_with_value(TOKEN_IO_NUMBER,
                                     lexer->data.io_number_lexer.value);
+    case ASSIGNMENT_WORD_LEXER:
+        return token_new_with_value(TOKEN_ASSIGNMENT_WORD, lexer->data.assignment_word_lexer.value);
     default:
         fprintf(stderr, "unknown lexer type [EXTRACT]\n");
         return token_new(TOKEN_ERROR);

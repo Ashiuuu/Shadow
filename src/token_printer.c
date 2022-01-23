@@ -63,6 +63,7 @@ int main(int argc, char **argv)
         [TOKEN_AND] = "&&",
         [TOKEN_OR] = "||",
         [TOKEN_EXPAND] = "EXPAND",
+        [TOKEN_ASSIGNMENT_WORD] = "ASSIGNMENT_WORD",
     };
 
     struct INPUT *input = input_from_string(argv[1]);
@@ -77,7 +78,7 @@ int main(int argc, char **argv)
         printf("%s", tab[type]);
         if (type == TOKEN_ERROR)
             break;
-        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER || type == TOKEN_EXPAND)
+        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER || type == TOKEN_EXPAND || type == TOKEN_ASSIGNMENT_WORD)
             printf(" (%s)", token->value);
         printf("\n");
     }

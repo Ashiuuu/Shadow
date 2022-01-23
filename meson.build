@@ -35,6 +35,7 @@ lexer_files = [
     'src/lexer/double_quote_lexer.c',
     'src/lexer/io_number_lexer.c',
     'src/lexer/general_lexer.c',
+    'src/lexer/assignment_word_lexer.c',
 ]
 
 parser_files = [

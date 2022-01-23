@@ -71,6 +71,8 @@ enum token_type
     TOKEN_OR,
     /// other keyword or token
     TOKEN_ERROR,
+    /// Assignment word for variables
+    TOKEN_ASSIGNMENT_WORD,
 };
 
 /**
