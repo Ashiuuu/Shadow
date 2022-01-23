@@ -124,6 +124,11 @@ struct token *read_until_new_token(struct lexer *lexer)
 
 struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
 {
+    if (lexer->input->current_char == '#')
+    {
+        while (lexer->input->current_char != '\n')
+            pop_char(lexer->input);
+    }
     while (lexer->input->current_char == ' '
            || lexer->input->current_char == '\t')
     {
