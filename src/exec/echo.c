@@ -12,7 +12,7 @@ int echo(struct ast_node *node)
         return -1;
     }
     if (node->data.ast_command.args_strings != NULL
-        && strcmp(node->data.ast_command.args_strings[0], "echo") != 0)
+            && strcmp(node->data.ast_command.args_strings[0], "echo") != 0)
     {
         fprintf(stderr, "trying to call echo on non echo command node\n");
         return -1;
@@ -26,32 +26,33 @@ int echo(struct ast_node *node)
     int rflag = 0;
 
     size_t args_len = array_len(node->data.ast_command.args_strings);
-    optind = 1;
+    optind = 0;
     opterr = 0;
-    size_t com_args_len = 0;
+    int magic = 1;
     opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
-    while (opt != -1 && rflag != 1)
+    while (opt != -1 && rflag !=1)
     {
         switch (opt)
         {
-        case 'n':
-            nflag = 1;
-            break;
-        case 'e':
-            eflag = 1;
-            break;
-        case '?':
-            com_args_len++;
-            rflag = 1;
-            break;
-        default:
-            fprintf(stderr, "error while parsing echo options\n");
-            abort();
+            case 'n':
+                magic++;
+                nflag = 1;
+                break;
+            case 'e':
+                magic++;
+                eflag = 1;
+                break;
+            case '?':
+                rflag = 1;
+                break;
+            default:
+                fprintf(stderr, "error while parsing echo options\n");
+                abort();
         }
         opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
     }
 
-    optind -= com_args_len;
+    optind = magic;
 
     if (rflag == 1 && eflag == 0)
     {
@@ -69,15 +70,15 @@ int echo(struct ast_node *node)
         return 0;
     }
 
+
     for (size_t i = optind; node->data.ast_command.args_strings[i] != NULL; i++)
     {
         char *string = node->data.ast_command.args_strings[i];
         if (eflag == 0)
         {
             for (size_t j = 0; string[j] != '\0'; ++j)
-            {
                 printf("%c", string[j]);
-            }
+
             if (node->data.ast_command.args_strings[i + 1] != NULL)
                 printf(" ");
         }
@@ -89,14 +90,14 @@ int echo(struct ast_node *node)
                 {
                     switch (string[k + 1])
                     {
-                    case 'n':
-                        printf("\n");
-                        break;
-                    case 't':
-                        printf("\t");
-                        break;
-                    default:
-                        printf("%c", string[k + 1]);
+                        case 'n':
+                            printf("\n");
+                            break;
+                        case 't':
+                            printf("\t");
+                            break;
+                        default:
+                            printf("%c", string[k + 1]);
                     }
                     k++;
                 }
