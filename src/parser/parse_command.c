@@ -42,6 +42,32 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
     return PARSER_FOUND; // default, shouldn't come here
 }
 
+enum parser_status parse_assignment(struct ast_node **ast, struct lexer *input)
+{
+    struct token *tok = lexer_peek(input);
+    if (tok->type == TOKEN_ERROR)
+        return PARSER_ERROR;
+
+    *ast = new_assignment_node(tok->value);
+    tok = lexer_pop(input);
+    if (tok->type == TOKEN_ERROR)
+    {
+        free_node(*ast);
+        return PARSER_ERROR;
+    }
+    if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND || tok->type == TOKEN_SINGLEQUOTE)
+    {
+        (*ast)->data.ast_assignment.tok = token_dup(tok);
+        lexer_pop(input);
+        return PARSER_FOUND;
+    }
+    else
+    {
+        free_node(*ast);
+        return PARSER_ERROR;
+    }
+}
+
 // Grammar :
 //   (prefix)+
 // | (prefix)* (element)+
@@ -55,24 +81,7 @@ enum parser_status parser_simple_command(struct ast_node **ast,
 
     if (tok->type == TOKEN_ASSIGNMENT_WORD)
     {
-        *ast = new_assignment_node(tok->value);
-        tok = lexer_pop(input);
-        if (tok->type == TOKEN_ERROR)
-        {
-            free_node(*ast);
-            return PARSER_ERROR;
-        }
-        if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND || tok->type == TOKEN_SINGLEQUOTE)
-        {
-            (*ast)->data.ast_assignment.tok = token_dup(tok);
-            lexer_pop(input);
-            return PARSER_FOUND;
-        }
-        else
-        {
-            free_node(*ast);
-            return PARSER_ERROR;
-        }
+        return parse_assignment(ast, input);
     }
     *ast = new_redirec_list_node();
 
@@ -129,9 +138,8 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 capacity = len + 1;
                 args = xrealloc(args, sizeof(struct token *) * capacity);
                 args[len] = NULL;
-                c = new_command_node(
-                    args); // new_command_node frees args array, don't need to
-                           // do it ourselves
+                // new_command_node frees args array, don't need to do it ourselves
+                c = new_command_node(args); 
 
                 (*ast)->data.ast_redirec_list.child = c;
                 return PARSER_FOUND;

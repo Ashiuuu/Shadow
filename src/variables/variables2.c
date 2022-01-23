@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
+#include <unistd.h>
 
 #include "variables.h"
 #include "utils.h"
@@ -9,10 +11,17 @@ void init_variables()
 {
     srand(time(NULL));
     push_linked_list(variables, "?", "0");
-    /*char *uid = xmalloc(sizeof(char) * 5);
-    sprintf(uid, "%lu", getuid);
-    push_linked_list(variables, "UID", uid);*/
+    char uid[10];
+    sprintf(uid, "%lu", (long unsigned int)getuid());
+    push_linked_list(variables, "UID", uid);
     variable_push_int("$", getpid());
+    char ifs[] = {'\n', '\0'};
+    push_linked_list(variables, "IFS", ifs);
+    char pwd[PATH_MAX];
+    if (getcwd(pwd, sizeof(pwd)) != NULL)
+    {
+        push_linked_list(variables, "OLDPWD", pwd);
+    }
 }
 
 void init_positional_arguments(char **args)

@@ -78,7 +78,6 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         }
     }
 
-
     if (accepted)
     {
         // valid character

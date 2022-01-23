@@ -8,19 +8,22 @@ struct token *lexer_peek(struct lexer *lexer)
     return lexer->current_token;
 }
 
-struct token *lexer_pop(struct lexer *lexer)
+int left_redirection_switch(struct lexer *lexer)
 {
-    return read_until_new_token(lexer);
-}
-
-struct token *lexer_pop_ignore_keyword(struct lexer *lexer)
-{
-    return read_until_new_token_ignore_keywords(lexer);
-}
-
-struct token *lexer_pop_ignore_keyword_and_assignment(struct lexer *lexer)
-{
-    return read_until_new_token_ignore_keywords_and_assignment(lexer);
+   switch (lexer->input->current_char)
+    {
+    case '>': // <>
+        pop_char(lexer->input);
+        token_swap(lexer, token_new(TOKEN_BIRED));
+        return 1;
+    case '&': // <&
+        pop_char(lexer->input);
+        token_swap(lexer, token_new(TOKEN_FDRED_IN));
+        return 1;
+    default: // only '<'
+        token_swap(lexer, token_new(TOKEN_FRED_IN));
+        return 1;
+    } 
 }
 
 int right_redirection_switch(struct lexer *lexer)
@@ -47,14 +50,6 @@ int right_redirection_switch(struct lexer *lexer)
 
 int short_token_switch(struct lexer *lexer)
 {
-    /*if (lexer->input->current_char == '\\' && lexer->input->next_char == 'n')
-    {
-        pop_char(lexer->input);
-        pop_char(lexer->input);
-        token_swap(lexer, token_new(TOKEN_EOL));
-        return 1;
-    }*/
-
     switch (lexer->input->current_char)
     {
     case EOF:
@@ -98,20 +93,7 @@ int short_token_switch(struct lexer *lexer)
         return right_redirection_switch(lexer);
     case '<':
         pop_char(lexer->input);
-        switch (lexer->input->current_char)
-        {
-        case '>': // <>
-            pop_char(lexer->input);
-            token_swap(lexer, token_new(TOKEN_BIRED));
-            return 1;
-        case '&': // <&
-            pop_char(lexer->input);
-            token_swap(lexer, token_new(TOKEN_FDRED_IN));
-            return 1;
-        default: // only '<'
-            token_swap(lexer, token_new(TOKEN_FRED_IN));
-            return 1;
-        }
+        return left_redirection_switch(lexer);
     }
     return 0;
 }

@@ -29,6 +29,7 @@ lexer_files = [
     'src/lexer/lexer.c',
     'src/lexer/lexer2.c',
     'src/lexer/lexer3.c',
+    'src/lexer/lexer4.c',
     'src/lexer/word_lexer.c',
     'src/lexer/keyword_lexer.c',
     'src/lexer/sing_quote_lexer.c',
@@ -63,6 +64,7 @@ exec_files = [
     'src/exec/pipe_node.c',
     'src/exec/and_or_node.c',
     'src/exec/variable_exec.c',
+    'src/exec/variable_exec2.c',
     'src/exec/assignment_node.c',
 
     'src/variables/variables.c',

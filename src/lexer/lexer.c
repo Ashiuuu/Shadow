@@ -45,21 +45,6 @@ struct lexer *lexer_new(struct INPUT *input_stream)
     return ret;
 }
 
-void lexer_free(struct lexer *lexer)
-{
-    if (lexer->current_token != NULL)
-        free(lexer->current_token);
-    if (lexer->input != NULL)
-        free_input(lexer->input);
-    if (lexer->lexer_list != NULL)
-    {
-        for (size_t i = 0; i < lexer->list_len; ++i)
-            general_lexer_free(lexer->lexer_list[i]);
-        free(lexer->lexer_list);
-    }
-    free(lexer);
-}
-
 void true_lexer_reset(struct lexer *lexer)
 {
     if (lexer->current_token != NULL)
