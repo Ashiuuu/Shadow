@@ -69,3 +69,11 @@ def test_echo_param_e_hard():
 @pytest.mark.timeout(2)
 def test_echo_param_e_hard():
     run_test.run_test_command("echo -e \t \n Hello Friend")
+
+@pytest.mark.timeout(2)
+def test_echo_param_n_lot_param():
+    run_test.run_test_command("echo -n -b -e -ta Hello Friend")
+
+@pytest.mark.timeout(2)
+def test_echo_param_e_lot_param():
+    run_test.run_test_command("echo -e -b -y -td Hello Friend")
