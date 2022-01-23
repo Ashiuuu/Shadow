@@ -23,5 +23,3 @@ def test_pipe_wrong_syntax():
 def test_pipe_word_cut():
     run_test.run_test_command("ls -l | wc")
 
-
-    
