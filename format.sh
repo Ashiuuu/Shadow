@@ -17,6 +17,9 @@ clang-format -i src/interactive/*.c;
 clang-format -i src/interactive/*.h;
 clang-format -i src/script/*.c;
 clang-format -i src/script/*.h;
+clang-format -i src/variables/*.c;
+clang-format -i src/variables/*.h;
+
 
 clang-format -i test/*.c;
 clang-format -i test/io_test/*.c;
