@@ -56,7 +56,8 @@ char *get_variable(char *name)
 {
     if (strcmp(name, "RANDOM") == 0)
     {
-        variable_push_int("RANDOM", random());
+        //variable_push_int("RANDOM", random());
+        variable_push_int("RANDOM", rand_r());
         return get_linked_list(variables, "RANDOM");
     }
     return get_linked_list(variables, name);
