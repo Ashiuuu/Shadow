@@ -62,7 +62,8 @@ enum parser_status parser_simple_command(struct ast_node **ast,
             free_node(*ast);
             return PARSER_ERROR;
         }
-        if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND || tok->type == TOKEN_SINGLEQUOTE)
+        if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND
+            || tok->type == TOKEN_SINGLEQUOTE)
         {
             (*ast)->data.ast_assignment.tok = token_dup(tok);
             lexer_pop(input);

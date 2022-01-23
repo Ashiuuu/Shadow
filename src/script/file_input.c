@@ -1,6 +1,7 @@
 #include "file_input.h"
-#include "variables.h"
+
 #include "lexer.h"
+#include "variables.h"
 
 void file_input(char **cmd_file)
 {
@@ -9,7 +10,7 @@ void file_input(char **cmd_file)
     struct lexer *lexer = lexer_new(input_from_file(cmd_file[0]));
     if (lexer == NULL)
     {
-        if(variables != NULL)
+        if (variables != NULL)
             free_linked_list(variables);
         fprintf(stderr, "Unable to open %s\n", cmd_file[0]);
         variable_push_int("?", 127);
@@ -23,7 +24,7 @@ void file_input(char **cmd_file)
     {
         struct ast_node *ast = NULL;
         enum parser_status stat = parse_input(&ast, lexer);
-        
+
         if (stat == PARSER_ERROR)
         {
             free_node(ast);

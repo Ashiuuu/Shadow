@@ -9,7 +9,8 @@ struct general_lexer *new_assigment_word_lexer()
     ret->state = LEXER_CONT;
     ret->data.assignment_word_lexer.capacity = 10;
     ret->data.assignment_word_lexer.len = 0;
-    ret->data.assignment_word_lexer.value = xmalloc(sizeof(char) * ret->data.assignment_word_lexer.capacity);
+    ret->data.assignment_word_lexer.value =
+        xmalloc(sizeof(char) * ret->data.assignment_word_lexer.capacity);
     ret->data.assignment_word_lexer.equal_flag = 0;
 
     return ret;
@@ -44,11 +45,13 @@ void reset_assignment_word_lexer(struct general_lexer *lexer)
     lexer->data.assignment_word_lexer.len = 0;
     if (lexer->data.assignment_word_lexer.value != NULL)
         free(lexer->data.assignment_word_lexer.value);
-    lexer->data.assignment_word_lexer.value = xmalloc(sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+    lexer->data.assignment_word_lexer.value =
+        xmalloc(sizeof(char) * lexer->data.assignment_word_lexer.capacity);
     lexer->data.assignment_word_lexer.equal_flag = 0;
 }
 
-enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input)
+enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
+                                                    struct INPUT *input)
 {
     if (lexer->type != ASSIGNMENT_WORD_LEXER)
     {
@@ -69,21 +72,29 @@ enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
     if (c == '=')
     {
         // stop parsing
-        lexer->data.assignment_word_lexer.capacity = lexer->data.assignment_word_lexer.len + 1;
-        lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
-        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = '\0';
+        lexer->data.assignment_word_lexer.capacity =
+            lexer->data.assignment_word_lexer.len + 1;
+        lexer->data.assignment_word_lexer.value =
+            xrealloc(lexer->data.assignment_word_lexer.value,
+                     sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+        lexer->data.assignment_word_lexer
+            .value[lexer->data.assignment_word_lexer.len] = '\0';
         lexer->state = LEXER_ACCEPT;
         pop_char(input); // pop '='
         return LEXER_ACCEPT;
     }
     if (is_alphanum(c) || c == '_')
     {
-        if (lexer->data.assignment_word_lexer.len == lexer->data.assignment_word_lexer.capacity)
+        if (lexer->data.assignment_word_lexer.len
+            == lexer->data.assignment_word_lexer.capacity)
         {
             lexer->data.assignment_word_lexer.capacity *= 2;
-            lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+            lexer->data.assignment_word_lexer.value = xrealloc(
+                lexer->data.assignment_word_lexer.value,
+                sizeof(char) * lexer->data.assignment_word_lexer.capacity);
         }
-        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = c;
+        lexer->data.assignment_word_lexer
+            .value[lexer->data.assignment_word_lexer.len] = c;
         lexer->data.assignment_word_lexer.len++;
         return LEXER_CONT;
     }
@@ -100,24 +111,28 @@ enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
         {
             lexer->data.assignment_word_lexer.equal_flag = 1;
         }
-        if (lexer->data.assignment_word_lexer.len == lexer->data.assignment_word_lexer.capacity)
+        if (lexer->data.assignment_word_lexer.len ==
+    lexer->data.assignment_word_lexer.capacity)
         {
             lexer->data.assignment_word_lexer.capacity *= 2;
-            lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+            lexer->data.assignment_word_lexer.value =
+    xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) *
+    lexer->data.assignment_word_lexer.capacity);
         }
-        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = c;
-        lexer->data.assignment_word_lexer.len++;
-        return LEXER_CONT;
+        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len]
+    = c; lexer->data.assignment_word_lexer.len++; return LEXER_CONT;
     }
     else
     {
         if (flag == 1) // success
         {
-            lexer->data.assignment_word_lexer.capacity = lexer->data.assignment_word_lexer.len + 1;
-            lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
-            lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = '\0';
-            lexer->state = LEXER_ACCEPT;
-            return LEXER_ACCEPT;
+            lexer->data.assignment_word_lexer.capacity =
+    lexer->data.assignment_word_lexer.len + 1;
+            lexer->data.assignment_word_lexer.value =
+    xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) *
+    lexer->data.assignment_word_lexer.capacity);
+            lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len]
+    = '\0'; lexer->state = LEXER_ACCEPT; return LEXER_ACCEPT;
         }
         else // fail, error
         {
@@ -126,4 +141,3 @@ enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
         }
     }*/
 }
-

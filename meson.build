@@ -8,7 +8,7 @@ project(
         'werror=true',
     ],
 )
-cflags = ['-D_GNU_SOURCE', '-D_POSIX_C_SOURCE=200809L']
+cflags = ['-D_POSIX_C_SOURCE=200809L']
 add_project_arguments(cflags, language: 'c')
 
 ldlibs = ['-lasan']
@@ -116,7 +116,7 @@ executable(
     common + test_files,
     include_directories: incdirs,
     #objects: '/usr/lib/libcriterion.so'
-    objects: run_command('find', '/', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
+    objects: run_command('find', '/nix', '-name', 'libcriterion.so', '-print', '-quit').stdout().strip()
 )
 
 if get_option('doc')

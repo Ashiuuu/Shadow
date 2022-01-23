@@ -1,13 +1,14 @@
 #include <string.h>
 
 #include "exec.h"
+#include "lexer.h"
 #include "utils.h"
 #include "variables.h"
-#include "lexer.h"
 
 int is_special(char c)
 {
-    return c == '@' || c == '*' || c == '?' || c == '$' || (c >= '0' && c <= '9') || c == '#';
+    return c == '@' || c == '*' || c == '?' || c == '$'
+        || (c >= '0' && c <= '9') || c == '#';
 }
 
 char *variable_search_and_replace(char *string)
@@ -15,7 +16,7 @@ char *variable_search_and_replace(char *string)
     // search for $ and call appropriate variable recognition function
     if (string == NULL)
         return NULL;
-    
+
     size_t len = strlen(string);
 
     for (size_t i = 0; i < len; ++i)
@@ -27,20 +28,23 @@ char *variable_search_and_replace(char *string)
             {
                 if (string[i + 1] == '{')
                 {
-                    name = parse_variable_bracket(string + i + 2); // skip bracket
+                    name =
+                        parse_variable_bracket(string + i + 2); // skip bracket
                     size_t name_len = strlen(name) + 2; // { and }
                     char *value = get_variable(name);
                     size_t val_len = 0;
                     if (value != NULL)
                         val_len = strlen(value);
                     char *first_half = strndup(string, i);
-                    first_half = xrealloc(first_half, sizeof(char) * (len + val_len - name_len));
+                    first_half = xrealloc(
+                        first_half, sizeof(char) * (len + val_len - name_len));
                     if (value != NULL)
                         first_half = strcat(first_half, value);
-                    first_half = strcat(first_half, (string + i + name_len + 1));
+                    first_half =
+                        strcat(first_half, (string + i + name_len + 1));
                     free(string);
                     free(name);
-                    return first_half; 
+                    return first_half;
                 }
                 else if (is_special(string[i + 1]))
                 {
@@ -51,10 +55,12 @@ char *variable_search_and_replace(char *string)
                     if (value != NULL)
                         val_len = strlen(value);
                     char *first_half = strndup(string, i);
-                    first_half = xrealloc(first_half, sizeof(char) * (len + val_len - name_len));
+                    first_half = xrealloc(
+                        first_half, sizeof(char) * (len + val_len - name_len));
                     if (value != NULL)
                         first_half = strcat(first_half, value);
-                    first_half = strcat(first_half, (string + i + name_len + 1));
+                    first_half =
+                        strcat(first_half, (string + i + name_len + 1));
                     free(string);
                     free(name);
                     return first_half;
@@ -68,10 +74,12 @@ char *variable_search_and_replace(char *string)
                     if (value != NULL)
                         val_len = strlen(value);
                     char *first_half = strndup(string, i);
-                    first_half = xrealloc(first_half, sizeof(char) * (len + val_len - name_len));
+                    first_half = xrealloc(
+                        first_half, sizeof(char) * (len + val_len - name_len));
                     if (value != NULL)
                         first_half = strcat(first_half, value);
-                    first_half = strcat(first_half, (string + i + name_len + 1));
+                    first_half =
+                        strcat(first_half, (string + i + name_len + 1));
                     free(string);
                     free(name);
                     return first_half;

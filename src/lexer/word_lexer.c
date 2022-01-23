@@ -1,11 +1,12 @@
-#include "lexer.h"
 #include "exec.h"
+#include "lexer.h"
 
 int is_accepted_char(struct INPUT *input)
 {
     char c = input->current_char;
     // char n = input->next_char;
-    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',' || c == '$' || is_special(c) || c == '_' || c == '=';
+    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ','
+        || c == '$' || is_special(c) || c == '_' || c == '=';
 }
 
 struct general_lexer *new_word_lexer()
@@ -77,7 +78,6 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
             accepted = 1;
         }
     }
-
 
     if (accepted)
     {

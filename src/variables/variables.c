@@ -1,8 +1,9 @@
-#include <string.h>
+#include "variables.h"
+
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
-#include "variables.h"
 #include "utils.h"
 
 struct linked_list *variables = NULL;
@@ -46,7 +47,8 @@ void push_linked_list(struct linked_list *list, char *name, char *value)
         }
         if (list->next != NULL) // if there is a next node
         {
-            push_linked_list(list->next, name, value); // push the variable to that next node
+            push_linked_list(list->next, name,
+                             value); // push the variable to that next node
             return;
         }
         // else, current node is not available but no next node

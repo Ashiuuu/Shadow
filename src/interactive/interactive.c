@@ -1,4 +1,5 @@
 #include "interactive.h"
+
 #include "lexer.h"
 #include "variables.h"
 
@@ -13,7 +14,7 @@ void interact()
     {
         struct ast_node *ast = NULL;
         enum parser_status stat = parse_input(&ast, lexer);
-        
+
         if (stat == PARSER_ERROR)
         {
             free_node(ast);

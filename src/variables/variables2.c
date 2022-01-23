@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "variables.h"
 #include "utils.h"
+#include "variables.h"
 
 void init_variables()
 {
@@ -43,7 +43,7 @@ void init_positional_arguments(char **args)
     char *len_string = xmalloc(sizeof(char) * 3);
     sprintf(len_string, "%ld", len);
     push_linked_list(variables, "#", len_string);
-    free(len_string);    
+    free(len_string);
 }
 
 void variable_push_int(char *name, int a)
@@ -58,7 +58,7 @@ char *get_variable(char *name)
 {
     if (strcmp(name, "RANDOM") == 0)
     {
-        //variable_push_int("RANDOM", random());
+        // variable_push_int("RANDOM", random());
         variable_push_int("RANDOM", rand());
         return get_linked_list(variables, "RANDOM");
     }

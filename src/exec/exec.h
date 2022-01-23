@@ -544,10 +544,10 @@ int exec_assignment_node(struct ast_node *node);
 int echo(struct ast_node *node);
 
 /**
- * @brief 
- * 
- * @param node 
- * @return int 
+ * @brief
+ *
+ * @param node
+ * @return int
  */
 int cd(struct ast_node *node);
 

@@ -121,7 +121,6 @@ struct io_number_lexer
     size_t capacity;
 };
 
-
 struct assignment_word_lexer
 {
     char *value;
@@ -254,8 +253,8 @@ enum lexer_state io_number_lexer_consume_char(struct general_lexer *lexer,
 struct general_lexer *new_assigment_word_lexer();
 void free_assignment_word_lexer(struct general_lexer *lexer);
 void reset_assignment_word_lexer(struct general_lexer *lexer);
-enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer, struct INPUT *input);
-
+enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
+                                                    struct INPUT *input);
 
 struct lexer *lexer_new(struct INPUT *input_stream);
 void lexer_free(struct lexer *lexer);
@@ -274,7 +273,8 @@ struct token *lexer_peek(struct lexer *lexer);
 struct token *lexer_pop(struct lexer *lexer);
 struct token *lexer_pop_ignore_keyword(struct lexer *lexer);
 struct token *lexer_pop_ignore_keyword_and_assignment(struct lexer *lexer);
-struct token *read_until_new_token_ignore_keywords_and_assignment(struct lexer *lexer);
+struct token *
+read_until_new_token_ignore_keywords_and_assignment(struct lexer *lexer);
 
 int is_alpha(char c);
 int is_num(char c);
