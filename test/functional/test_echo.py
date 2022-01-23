@@ -85,3 +85,7 @@ def test_echo_param_wrong_lot_param():
 @pytest.mark.timeout(2)
 def test_echo_param_empty_tirait():
     run_test.run_test_command("echo - -b -e -y -td Hello Friend")
+
+@pytest.mark.timeout(2)
+def test_echo_param_empty_tirait_second_pos():
+    run_test.run_test_command("echo -b - -e - -y -td Hello Friend")
