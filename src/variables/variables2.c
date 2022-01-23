@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "variables.h"
 #include "utils.h"
 
 void init_variables()
 {
+    srand(time(NULL));
     push_linked_list(variables, "?", "0");
     /*char *uid = xmalloc(sizeof(char) * 5);
     sprintf(uid, "%lu", getuid);
@@ -57,7 +59,7 @@ char *get_variable(char *name)
     if (strcmp(name, "RANDOM") == 0)
     {
         //variable_push_int("RANDOM", random());
-        variable_push_int("RANDOM", rand_r());
+        variable_push_int("RANDOM", rand());
         return get_linked_list(variables, "RANDOM");
     }
     return get_linked_list(variables, name);
