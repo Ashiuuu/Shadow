@@ -108,7 +108,8 @@ enum parser_status parse_compound_list(struct ast_node **ast,
 
     // first and_or
     struct ast_node *com = NULL;
-    enum parser_status stat = parser_simple_command(&com, input);
+    enum parser_status stat = parse_and_or(&com, input);
+    //enum parser_status stat = parser_simple_command(&com, input);
     if (stat != PARSER_FOUND) // either error or didn'd anything
     {
         free_node(*ast);
