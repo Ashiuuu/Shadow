@@ -63,6 +63,7 @@ exec_files = [
     'src/exec/pipe_node.c',
     'src/exec/and_or_node.c',
     'src/exec/variable_exec.c',
+    'src/exec/assignment_node.c',
 
     'src/variables/variables.c',
     'src/variables/variables2.c',

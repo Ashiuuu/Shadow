@@ -45,15 +45,20 @@ enum parser_status parse_command(struct ast_node **ast, struct lexer *input)
 // Grammar :
 //   (prefix)+
 // | (prefix)* (element)+
-// Basically, redirections and WORDS
-// we put WORDS in a command node and redirections in a redirection list
-// then put the command as child of the redirection list
+// For us, is there is a assignment, ignore the rest, else proceed as normal
 enum parser_status parser_simple_command(struct ast_node **ast,
                                          struct lexer *input)
 {
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
         return PARSER_ERROR;
+
+    if (tok->type == TOKEN_ASSIGNMENT_WORD)
+    {
+        *ast = new_assignment_node(tok->value);
+        lexer_pop(input);
+        return PARSER_FOUND;
+    }
     *ast = new_redirec_list_node();
 
     size_t capacity = 5;

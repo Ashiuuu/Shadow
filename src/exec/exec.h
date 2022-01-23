@@ -161,6 +161,12 @@ struct ast_node_and_or
     enum token_type type;
 };
 
+struct ast_node_assignment
+{
+    /// Value of the assignment token retrieved
+    char *string;
+};
+
 /**
  * @brief Enum that holds the type of a node
  *
@@ -176,6 +182,7 @@ enum node_type
     NODE_UNTIL,
     NODE_PIPE,
     NODE_AND_OR,
+    NODE_ASSIGNMENT,
 };
 
 /**
@@ -194,6 +201,7 @@ union ast_data
     struct ast_node_until ast_until;
     struct ast_node_pipe ast_pipe;
     struct ast_node_and_or ast_and_or;
+    struct ast_node_assignment ast_assignment;
 };
 
 /**
@@ -514,6 +522,11 @@ void free_and_or_node(struct ast_node *node);
  * @return int Return status of the last node
  */
 int exec_and_or_node(struct ast_node *node);
+
+// Variable assignment
+struct ast_node *new_assignment_node(char *string);
+void free_assignment_node(struct ast_node *node);
+int exec_assignment_node(struct ast_node *node);
 
 // Built-ins
 /**
