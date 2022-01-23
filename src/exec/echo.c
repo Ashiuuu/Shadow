@@ -53,7 +53,6 @@ int echo(struct ast_node *node)
                     {
                         switch (curr[k + 1])
                         {
-<<<<<<< HEAD
                         case 'n':
                             printf("\n");
                             break;
@@ -62,16 +61,6 @@ int echo(struct ast_node *node)
                             break;
                         default:
                             printf("%c", curr[k + 1]);
-=======
-                        case 'n':
-                            printf("\n");
-                            break;
-                        case 't':
-                            printf("\t");
-                            break;
-                        default:
-                            printf("%c", curr[k + 1]);
->>>>>>> 3ce8ee2ac054f0ec3303069d52544374cb260013
                         }
                         k++;
                     }
