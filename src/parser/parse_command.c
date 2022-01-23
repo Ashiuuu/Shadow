@@ -56,8 +56,23 @@ enum parser_status parser_simple_command(struct ast_node **ast,
     if (tok->type == TOKEN_ASSIGNMENT_WORD)
     {
         *ast = new_assignment_node(tok->value);
-        lexer_pop(input);
-        return PARSER_FOUND;
+        tok = lexer_pop(input);
+        if (tok->type == TOKEN_ERROR)
+        {
+            free_node(*ast);
+            return PARSER_ERROR;
+        }
+        if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND || tok->type == TOKEN_SINGLEQUOTE)
+        {
+            (*ast)->data.ast_assignment.tok = token_dup(tok);
+            lexer_pop(input);
+            return PARSER_FOUND;
+        }
+        else
+        {
+            free_node(*ast);
+            return PARSER_ERROR;
+        }
     }
     *ast = new_redirec_list_node();
 

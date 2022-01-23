@@ -176,3 +176,57 @@ struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
 
     return lexer->current_token;
 }
+
+struct token *read_until_new_token_ignore_keywords_and_assignment(struct lexer *lexer)
+{
+    if (lexer->input->current_char == '#')
+    {
+        while (lexer->input->current_char != '\n')
+            pop_char(lexer->input);
+    }
+    while (lexer->input->current_char == ' '
+           || lexer->input->current_char == '\t')
+    {
+        pop_char(lexer->input);
+    }
+
+    if (short_token_switch(lexer) == 1)
+        return lexer->current_token;
+
+    int accepted = 0;
+    while (accepted == 0)
+    {
+        size_t errors = 0;
+        for (size_t i = NB_OF_KEYWORDS + 1; i < lexer->list_len; ++i)
+        {
+            enum lexer_state state =
+                general_lexer_consume_char(lexer->lexer_list[i], lexer->input);
+            if (state == LEXER_ERROR)
+                errors++;
+            if (errors == lexer->list_len - NB_OF_KEYWORDS)
+            {
+                fprintf(stderr,
+                        "[FATAL] All lexers encountered error, no pattern "
+                        "recognized\n");
+                lexer->current_token =
+                    token_swap(lexer, token_new(TOKEN_ERROR));
+                return lexer->current_token;
+            }
+            if (state == LEXER_ACCEPT)
+            {
+                accepted = 1;
+                lexer->current_token =
+                    token_swap(lexer, extract_token(lexer->lexer_list[i]));
+                break;
+            }
+        }
+        if (accepted != 1)
+            pop_char(lexer->input);
+    }
+
+    // reset all lexers
+    for (size_t i = 0; i < lexer->list_len; ++i)
+        reset_lexer(lexer->lexer_list[i]);
+
+    return lexer->current_token;
+}

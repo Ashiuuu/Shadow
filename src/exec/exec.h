@@ -165,6 +165,8 @@ struct ast_node_assignment
 {
     /// Value of the assignment token retrieved
     char *string;
+    /// Token for the value of the variable
+    struct token *tok;
 };
 
 /**

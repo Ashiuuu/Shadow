@@ -81,7 +81,7 @@ char *variable_search_and_replace(char *string)
             }
         }
     }
-    return NULL;
+    return string;
 }
 
 char *parse_variable_bracket(char *string)

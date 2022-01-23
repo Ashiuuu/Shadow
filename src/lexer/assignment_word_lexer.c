@@ -60,9 +60,40 @@ enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_ERROR;
 
     char c = input->current_char;
-    int flag = lexer->data.assignment_word_lexer.equal_flag;
 
-    // for now just accept alphanum and _
+    if (c == '=' && lexer->data.assignment_word_lexer.len == 0)
+    {
+        lexer->state = LEXER_ERROR;
+        return LEXER_ERROR;
+    }
+    if (c == '=')
+    {
+        // stop parsing
+        lexer->data.assignment_word_lexer.capacity = lexer->data.assignment_word_lexer.len + 1;
+        lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = '\0';
+        lexer->state = LEXER_ACCEPT;
+        pop_char(input); // pop '='
+        return LEXER_ACCEPT;
+    }
+    if (is_alphanum(c) || c == '_')
+    {
+        if (lexer->data.assignment_word_lexer.len == lexer->data.assignment_word_lexer.capacity)
+        {
+            lexer->data.assignment_word_lexer.capacity *= 2;
+            lexer->data.assignment_word_lexer.value = xrealloc(lexer->data.assignment_word_lexer.value, sizeof(char) * lexer->data.assignment_word_lexer.capacity);
+        }
+        lexer->data.assignment_word_lexer.value[lexer->data.assignment_word_lexer.len] = c;
+        lexer->data.assignment_word_lexer.len++;
+        return LEXER_CONT;
+    }
+    else
+    {
+        lexer->state = LEXER_ERROR;
+        return LEXER_ERROR;
+    }
+
+    /*// for now just accept alphanum and _
     if (is_alphanum(c) || c == '_' || c == '=')
     {
         if (c == '=')
@@ -93,6 +124,6 @@ enum lexer_state assignment_word_lexer_consume_char(struct general_lexer *lexer,
             lexer->state = LEXER_ERROR;
             return LEXER_ERROR;
         }
-    }
+    }*/
 }
 

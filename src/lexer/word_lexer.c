@@ -5,7 +5,7 @@ int is_accepted_char(struct INPUT *input)
 {
     char c = input->current_char;
     // char n = input->next_char;
-    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',' || c == '$' || is_special(c) || c == '_';
+    return is_alphanum(c) || c == '-' || c == '.' || c == '/' || c == ',' || c == '$' || is_special(c) || c == '_' || c == '=';
 }
 
 struct general_lexer *new_word_lexer()
@@ -67,15 +67,11 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_ERROR;
 
     int accepted = is_accepted_char(input);
-    int valid_state = 0;
-
 
     // escape or detect \n and things like that
     if (input->current_char == '\\')
     {
-        if (input->next_char == 'x')
-            valid_state = 1;
-        else if (input->next_char == '\'')
+        if (input->next_char == '\'')
         {
             pop_char(input);
             accepted = 1;
@@ -99,7 +95,7 @@ enum lexer_state word_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_CONT;
     }
 
-    if (valid_state == 1 || input->current_char == ' ' || input->current_char == ';'
+    if (input->current_char == ' ' || input->current_char == ';'
         || input->current_char == '\n'
         || input->current_char == EOF) // end of word
     {

@@ -18,6 +18,11 @@ struct token *lexer_pop_ignore_keyword(struct lexer *lexer)
     return read_until_new_token_ignore_keywords(lexer);
 }
 
+struct token *lexer_pop_ignore_keyword_and_assignment(struct lexer *lexer)
+{
+    return read_until_new_token_ignore_keywords_and_assignment(lexer);
+}
+
 int right_redirection_switch(struct lexer *lexer)
 {
     switch (lexer->input->current_char)

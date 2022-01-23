@@ -24,9 +24,10 @@ struct token *token_new_word(char *value)
 struct token *token_new_with_value(enum token_type type, char *value)
 {
     struct token *new = token_new(type);
-    new->value = xmalloc(sizeof(char) * (strlen(value) + 1));
+    new->value = strdup(value);
+    /*new->value = xmalloc(sizeof(char) * (strlen(value) + 1));
 
-    strcpy(new->value, value);
+    strcpy(new->value, value);*/
 
     return new;
 }
