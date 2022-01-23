@@ -1,4 +1,3 @@
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -17,7 +16,7 @@ void init_variables()
     variable_push_int("$", getpid());
     char ifs[] = { '\n', '\0' };
     push_linked_list(variables, "IFS", ifs);
-    char pwd[PATH_MAX];
+    char pwd[4096];
     if (getcwd(pwd, sizeof(pwd)) != NULL)
     {
         push_linked_list(variables, "OLDPWD", pwd);
