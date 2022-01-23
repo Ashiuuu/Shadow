@@ -61,3 +61,11 @@ def test_echo_param_e_long_double_quotes_backslash():
 @pytest.mark.timeout(2)
 def test_echo_param_n():
     run_test.run_test_command("echo -n \'Hello Friend\'")
+
+@pytest.mark.timeout(2)
+def test_echo_param_e_hard():
+    run_test.run_test_command("echo -e \'\t \n Hello Friend\'")
+
+@pytest.mark.timeout(2)
+def test_echo_param_e_hard():
+    run_test.run_test_command("echo -e \t \n Hello Friend")
