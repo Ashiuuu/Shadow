@@ -23,13 +23,14 @@ int echo(struct ast_node *node)
     int opt;
     int nflag = 0;
     int eflag = 0;
+    int rflag = 0;
 
     size_t args_len = array_len(node->data.ast_command.args_strings);
     optind = 1;
     opterr = 0;
     size_t com_args_len = 0;
     opt = getopt(args_len, node->data.ast_command.args_strings, "ne");
-    while (opt != -1)
+    while (opt != -1 && rflag != 1)
     {
         switch (opt)
         {
@@ -41,6 +42,7 @@ int echo(struct ast_node *node)
             break;
         case '?':
             com_args_len++;
+            rflag = 1;
             break;
         default:
             fprintf(stderr, "error while parsing echo options\n");
@@ -50,6 +52,22 @@ int echo(struct ast_node *node)
     }
 
     optind -= com_args_len;
+
+    if (rflag == 1 && eflag == 0)
+    {
+        size_t j = 1;
+        if (nflag == 1)
+            j++;
+        for (; node->data.ast_command.args_strings[j] != NULL; ++j)
+        {
+            printf("%s", node->data.ast_command.args_strings[j]);
+            if (node->data.ast_command.args_strings[j + 1] != NULL)
+                printf(" ");
+        }
+        if (nflag == 0)
+            printf("\n");
+        return 0;
+    }
 
     for (size_t i = optind; node->data.ast_command.args_strings[i] != NULL; i++)
     {
