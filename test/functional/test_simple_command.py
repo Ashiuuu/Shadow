@@ -2,6 +2,8 @@ import subprocess
 import os
 import pytest
 
+import run_test
+
 @pytest.mark.timeout(2)
 def test_mkdir():
     os.popen("rm -r tess")
@@ -69,3 +71,18 @@ def test_ls():
     result = os.popen("./42sh -c \"ls tess/\"").read()
     os.popen("rm -r tess")
     assert result == 'bite\n'
+
+@pytest.mark.timeout(5)
+def test_cd():
+    os.popen("mkdir tess")
+    run_test.run_test_command("cd tess")
+    run_test.run_test_command("ls")
+    os.popen("rm -r tess")
+
+@pytest.mark.timeout(5)
+def test_cd_point_point():
+    os.popen("mkdir tess")
+    run_test.run_test_command("cd tess")
+    run_test.run_test_command("cd ..")
+    run_test.run_test_command("ls")
+    os.popen("rm -r tess")
