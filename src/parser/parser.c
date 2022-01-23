@@ -20,13 +20,13 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
     struct token *tok = lexer_peek(input);
     if (tok->type == TOKEN_ERROR)
     {
-        //lexer_free(input);
+        // lexer_free(input);
         return PARSER_ERROR;
     }
 
     if (tok->type == TOKEN_EOF || tok->type == TOKEN_EOL)
     {
-        //lexer_free(input);
+        // lexer_free(input);
         lexer_pop(input);
         return PARSER_OK;
     }
@@ -35,7 +35,7 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
     if (stat != PARSER_FOUND)
     {
         fprintf(stderr, "Unexpected token\n");
-        //lexer_free(input);
+        // lexer_free(input);
         return PARSER_ERROR;
     }
 
@@ -43,13 +43,13 @@ enum parser_status parse_input(struct ast_node **ast, struct lexer *input)
 
     if (tok->type == TOKEN_EOF || tok->type == TOKEN_EOL)
     {
-        //lexer_free(input);
+        // lexer_free(input);
         lexer_pop(input);
         return PARSER_FOUND;
     }
 
     fprintf(stderr, "Expected EOF or EOL token\n");
-    //lexer_free(input);
+    // lexer_free(input);
     return PARSER_ERROR;
 }
 
@@ -109,7 +109,7 @@ enum parser_status parse_compound_list(struct ast_node **ast,
     // first and_or
     struct ast_node *com = NULL;
     enum parser_status stat = parse_and_or(&com, input);
-    //enum parser_status stat = parser_simple_command(&com, input);
+    // enum parser_status stat = parser_simple_command(&com, input);
     if (stat != PARSER_FOUND) // either error or didn'd anything
     {
         free_node(*ast);

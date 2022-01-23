@@ -66,8 +66,8 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
     }
 
     if (lexer->data.double_quote_lexer.quote_flag != 0
-             && input->current_char == '"') // flag was set (we encountered a '
-                                            // before) and we see another one
+        && input->current_char == '"') // flag was set (we encountered a '
+                                       // before) and we see another one
     {
         // end parsing
         lexer->state = LEXER_ACCEPT;
@@ -87,7 +87,7 @@ enum lexer_state double_quote_lexer_consume_char(struct general_lexer *lexer,
         return LEXER_ACCEPT;
     }
     else if (lexer->data.double_quote_lexer.len == 0
-        && input->current_char == '"') // if it is the first char and a "
+             && input->current_char == '"') // if it is the first char and a "
     {
         // start getting chars
         lexer->data.double_quote_lexer.quote_flag = 1; // set flag

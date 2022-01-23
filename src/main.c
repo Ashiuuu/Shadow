@@ -37,7 +37,7 @@ void as_argument(char *com, char **com_argv, int printer)
     {
         struct ast_node *ast = NULL;
         enum parser_status stat = parse_input(&ast, lexer);
-        
+
         if (stat == PARSER_ERROR)
         {
             free_node(ast);
@@ -61,7 +61,6 @@ void as_argument(char *com, char **com_argv, int printer)
         tok = lexer_peek(lexer);
     }
 
-
     lexer_free(lexer);
     variable_push_int("?", return_status);
 }
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        //struct ast_node *ast = NULL;
+        // struct ast_node *ast = NULL;
         int printer = 0;
         while (1)
         {

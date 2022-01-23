@@ -78,7 +78,8 @@ int main(int argc, char **argv)
         printf("%s", tab[type]);
         if (type == TOKEN_ERROR)
             break;
-        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER || type == TOKEN_EXPAND || type == TOKEN_ASSIGNMENT_WORD)
+        if (type == TOKEN_WORDS || type == TOKEN_IO_NUMBER
+            || type == TOKEN_EXPAND || type == TOKEN_ASSIGNMENT_WORD)
             printf(" (%s)", token->value);
         printf("\n");
     }

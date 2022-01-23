@@ -89,12 +89,14 @@ struct token *extract_token(struct general_lexer *lexer)
     case SING_QUOTE_LEXER:
         return token_new_word(lexer->data.sing_quote_lexer.value);
     case DOUBLE_QUOTE_LEXER:
-        return token_new_with_value(TOKEN_EXPAND, lexer->data.double_quote_lexer.value);
+        return token_new_with_value(TOKEN_EXPAND,
+                                    lexer->data.double_quote_lexer.value);
     case IO_NUMBER_LEXER:
         return token_new_with_value(TOKEN_IO_NUMBER,
                                     lexer->data.io_number_lexer.value);
     case ASSIGNMENT_WORD_LEXER:
-        return token_new_with_value(TOKEN_ASSIGNMENT_WORD, lexer->data.assignment_word_lexer.value);
+        return token_new_with_value(TOKEN_ASSIGNMENT_WORD,
+                                    lexer->data.assignment_word_lexer.value);
     default:
         fprintf(stderr, "unknown lexer type [EXTRACT]\n");
         return token_new(TOKEN_ERROR);

@@ -7,5 +7,6 @@ test_suite
 .DS_Store
 build/
 pytest-env/
+test-env/
 test/functional/__pycache__/
 tess/

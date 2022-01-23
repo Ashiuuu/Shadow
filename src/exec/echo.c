@@ -12,7 +12,7 @@ int echo(struct ast_node *node)
         return -1;
     }
     if (node->data.ast_command.args_strings != NULL
-            && strcmp(node->data.ast_command.args_strings[0], "echo") != 0)
+        && strcmp(node->data.ast_command.args_strings[0], "echo") != 0)
     {
         fprintf(stderr, "trying to call echo on non echo command node\n");
         return -1;
@@ -53,6 +53,7 @@ int echo(struct ast_node *node)
                     {
                         switch (curr[k + 1])
                         {
+<<<<<<< HEAD
                             case 'n':
                                 printf("\n");
                                 break;
@@ -61,6 +62,16 @@ int echo(struct ast_node *node)
                                 break;
                             default:
                                 printf("%c", curr[k + 1]);
+=======
+                        case 'n':
+                            printf("\n");
+                            break;
+                        case 't':
+                            printf("\t");
+                            break;
+                        default:
+                            printf("%c", curr[k + 1]);
+>>>>>>> 3ce8ee2ac054f0ec3303069d52544374cb260013
                         }
                         k++;
                     }

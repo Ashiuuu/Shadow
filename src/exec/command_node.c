@@ -48,7 +48,8 @@ void free_command_node(struct ast_node *node)
         }
         if (node->data.ast_command.args_strings != NULL)
         {
-            for (size_t i = 0; node->data.ast_command.args_strings[i] != NULL; ++i)
+            for (size_t i = 0; node->data.ast_command.args_strings[i] != NULL;
+                 ++i)
                 free(node->data.ast_command.args_strings[i]);
             free(node->data.ast_command.args_strings);
         }
@@ -77,10 +78,12 @@ int exec_command_node(struct ast_node *node)
         else if (node->data.ast_command.args[i]->type != TOKEN_EXPAND)
         {
             // ?????
-            fprintf(stderr, "[FATAL] Got non word or expand token into command node\n");
+            fprintf(stderr,
+                    "[FATAL] Got non word or expand token into command node\n");
             abort();
         }
-        char *replaced = variable_search_and_replace(node->data.ast_command.args[i]->value);
+        char *replaced =
+            variable_search_and_replace(node->data.ast_command.args[i]->value);
         if (replaced != NULL)
             node->data.ast_command.args[i]->value = replaced;
         len++;
@@ -90,7 +93,8 @@ int exec_command_node(struct ast_node *node)
     node->data.ast_command.args_strings = xmalloc(sizeof(char *) * (len + 1));
     for (size_t i = 0; i < len; ++i)
     {
-        node->data.ast_command.args_strings[i] = strdup(node->data.ast_command.args[i]->value);
+        node->data.ast_command.args_strings[i] =
+            strdup(node->data.ast_command.args[i]->value);
     }
     node->data.ast_command.args_strings[len] = NULL;
 
@@ -126,7 +130,8 @@ int exec_command_node(struct ast_node *node)
     if (child == 0)
     {
         // child process
-        execvp(node->data.ast_command.args_strings[0], node->data.ast_command.args_strings);
+        execvp(node->data.ast_command.args_strings[0],
+               node->data.ast_command.args_strings);
         fprintf(stderr, "Could not execute %s\n",
                 node->data.ast_command.args_strings[0]);
         exit(127);

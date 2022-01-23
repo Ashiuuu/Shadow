@@ -25,9 +25,9 @@ struct lexer *lexer_new(struct INPUT *input_stream)
 
     ret->input = input_stream;
     ret->current_token = NULL;
-    ret->list_len =
-        array_len(keyword_list) + 5; // add [single quote lexer, double quote,
-                                     // io number lexer, word lexer, assignment_word]
+    ret->list_len = array_len(keyword_list)
+        + 5; // add [single quote lexer, double quote,
+             // io number lexer, word lexer, assignment_word]
     ret->lexer_list = xmalloc(sizeof(struct general_lexer *) * ret->list_len);
 
     size_t i;
@@ -162,7 +162,8 @@ struct token *read_until_new_token_ignore_keywords(struct lexer *lexer)
     return lexer->current_token;
 }
 
-struct token *read_until_new_token_ignore_keywords_and_assignment(struct lexer *lexer)
+struct token *
+read_until_new_token_ignore_keywords_and_assignment(struct lexer *lexer)
 {
     if (lexer->input->current_char == '#')
     {

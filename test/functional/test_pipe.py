@@ -19,7 +19,7 @@ def test_pipe_triple():
 def test_pipe_wrong_syntax():
     run_test.run_test_command("echo a | echo b |")
 
-@pytest.mark.timeout(4)
+@pytest.mark.timeout(8)
 def test_pipe_word_cut():
     run_test.run_test_command("ls -l | wc")
 
