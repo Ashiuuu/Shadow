@@ -10,7 +10,7 @@ struct token *lexer_peek(struct lexer *lexer)
 
 int left_redirection_switch(struct lexer *lexer)
 {
-   switch (lexer->input->current_char)
+    switch (lexer->input->current_char)
     {
     case '>': // <>
         pop_char(lexer->input);
@@ -23,7 +23,7 @@ int left_redirection_switch(struct lexer *lexer)
     default: // only '<'
         token_swap(lexer, token_new(TOKEN_FRED_IN));
         return 1;
-    } 
+    }
 }
 
 int right_redirection_switch(struct lexer *lexer)

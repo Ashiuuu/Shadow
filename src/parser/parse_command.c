@@ -55,7 +55,8 @@ enum parser_status parse_assignment(struct ast_node **ast, struct lexer *input)
         free_node(*ast);
         return PARSER_ERROR;
     }
-    if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND || tok->type == TOKEN_SINGLEQUOTE)
+    if (tok->type == TOKEN_WORDS || tok->type == TOKEN_EXPAND
+        || tok->type == TOKEN_SINGLEQUOTE)
     {
         (*ast)->data.ast_assignment.tok = token_dup(tok);
         lexer_pop(input);
@@ -138,8 +139,9 @@ enum parser_status parser_simple_command(struct ast_node **ast,
                 capacity = len + 1;
                 args = xrealloc(args, sizeof(struct token *) * capacity);
                 args[len] = NULL;
-                // new_command_node frees args array, don't need to do it ourselves
-                c = new_command_node(args); 
+                // new_command_node frees args array, don't need to do it
+                // ourselves
+                c = new_command_node(args);
 
                 (*ast)->data.ast_redirec_list.child = c;
                 return PARSER_FOUND;

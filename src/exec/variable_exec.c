@@ -19,7 +19,8 @@ char *replace(char *name, char *string, size_t i, size_t len)
     if (value != NULL)
         val_len = strlen(value);
     char *first_half = strndup(string, i);
-    first_half = xrealloc(first_half, sizeof(char) * (len + val_len - name_len));
+    first_half =
+        xrealloc(first_half, sizeof(char) * (len + val_len - name_len));
     if (value != NULL)
         first_half = strcat(first_half, value);
     first_half = strcat(first_half, (string + i + name_len + 1));
@@ -46,7 +47,8 @@ char *variable_search_and_replace(char *string)
                 if (string[i + 1] == '{')
                 {
 <<<<<<< HEAD
-                    name = parse_variable_bracket(string + i + 2); // skip bracket
+                    name =
+                        parse_variable_bracket(string + i + 2); // skip bracket
                     return replace(name, string, i, len);
 =======
                     name =

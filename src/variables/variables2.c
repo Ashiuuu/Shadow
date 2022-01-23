@@ -1,7 +1,7 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <limits.h>
 #include <unistd.h>
 
 #include "utils.h"
@@ -15,7 +15,7 @@ void init_variables()
     sprintf(uid, "%lu", (long unsigned int)getuid());
     push_linked_list(variables, "UID", uid);
     variable_push_int("$", getpid());
-    char ifs[] = {'\n', '\0'};
+    char ifs[] = { '\n', '\0' };
     push_linked_list(variables, "IFS", ifs);
     char pwd[PATH_MAX];
     if (getcwd(pwd, sizeof(pwd)) != NULL)

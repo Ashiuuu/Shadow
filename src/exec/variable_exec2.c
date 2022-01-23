@@ -1,9 +1,9 @@
 #include <string.h>
 
 #include "exec.h"
+#include "lexer.h"
 #include "utils.h"
 #include "variables.h"
-#include "lexer.h"
 
 char *parse_special(char *string)
 {
